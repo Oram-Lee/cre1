@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빌딩 정보 지도 시스템</title>
+    
+    <!-- 카카오맵 API -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1ac6eee9b1e4c2e0cc6f1d1ca1a6a559&libraries=services,clusterer,drawing"></script>
+    
+    <!-- SheetJS 라이브러리 (엑셀 처리) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden;
+        }
+        
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* 좌측 패널 */
+        #sidebar {
+            width: 350px;
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            transition: margin-left 0.3s;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        #sidebar.collapsed {
+            margin-left: -350px;
+        }
+        
+        #toggle-btn {
+            position: fixed;
+            left: 350px;
+            top: 20px;
+            width: 30px;
+            height: 60px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            z-index: 100;
+            transition: left 0.3s;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        #toggle-btn.collapsed {
+            left: 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .search-section {
+            padding: 20px;
+            background: white;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .search-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .search-section input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .search-section button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .search-section button:hover {
+            background: #0056b3;
+        }
+        
+        /* 빌딩 리스트 */
+        #building-list {
+            padding: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .building-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .building-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .building-item.selected {
+            background: #e3f2fd;
+            border: 2px solid #007bff;
+        }
+        
+        .building-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .building-address {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 장바구니 섹션 */
+        #cart-section {
+            padding: 20px;
+            background: #fff3cd;
+            margin: 10px;
+            border-radius: 8px;
+        }
+        
+        #cart-count {
+            font-weight: bold;
+            color: #856404;
+        }
+        
+        #export-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #export-btn:hover {
+            background: #218838;
+        }
+        
+        /* 지도 영역 */
+        #map {
+            flex: 1;
+            position: relative;
+        }
+        
+        /* 팝업 */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .popup-close:hover {
+            color: #333;
+        }
+        
+        .popup-content h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            width: 120px;
+            color: #666;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+        
+        /* 도구 모음 */
+        #drawing-tools {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .tool-btn {
+            padding: 8px 15px;
+            margin: 5px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .tool-btn:hover {
+            background: #5a6268;
+        }
+        
+        .tool-btn.active {
+            background: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- 토글 버튼 -->
+        <button id="toggle-btn">◀</button>
+        
+        <!-- 좌측 패널 -->
+        <div id="sidebar">
+            <!-- 검색 섹션 -->
+            <div class="search-section">
+                <h3>빌딩 검색</h3>
+                <input type="text" id="search-name" placeholder="빌딩명">
+                <input type="text" id="search-address" placeholder="주소">
+                <input type="text" id="search-station" placeholder="지하철역">
+                <button onclick="searchBuildings()">검색</button>
+            </div>
+            
+            <!-- 빌딩 리스트 -->
+            <div id="building-list"></div>
+            
+            <!-- 장바구니 섹션 -->
+            <div id="cart-section">
+                <h3>선택된 빌딩 (<span id="cart-count">0</span>개)</h3>
+                <button id="export-btn" onclick="exportToExcel()">Comp List 엑셀파일 생성</button>
+            </div>
+        </div>
+        
+        <!-- 지도 영역 -->
+        <div id="map">
+            <!-- 도구 모음 -->
+            <div id="drawing-tools">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px;">도형 그리기</h4>
+                <button class="tool-btn" onclick="setDrawingMode('rectangle')">사각형</button>
+                <button class="tool-btn" onclick="setDrawingMode('circle')">원</button>
+                <button class="tool-btn" onclick="setDrawingMode('polygon')">다각형</button>
+                <button class="tool-btn" onclick="clearDrawing()">지우기</button>
+                <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                    * 도형을 그려서 영역 내 빌딩을 검색하세요<br>
+                    * 다각형: 클릭으로 점 추가, 더블클릭으로 완성
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 팝업 -->
+    <div id="popup" class="popup-overlay" onclick="closePopup(event)">
+        <div class="popup-content" onclick="event.stopPropagation()">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div id="popup-body"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 전역 변수
+        let map;
+        let markers = [];
+        let clusterer;
+        let selectedBuildings = new Set();
+        let buildingsData = [];
+        let manager;
+        let currentOverlay = null;
+        let polygonPoints = []; // 다각형 점들 저장
+        
+        // 더미 데이터 (실제로는 엑셀 파일에서 로드)
+        const dummyBuildings = [
+            {
+                id: 1,
+                name: "강남파이낸스센터",
+                address: "서울특별시 강남구 테헤란로 152",
+                lat: 37.500622,
+                lng: 127.036456,
+                station: "강남역",
+                floors: "B8~38F",
+                area: "3,305㎡",
+                rentPrice: "90,000원/㎡",
+                managementFee: "35,000원/㎡",
+                parkingFee: "월 150,000원",
+                completionYear: "2000"
+            },
+            {
+                id: 2,
+                name: "삼성SDS타워",
+                address: "서울특별시 송파구 올림픽로35길 125",
+                lat: 37.514522,
+                lng: 127.102798,
+                station: "잠실역",
+                floors: "B4~27F",
+                area: "2,875㎡",
+                rentPrice: "85,000원/㎡",
+                managementFee: "32,000원/㎡",
+                parkingFee: "월 130,000원",
+                completionYear: "2015"
+            },
+            {
+                id: 3,
+                name: "센터필드",
+                address: "서울특별시 강남구 테헤란로 231",
+                lat: 37.503437,
+                lng: 127.041372,
+                station: "역삼역",
+                floors: "B6~27F",
+                area: "2,645㎡",
+                rentPrice: "88,000원/㎡",
+                managementFee: "33,000원/㎡",
+                parkingFee: "월 140,000원",
+                completionYear: "2019"
+            }
+        ];
+        
+        // 지도 초기화
+        function initMap() {
+            const container = document.getElementById('map');
+            const options = {
+                center: new kakao.maps.LatLng(37.5065, 127.0550),
+                level: 5
+            };
+            
+            map = new kakao.maps.Map(container, options);
+            
+            // 클러스터러 생성
+            clusterer = new kakao.maps.MarkerClusterer({
+                map: map,
+                averageCenter: true,
+                minLevel: 3
+            });
+            
+            // 그리기 관리자 생성
+            const drawingOptions = {
+                map: map,
+                drawingMode: [
+                    kakao.maps.drawing.OverlayType.RECTANGLE,
+                    kakao.maps.drawing.OverlayType.CIRCLE,
+                    kakao.maps.drawing.OverlayType.POLYGON
+                ],
+                guideTooltip: ['draw', 'drag', 'edit'],
+                rectangleOptions: {
+                    draggable: true,
+                    removable: true,
+                    editable: true,
+                    strokeWeight: 2,
+                    strokeColor: '#39f',
+                    fillColor: '#39f',
+                    fillOpacity: 0.3
+                },
+                circleOptions: {
+                    draggable: true,
+                    removable: true,
+                    editable: true,
+                    strokeWeight: 2,
+                    strokeColor: '#39f',
+                    fillColor: '#39f',
+                    fillOpacity: 0.3
+                },
+                polygonOptions: {
+                    draggable: true,
+                    removable: true,
+                    editable: true,
+                    strokeWeight: 2,
+                    strokeColor: '#39f',
+                    fillColor: '#39f',
+                    fillOpacity: 0.3
+                }
+            };
+            
+            manager = new kakao.maps.drawing.DrawingManager(drawingOptions);
+            
+            // 더미 데이터로 마커 생성
+            buildingsData = dummyBuildings;
+            displayMarkers(buildingsData);
+            displayBuildingList(buildingsData);
+        }
+        
+        // 마커 표시
+        function displayMarkers(buildings) {
+            // 기존 마커 제거
+            clusterer.clear();
+            markers = [];
+            
+            buildings.forEach(building => {
+                const markerPosition = new kakao.maps.LatLng(building.lat, building.lng);
+                const marker = new kakao.maps.Marker({
+                    position: markerPosition,
+                    title: building.name
+                });
+                
+                // 마커 클릭 이벤트
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    showBuildingPopup(building);
+                });
+                
+                markers.push(marker);
+            });
+            
+            // 클러스터러에 마커 추가
+            clusterer.addMarkers(markers);
+        }
+        
+        // 빌딩 리스트 표시
+        function displayBuildingList(buildings) {
+            const listContainer = document.getElementById('building-list');
+            listContainer.innerHTML = '';
+            
+            buildings.forEach(building => {
+                const item = document.createElement('div');
+                item.className = 'building-item';
+                if (selectedBuildings.has(building.id)) {
+                    item.classList.add('selected');
+                }
+                
+                item.innerHTML = `
+                    <div class="building-name">${building.name}</div>
+                    <div class="building-address">${building.address}</div>
+                `;
+                
+                item.onclick = function() {
+                    toggleBuildingSelection(building);
+                };
+                
+                listContainer.appendChild(item);
+            });
+        }
+        
+        // 빌딩 선택/해제
+        function toggleBuildingSelection(building) {
+            if (selectedBuildings.has(building.id)) {
+                selectedBuildings.delete(building.id);
+            } else {
+                selectedBuildings.add(building.id);
+            }
+            
+            updateCartCount();
+            displayBuildingList(buildingsData);
+        }
+        
+        // 장바구니 카운트 업데이트
+        function updateCartCount() {
+            document.getElementById('cart-count').textContent = selectedBuildings.size;
+        }
+        
+        // 빌딩 검색
+        function searchBuildings() {
+            const name = document.getElementById('search-name').value.toLowerCase();
+            const address = document.getElementById('search-address').value.toLowerCase();
+            const station = document.getElementById('search-station').value.toLowerCase();
+            
+            const filtered = buildingsData.filter(building => {
+                return (!name || building.name.toLowerCase().includes(name)) &&
+                       (!address || building.address.toLowerCase().includes(address)) &&
+                       (!station || building.station.toLowerCase().includes(station));
+            });
+            
+            displayBuildingList(filtered);
+            displayMarkers(filtered);
+        }
+        
+        // 빌딩 팝업 표시
+        function showBuildingPopup(building) {
+            const popupBody = document.getElementById('popup-body');
+            popupBody.innerHTML = `
+                <h2>${building.name}</h2>
+                <div class="info-row">
+                    <span class="info-label">주소</span>
+                    <span class="info-value">${building.address}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">지하철역</span>
+                    <span class="info-value">${building.station}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">층수</span>
+                    <span class="info-value">${building.floors}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">기준층 면적</span>
+                    <span class="info-value">${building.area}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">임대료</span>
+                    <span class="info-value">${building.rentPrice}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">관리비</span>
+                    <span class="info-value">${building.managementFee}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">주차비</span>
+                    <span class="info-value">${building.parkingFee}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">준공년도</span>
+                    <span class="info-value">${building.completionYear}</span>
+                </div>
+            `;
+            
+            document.getElementById('popup').style.display = 'block';
+        }
+        
+        // 팝업 닫기
+        function closePopup(event) {
+            if (!event || event.target.id === 'popup') {
+                document.getElementById('popup').style.display = 'none';
+            }
+        }
+        
+        // 엑셀 내보내기
+        function exportToExcel() {
+            if (selectedBuildings.size === 0) {
+                alert('선택된 빌딩이 없습니다.');
+                return;
+            }
+            
+            // 선택된 빌딩 데이터 가져오기
+            const selectedData = buildingsData.filter(b => selectedBuildings.has(b.id));
+            
+            // 워크시트 데이터 생성
+            const wsData = [
+                ['빌딩명', '주소', '지하철역', '층수', '기준층 면적', '임대료', '관리비', '주차비', '준공년도']
+            ];
+            
+            selectedData.forEach(building => {
+                wsData.push([
+                    building.name,
+                    building.address,
+                    building.station,
+                    building.floors,
+                    building.area,
+                    building.rentPrice,
+                    building.managementFee,
+                    building.parkingFee,
+                    building.completionYear
+                ]);
+            });
+            
+            // 워크북 생성
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            
+            // 스타일 적용
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+                const address = XLSX.utils.encode_col(C) + "1";
+                if (!ws[address]) continue;
+                ws[address].s = {
+                    font: { bold: true },
+                    fill: { fgColor: { rgb: "4472C4" } },
+                    alignment: { horizontal: "center" }
+                };
+            }
+            
+            XLSX.utils.book_append_sheet(wb, ws, "Comp List");
+            
+            // 파일 다운로드
+            XLSX.writeFile(wb, `CompList_${new Date().toISOString().slice(0,10)}.xlsx`);
+        }
+        
+        // 그리기 모드 설정
+        function setDrawingMode(type) {
+            // 기존 도형 제거
+            if (currentOverlay) {
+                manager.remove(currentOverlay);
+                currentOverlay = null;
+            }
+            
+            // 모든 버튼 비활성화
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 선택된 버튼 활성화
+            event.target.classList.add('active');
+            
+            // 다각형 점들 초기화
+            polygonPoints = [];
+            
+            // Drawing Manager로 그리기 모드 선택
+            if (type === 'rectangle') {
+                manager.select(kakao.maps.drawing.OverlayType.RECTANGLE);
+            } else if (type === 'circle') {
+                manager.select(kakao.maps.drawing.OverlayType.CIRCLE);
+            } else if (type === 'polygon') {
+                manager.select(kakao.maps.drawing.OverlayType.POLYGON);
+                
+                // 다각형의 경우 점 추가 이벤트 리스너
+                manager.addListener('state_changed', function() {
+                    const data = manager.getData();
+                    if (data.polygon && data.polygon.length > 0) {
+                        const lastPolygon = data.polygon[data.polygon.length - 1];
+                        if (lastPolygon.points) {
+                            polygonPoints = lastPolygon.points.map(p => 
+                                new kakao.maps.LatLng(p.y, p.x)
+                            );
+                        }
+                    }
+                });
+            }
+            
+            // 그리기 완료 이벤트 리스너 추가
+            manager.addListener('drawend', function(data) {
+                currentOverlay = data.target;
+                
+                // 디버깅을 위한 로그
+                console.log('Drawing completed:', data);
+                console.log('Overlay object:', currentOverlay);
+                
+                // Drawing Manager의 getData 메서드 사용해보기
+                const managerData = manager.getData();
+                console.log('Manager data:', managerData);
+                
+                // 영역 내 빌딩 검색
+                const buildingsInArea = findBuildingsInArea(data.target);
+                displayBuildingList(buildingsInArea);
+                displayMarkers(buildingsInArea);
+                
+                // 그리기 모드 해제
+                manager.cancel();
+                
+                // 버튼 비활성화
+                document.querySelectorAll('.tool-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // 검색 결과 알림
+                const searchSection = document.querySelector('.search-section');
+                const resultMsg = document.createElement('div');
+                resultMsg.style.cssText = 'background: #d4edda; color: #155724; padding: 10px; margin-top: 10px; border-radius: 4px;';
+                resultMsg.textContent = `선택한 영역에서 ${buildingsInArea.length}개의 빌딩을 찾았습니다.`;
+                searchSection.appendChild(resultMsg);
+                
+                // 3초 후 메시지 제거
+                setTimeout(() => {
+                    resultMsg.remove();
+                }, 3000);
+            });
+        }
+        
+        // 그리기 지우기
+        function clearDrawing() {
+            if (currentOverlay) {
+                manager.remove(currentOverlay);
+                currentOverlay = null;
+            }
+            
+            manager.cancel();
+            
+            // 모든 버튼 비활성화
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 전체 빌딩 표시
+            displayBuildingList(buildingsData);
+            displayMarkers(buildingsData);
+        }
+        
+        // 영역 내 빌딩 찾기
+        function findBuildingsInArea(overlay) {
+            return buildingsData.filter(building => {
+                const position = new kakao.maps.LatLng(building.lat, building.lng);
+                
+                if (overlay instanceof kakao.maps.Rectangle) {
+                    const bounds = overlay.getBounds();
+                    return bounds.contain(position);
+                } else if (overlay instanceof kakao.maps.Circle) {
+                    const center = overlay.getPosition();
+                    const radius = overlay.getRadius();
+                    const poly = new kakao.maps.Polyline({
+                        path: [center, position]
+                    });
+                    const distance = poly.getLength();
+                    return distance <= radius;
+                } else if (overlay.overlayType === 'polygon' || overlay instanceof kakao.maps.Polygon) {
+                    try {
+                        // manager.getData()로 다각형 데이터 가져오기
+                        const managerData = manager.getData();
+                        console.log('Manager getData for polygon:', managerData);
+                        
+                        let coords = [];
+                        
+                        // getData에서 polygon 배열 확인
+                        if (managerData && managerData.polygon && managerData.polygon.length > 0) {
+                            // 가장 최근에 그린 다각형 (마지막 요소)
+                            const lastPolygon = managerData.polygon[managerData.polygon.length - 1];
+                            
+                            if (lastPolygon.points && Array.isArray(lastPolygon.points)) {
+                                // points 배열에서 좌표 추출
+                                coords = lastPolygon.points.map(point => {
+                                    return new kakao.maps.LatLng(point.y, point.x);
+                                });
+                                console.log('Extracted polygon coords:', coords);
+                            }
+                        }
+                        
+                        // coords가 없으면 polygonPoints 사용
+                        if (coords.length === 0 && polygonPoints.length > 0) {
+                            coords = polygonPoints;
+                        }
+                        
+                        // 여전히 좌표가 없으면 false 반환
+                        if (coords.length < 3) {
+                            console.log('다각형 좌표가 충분하지 않습니다.');
+                            return false;
+                        }
+                        
+                        // Ray Casting Algorithm으로 내부 판별
+                        let inside = false;
+                        const x = position.getLng();
+                        const y = position.getLat();
+                        
+                        for (let i = 0, j = coords.length - 1; i < coords.length; j = i++) {
+                            const xi = coords[i].getLng();
+                            const yi = coords[i].getLat();
+                            const xj = coords[j].getLng();
+                            const yj = coords[j].getLat();
+                            
+                            const intersect = ((yi > y) !== (yj > y))
+                                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                            
+                            if (intersect) inside = !inside;
+                        }
+                        
+                        return inside;
+                        
+                    } catch (error) {
+                        console.error('다각형 내부 판별 오류:', error);
+                        return false;
+                    }
+                }
+                
+                return false;
+            });
+        }
+        
+        // 토글 버튼
+        document.getElementById('toggle-btn').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+            this.classList.toggle('collapsed');
+            this.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+        });
+        
+        // 페이지 로드 시 지도 초기화
+        window.onload = function() {
+            initMap();
+        };
+    </script>
+</body>
+</html>
