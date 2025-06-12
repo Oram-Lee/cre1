@@ -1,0 +1,815 @@
+/* ===== 전역 스타일 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+#container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+/* ===== 좌측 패널 ===== */
+#sidebar {
+    width: 350px;
+    background: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    transition: margin-left 0.3s;
+    overflow-y: auto;
+    position: relative;
+    flex-shrink: 0;
+}
+
+#sidebar.collapsed {
+    margin-left: -350px;
+}
+
+#toggle-btn {
+    position: fixed;
+    left: 350px;
+    top: 20px;
+    width: 30px;
+    height: 60px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    z-index: 100;
+    transition: left 0.3s;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+#toggle-btn.collapsed {
+    left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+/* ===== 검색 섹션 ===== */
+.search-section {
+    padding: 20px;
+    background: white;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-section h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.search-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.search-section input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.search-section button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-section button:hover {
+    background: #0056b3;
+}
+
+/* ===== 빌딩 리스트 ===== */
+#building-list {
+    padding: 10px;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.building-count {
+    padding: 10px;
+    text-align: center;
+    background: #e9ecef;
+    margin: 0 10px 10px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #495057;
+}
+
+.building-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.building-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+    background: #f0f8ff;
+}
+
+.building-item.selected {
+    background: #e3f2fd;
+    border: 2px solid #007bff;
+    padding: 13px;
+}
+
+.building-item.highlighted {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    padding: 13px;
+}
+
+.building-item.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 20px;
+    background: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.building-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.building-address {
+    font-size: 14px;
+    color: #666;
+}
+
+.building-type {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 8px;
+    background: #e9ecef;
+    color: #495057;
+    border-radius: 3px;
+    margin-top: 5px;
+}
+
+/* ===== 장바구니 섹션 ===== */
+#cart-section {
+    padding: 20px;
+    background: #fff3cd;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+#cart-count {
+    font-weight: bold;
+    color: #856404;
+}
+
+#export-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#export-btn:hover {
+    background: #218838;
+}
+
+/* ===== 선택된 빌딩 리스트 ===== */
+#selected-buildings-list {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border-radius: 4px;
+    padding: 10px;
+    display: none;
+}
+
+#selected-buildings-list.has-items {
+    display: block;
+}
+
+.selected-building-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 5px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    cursor: move;
+}
+
+.selected-building-item.dragging {
+    opacity: 0.5;
+}
+
+.selected-building-item .order-number {
+    width: 25px;
+    height: 25px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.selected-building-item .building-info {
+    flex: 1;
+    font-size: 14px;
+}
+
+.selected-building-item .order-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.selected-building-item button {
+    padding: 4px 8px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.selected-building-item button:hover {
+    background: #5a6268;
+}
+
+/* ===== 검색 결과 메시지 ===== */
+.result-msg {
+    animation: slideIn 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== 지도 영역 ===== */
+#map {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+    transition: all 0.3s ease;
+}
+
+/* ===== 빌딩 라벨 스타일 ===== */
+.building-label {
+    padding: 2px 6px !important;
+    background: white !important;
+    border: 1px solid #007bff !important;
+    border-radius: 3px !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    color: #333 !important;
+    white-space: nowrap !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+    transition: all 0.2s !important;
+    cursor: pointer !important;
+}
+
+.building-label:hover {
+    background: #007bff !important;
+    color: white !important;
+    transform: scale(1.1) !important;
+    z-index: 10000 !important;
+}
+
+.building-label.selected {
+    background: #007bff !important;
+    color: white !important;
+}
+
+.building-label.highlighted {
+    background: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #000 !important;
+    transform: scale(1.2) !important;
+    z-index: 10001 !important;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1.2); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1.2); }
+}
+
+/* ===== 겹친 빌딩 그룹 스타일 ===== */
+.building-group-label {
+    padding: 4px 8px !important;
+    background: #dc3545 !important;
+    border: 2px solid white !important;
+    border-radius: 15px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    color: white !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+    cursor: pointer !important;
+    position: relative !important;
+}
+
+.building-group-label:hover {
+    transform: scale(1.1) !important;
+    z-index: 10002 !important;
+}
+
+/* ===== 겹친 빌딩 펼쳐진 상태 ===== */
+.building-spread-container {
+    position: absolute !important;
+    z-index: 10003 !important;
+}
+
+.building-spread-item {
+    position: absolute !important;
+    padding: 2px 6px !important;
+    background: white !important;
+    border: 2px solid #007bff !important;
+    border-radius: 3px !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    color: #333 !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.building-spread-item:hover {
+    background: #007bff !important;
+    color: white !important;
+    transform: scale(1.1) !important;
+}
+
+.building-spread-item.selected {
+    background: #007bff !important;
+    color: white !important;
+}
+
+.building-spread-item.highlighted {
+    background: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #000 !important;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+/* ===== 지도 레벨에 따른 라벨 크기 조정 ===== */
+.building-label.zoom-far,
+.building-spread-item.zoom-far {
+    font-size: 9px !important;
+    padding: 1px 4px !important;
+}
+
+.building-label.zoom-medium,
+.building-spread-item.zoom-medium {
+    font-size: 11px !important;
+    padding: 2px 6px !important;
+}
+
+.building-label.zoom-near,
+.building-spread-item.zoom-near {
+    font-size: 13px !important;
+    padding: 3px 8px !important;
+}
+
+/* ===== 팝업 ===== */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.popup-close:hover {
+    color: #333;
+}
+
+.popup-content h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.popup-content .select-btn,
+.popup-content .deselect-btn {
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+.popup-content .select-btn {
+    background: #007bff;
+    color: white;
+}
+
+.popup-content .select-btn:hover {
+    background: #0056b3;
+}
+
+.popup-content .deselect-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.popup-content .deselect-btn:hover {
+    background: #c82333;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.info-label {
+    font-weight: bold;
+    width: 120px;
+    color: #666;
+}
+
+.info-value {
+    flex: 1;
+    color: #333;
+}
+
+/* ===== 공실정보 스타일 (추가) ===== */
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge.bg-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.form-select {
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    background-color: transparent;
+    background-image: none;
+    border-color: #007bff;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* ===== 도구 모음 ===== */
+#drawing-tools {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 10;
+    cursor: move;
+    user-select: none;
+    min-width: 200px;
+    transition: all 0.3s ease;
+}
+
+#drawing-tools.dragging {
+    opacity: 0.8;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#drawing-tools.minimized {
+    padding: 10px;
+    min-width: 150px;
+}
+
+#drawing-tools.minimized .tool-content {
+    display: none;
+}
+
+#drawing-tools h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    padding: 5px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+    cursor: move;
+}
+
+#drawing-tools h4::before {
+    content: '⋮⋮';
+    display: block;
+    font-size: 10px;
+    color: #999;
+    margin-bottom: 2px;
+}
+
+#drawing-tools.minimized h4 {
+    margin: 0;
+    font-size: 12px;
+    padding: 3px;
+}
+
+#drawing-tools.minimized h4::before {
+    display: none;
+}
+
+.tool-btn {
+    padding: 8px 15px;
+    margin: 5px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer !important;
+}
+
+.tool-btn:hover {
+    background: #5a6268;
+}
+
+.tool-btn.active {
+    background: #007bff;
+}
+
+#drawing-tools button {
+    pointer-events: auto;
+}
+
+/* ===== 위치 리셋 버튼 ===== */
+#reset-position-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+#reset-position-btn:hover {
+    opacity: 1;
+}
+
+/* ===== 최소화 버튼 ===== */
+#minimize-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: #ffc107;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    line-height: 1;
+    z-index: 1;
+}
+
+#minimize-btn:hover {
+    opacity: 1;
+}
+
+/* ===== 로딩 오버레이 ===== */
+#loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.9);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.loading-progress {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* ===== 클러스터 커스텀 스타일 ===== */
+.custom-cluster {
+    background: rgba(0, 123, 255, 0.8);
+    border: 2px solid white;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* ===== 통계 정보 ===== */
+.stats-info {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 14px;
+    z-index: 5;
+}
+
+.stats-info span {
+    margin-right: 15px;
+}
+
+.stats-info .stat-number {
+    font-weight: bold;
+    color: #007bff;
+}
