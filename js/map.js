@@ -40,6 +40,7 @@ function initMap() {
         map: null, // 초기에는 지도에 표시하지 않음
         averageCenter: true,
         minLevel: CLUSTER_MIN_LEVEL,
+        minClusterSize: 1,  // ⭐ 2에서 1로 변경! (1개일 때도 클러스터로 표시)
         disableClickZoom: false,
         calculator: [10, 30, 50, 100], // 클러스터 크기별 스타일
         styles: [{
