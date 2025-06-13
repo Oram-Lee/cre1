@@ -201,7 +201,7 @@ function showBuildingInfo(building) {
             <div>
                 <div class="info-row">
                     <span class="info-label">기준층전용면적(평)</span>
-                    <span class="info-value">${building.baseFloorAreaPy || '-'}</span>
+                    <span class="info-value">${building.baseFloorAreaDedicatedPy || '-'}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">기준층임대면적(평)</span>
