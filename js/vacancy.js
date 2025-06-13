@@ -79,12 +79,12 @@ function openPdfViewer(buildingName) {
             variations.push(text.replace(/\s*\([^)]*\)/g, '').trim());
         }
         
-        // 빌딩/타워 제거한 버전도 추가
-        const buildingKeywords = ['빌딩', '타워', 'Tower', 'Building'];
+        // 빌딩/타워/사옥 제거한 버전도 추가
+        const buildingKeywords = ['빌딩', '타워', 'Tower', 'Building', '사옥', '센터', 'Center'];
         buildingKeywords.forEach(keyword => {
             if (text.includes(keyword)) {
                 const removed = text.replace(keyword, '').trim();
-                if (removed) variations.push(removed);
+                if (removed && removed.length > 2) variations.push(removed);
             }
         });
         
@@ -139,24 +139,27 @@ function openPdfViewer(buildingName) {
             
             // 기존 도로명 주소 처리
             if (building.address) {
-                // 도로명 주소에서 번지 추출 (예: "63로 36" → "36")
+                // 도로명 주소에서 번지 추출 - 수정!
                 const roadNumMatch = building.address.match(/\d+로\s*(\d+)/);
                 if (roadNumMatch) {
-                    addressVariations.push(roadNumMatch[1] + '번지');
-                    addressVariations.push(roadNumMatch[1]);
+                    // 🆕 3자리 이상 숫자만 추가 (단일 숫자 제외)
+                    if (roadNumMatch[1].length >= 3) {
+                        addressVariations.push(roadNumMatch[1] + '번지');
+                        addressVariations.push(roadNumMatch[1]);
+                    }
                 }
                 
-                // 도로명 추출 (예: "성수이로 77")
+                // 도로명 추출 (예: "노해로 464")
                 const roadMatch = building.address.match(/([가-힣]+로\s*\d+)/);
                 if (roadMatch) {
                     addressVariations.push(roadMatch[1]);
                 }
                 
-                // 구 정보 추출 (예: "마포구")
+                // 구 정보 추출 (예: "노원구")
                 const guMatch = building.address.match(/(\S+구)/);
                 if (guMatch) addressVariations.push(guMatch[1]);
                 
-                // 동 정보 추출 (예: "신공덕동", "공덕동")
+                // 동 정보 추출 (예: "상계동")
                 const dongMatch = building.address.match(/(\S+동)(?=\s|$)/);
                 if (dongMatch) {
                     addressVariations.push(dongMatch[1]);
@@ -178,7 +181,8 @@ function openPdfViewer(buildingName) {
             }
         }
         
-        return [...new Set(addressVariations)]; // 중복 제거
+        // 🆕 너무 짧은 검색어 제거 (3자 이하)
+        return [...new Set(addressVariations)].filter(v => v && v.length > 3);
     }
     
     // 검색어 변형 생성
@@ -188,9 +192,17 @@ function openPdfViewer(buildingName) {
     // 주소 정보 추가
     const addressInfo = extractAddressInfo(currentBuilding);
     
+    // 🆕 특별한 경우 처리 - 회사별 특수 표기
+    if (pdfFile === 'GM.pdf' && buildingName.includes('한화')) {
+        // GM에서는 한화 빌딩을 다르게 표기할 수 있음
+        companyVariations.push('한화 노원');
+        companyVariations.push('한화노원');
+        companyVariations.push('노원 한화');
+    }
+    
     // 모든 변형을 결합 (중복 제거, 빈 값과 괄호 제거)
     const allVariations = [...new Set([...companyVariations, ...systemVariations, ...addressInfo])]
-        .filter(v => v && !v.startsWith('(') && !v.endsWith(')') && v.length > 0);
+        .filter(v => v && !v.startsWith('(') && !v.endsWith(')') && v.length > 3);
     
     // 첫 번째는 회사 표기를 우선
     const primarySearch = companyVariations[0];
