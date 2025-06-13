@@ -108,8 +108,24 @@ function openPdfViewer(buildingName) {
     }
     
     // 주소에서 유용한 정보 추출
-    function extractAddressInfo(building) {
-        const addressVariations = [];
+function extractAddressInfo(building) {
+    const addressVariations = [];
+    
+    if (building && building.address) {
+        // 🆕 도로명 주소에서 번지 추출 (새로 추가)
+        const roadNumMatch = building.address.match(/\d+로\s*(\d+)/);
+        if (roadNumMatch) {
+            addressVariations.push(roadNumMatch[1] + '번지');
+            addressVariations.push(roadNumMatch[1]);
+        }
+        
+        // 🆕 지번 주소에서 번지 추출 (새로 추가)
+        if (building.addressJibun) {
+            const jibunMatch = building.addressJibun.match(/동\s*(\d+-?\d*)/);
+            if (jibunMatch) {
+                addressVariations.push(jibunMatch[1]);
+            }
+        }
         
         if (building && building.address) {
             // 구 정보 추출 (예: "마포구")
