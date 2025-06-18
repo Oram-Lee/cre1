@@ -1,0 +1,2786 @@
+Excel Template Style Analysis
+Generated: 2025. 6. 19. 오전 8:25:31
+File: template.xlsx
+
+=== SUMMARY ===
+Sheets: 1
+Total Cells: 344
+Styled Cells: 344
+Merged Cells: 10
+Formulas: 80
+
+=== FONTS ===
+Default fonts only
+
+=== COLORS ===
+Default colors only
+
+=== FORMATS ===
+General
+##0.00\ "%"
+#,##0.000\ "m²"
+#,##0.000\ "평"
+\₩* #,##0
+
+=== DETAILED STYLE DATA ===
+{
+  "fileName": "template.xlsx",
+  "sheets": {
+    "후보지": {
+      "name": "후보지",
+      "range": "B1:H55",
+      "mergedCells": [
+        {
+          "s": {
+            "c": 1,
+            "r": 2
+          },
+          "e": {
+            "c": 2,
+            "r": 3
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 31
+          },
+          "e": {
+            "c": 1,
+            "r": 38
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 39
+          },
+          "e": {
+            "c": 1,
+            "r": 43
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 45
+          },
+          "e": {
+            "c": 1,
+            "r": 49
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 4
+          },
+          "e": {
+            "c": 2,
+            "r": 4
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 5
+          },
+          "e": {
+            "c": 2,
+            "r": 5
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 6
+          },
+          "e": {
+            "c": 1,
+            "r": 17
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 20
+          },
+          "e": {
+            "c": 1,
+            "r": 22
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 24
+          },
+          "e": {
+            "c": 1,
+            "r": 30
+          }
+        },
+        {
+          "s": {
+            "c": 1,
+            "r": 18
+          },
+          "e": {
+            "c": 1,
+            "r": 19
+          }
+        }
+      ],
+      "cols": [
+        {
+          "width": 2.6640625,
+          "customwidth": "1",
+          "wpx": 16,
+          "wch": 1.83,
+          "MDW": 6
+        },
+        {
+          "width": 13.21875,
+          "customwidth": "1",
+          "wpx": 79,
+          "wch": 12.33,
+          "MDW": 6
+        },
+        {
+          "width": 24.5546875,
+          "customwidth": "1",
+          "wpx": 147,
+          "wch": 23.67,
+          "MDW": 6
+        },
+        {
+          "width": 26.33203125,
+          "customwidth": "1",
+          "wpx": 158,
+          "wch": 25.5,
+          "MDW": 6
+        },
+        {
+          "width": 26.33203125,
+          "customwidth": "1",
+          "wpx": 158,
+          "wch": 25.5,
+          "MDW": 6
+        },
+        {
+          "width": 26.33203125,
+          "customwidth": "1",
+          "wpx": 158,
+          "wch": 25.5,
+          "MDW": 6
+        },
+        {
+          "width": 26.33203125,
+          "customwidth": "1",
+          "wpx": 158,
+          "wch": 25.5,
+          "MDW": 6
+        },
+        {
+          "width": 26.33203125,
+          "customwidth": "1",
+          "wpx": 158,
+          "wch": 25.5,
+          "MDW": 6
+        }
+      ],
+      "rows": [
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 49.9,
+          "hpx": 49.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 190.15,
+          "hpx": 190.15
+        },
+        {
+          "hpt": 79.9,
+          "hpx": 79.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 60,
+          "hpx": 60
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        },
+        {
+          "hpt": 16.9,
+          "hpx": 16.9
+        }
+      ],
+      "images": [],
+      "styles": {},
+      "cells": [
+        {
+          "address": "H1",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H2",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B3",
+          "value": "PRESENT TO :",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C3",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D3",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E3",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F3",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G3",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H3",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B4",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C4",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D4",
+          "value": "빌딩명",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E4",
+          "value": "빌딩명",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F4",
+          "value": "빌딩명",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G4",
+          "value": "빌딩명",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H4",
+          "value": "빌딩명",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B5",
+          "value": "고객사 로고 삽입",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C5",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D5",
+          "value": "빌딩이미지 외관 사진",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E5",
+          "value": "빌딩이미지 외관 사진",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F5",
+          "value": "빌딩이미지 외관 사진",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G5",
+          "value": "빌딩이미지 외관 사진",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H5",
+          "value": "빌딩이미지 외관 사진",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B6",
+          "value": "임차 특이사항",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C6",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D6",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E6",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F6",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G6",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H6",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B7",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C7",
+          "value": "주소",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D7",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E7",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F7",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G7",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H7",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B8",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C8",
+          "value": "도로명 주소",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D8",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E8",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F8",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G8",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H8",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B9",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C9",
+          "value": "위치",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D9",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E9",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F9",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G9",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H9",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B10",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C10",
+          "value": "빌딩 규모",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D10",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E10",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F10",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G10",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H10",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B11",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C11",
+          "value": "사용승인일 / 리모델링 년도",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D11",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E11",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F11",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G11",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H11",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B12",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C12",
+          "value": "전용률 (%)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D12",
+          "type": "z",
+          "style": {},
+          "format": "##0.00\\ \"%\""
+        },
+        {
+          "address": "E12",
+          "type": "z",
+          "style": {},
+          "format": "##0.00\\ \"%\""
+        },
+        {
+          "address": "F12",
+          "type": "z",
+          "style": {},
+          "format": "##0.00\\ \"%\""
+        },
+        {
+          "address": "G12",
+          "type": "z",
+          "style": {},
+          "format": "##0.00\\ \"%\""
+        },
+        {
+          "address": "H12",
+          "type": "z",
+          "style": {},
+          "format": "##0.00\\ \"%\""
+        },
+        {
+          "address": "B13",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C13",
+          "value": "기준층 임대면적 (m2)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D13",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "E13",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "F13",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "G13",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "H13",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "B14",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C14",
+          "value": "기준층 전용면적 (m2)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D14",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "E14",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "F14",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "G14",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "H14",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "B15",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C15",
+          "value": "기준층 임대면적 (평)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D15",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "E15",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "F15",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "G15",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "H15",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "B16",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C16",
+          "value": "기준층 전용면적 (평)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D16",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "E16",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "F16",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "G16",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "H16",
+          "type": "z",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "B17",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C17",
+          "value": "주차 방식",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D17",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E17",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F17",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G17",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H17",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B18",
+          "value": "빌딩 현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C18",
+          "value": "냉난방 방식",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D18",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E18",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F18",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G18",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H18",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B19",
+          "value": "빌딩 세부현황",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C19",
+          "value": "건물종류",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D19",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E19",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F19",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G19",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H19",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B20",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C20",
+          "value": "주 출입구 방향",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D20",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E20",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F20",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G20",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H20",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B21",
+          "value": "주차 관련",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C21",
+          "value": "무료 주차 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D21",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E21",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F21",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G21",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H21",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B22",
+          "value": "주차 관련",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C22",
+          "value": "무료 주차 제공 (대)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D22",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E22",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F22",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G22",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H22",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B23",
+          "value": "주차 관련",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C23",
+          "value": "유료 주차 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D23",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E23",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F23",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G23",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H23",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B24",
+          "value": "**붉은색 최종 저장시 붉은색 안내문구 삭제 필수 ",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C24",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D24",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E24",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F24",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G24",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H24",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B25",
+          "value": "임차 제안\r\n\r\n (평기준 임대/전용면적 입력시 자동계산)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C25",
+          "value": "입주조건 최적 임차 층수",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D25",
+          "value": "층수를 입력하세요. ",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E25",
+          "value": "층수를 입력하세요. ",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F25",
+          "value": "층수를 입력하세요. ",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G25",
+          "value": "층수를 입력하세요. ",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H25",
+          "value": "층수를 입력하세요. ",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B26",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C26",
+          "value": "입주 가능 시기",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D26",
+          "value": "입주시기 입력하세요. (ex.즉시)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E26",
+          "value": "입주시기 입력하세요. (ex.즉시)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F26",
+          "value": "입주시기 입력하세요. (ex.즉시)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G26",
+          "value": "입주시기 입력하세요. (ex.즉시)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H26",
+          "value": "입주시기 입력하세요. (ex.즉시)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B27",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C27",
+          "value": "거래유형",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D27",
+          "value": "유형을 입력하세요.(ex. 월세)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E27",
+          "value": "유형을 입력하세요.(ex. 월세)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F27",
+          "value": "유형을 입력하세요.(ex. 월세)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G27",
+          "value": "유형을 입력하세요.(ex. 월세)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H27",
+          "value": "유형을 입력하세요.(ex. 월세)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B28",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C28",
+          "value": "임대면적 (m2)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D28",
+          "value": 330.578,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "E28",
+          "value": 330.578,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "F28",
+          "value": 330.578,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "G28",
+          "value": 330.578,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "H28",
+          "value": 330.578,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "B29",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C29",
+          "value": "전용면적 (m2)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D29",
+          "value": 165.289,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "E29",
+          "value": 165.289,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "F29",
+          "value": 165.289,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "G29",
+          "value": 165.289,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "H29",
+          "value": 165.289,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"m²\""
+        },
+        {
+          "address": "B30",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C30",
+          "value": "임대면적 (평)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D30",
+          "value": 100,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "E30",
+          "value": 100,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "F30",
+          "value": 100,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "G30",
+          "value": 100,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "H30",
+          "value": 100,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "B31",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C31",
+          "value": "전용면적 (평)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D31",
+          "value": 50,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "E31",
+          "value": 50,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "F31",
+          "value": 50,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "G31",
+          "value": 50,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "H31",
+          "value": 50,
+          "type": "n",
+          "style": {},
+          "format": "#,##0.000\\ \"평\""
+        },
+        {
+          "address": "B32",
+          "value": "임대 기준\r\n\r\n (평기준 보/임/관 입력시 자동계산)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C32",
+          "value": "월 평당 보증금",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D32",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E32",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F32",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G32",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H32",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B33",
+          "value": "임대 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C33",
+          "value": "월 평당 임대료",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D33",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E33",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F33",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G33",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H33",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B34",
+          "value": "임대 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C34",
+          "value": "월 평당 관리비",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D34",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E34",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F34",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G34",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H34",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B35",
+          "value": "임대 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C35",
+          "value": "월 평당 지출비용",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D35",
+          "value": 150000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E35",
+          "value": 150000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F35",
+          "value": 150000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G35",
+          "value": 150000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H35",
+          "value": 150000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B36",
+          "value": "임대 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C36",
+          "value": "총 보증금",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D36",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E36",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F36",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G36",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H36",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B37",
+          "value": "임대 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C37",
+          "value": "월 임대료 총액",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D37",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E37",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F37",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G37",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H37",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B38",
+          "value": "임대 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C38",
+          "value": "월 관리비 총액",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D38",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E38",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F38",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G38",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H38",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B39",
+          "value": "임대 기준",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C39",
+          "value": "월 전용면적당 지출비용",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D39",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E39",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F39",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G39",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H39",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B40",
+          "value": "임대기준 조정\r\n(렌트프리 개월 입력시 \r\n자동계산)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C40",
+          "value": "보증금",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D40",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E40",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F40",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G40",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H40",
+          "value": 1000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B41",
+          "value": "임대기준 조정",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C41",
+          "value": "렌트프리 (개월/년)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D41",
+          "value": 0,
+          "type": "n",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E41",
+          "value": 0,
+          "type": "n",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F41",
+          "value": 0,
+          "type": "n",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G41",
+          "value": 0,
+          "type": "n",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H41",
+          "value": 0,
+          "type": "n",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B42",
+          "value": "임대기준 조정",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C42",
+          "value": "평균 임대료",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D42",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E42",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F42",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G42",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H42",
+          "value": 100000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B43",
+          "value": "임대기준 조정",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C43",
+          "value": "관리비",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D43",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E43",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F43",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G43",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H43",
+          "value": 50000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B44",
+          "value": "임대기준 조정",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C44",
+          "value": "NOC",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D44",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E44",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F44",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G44",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H44",
+          "value": 300000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B45",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C45",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D45",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "E45",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "F45",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "G45",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "H45",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B46",
+          "value": "예상비용",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C46",
+          "value": "보증금",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D46",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E46",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F46",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G46",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H46",
+          "value": 100000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B47",
+          "value": "예상비용",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C47",
+          "value": "평균 월 임대료",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D47",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E47",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F47",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G47",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H47",
+          "value": 10000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B48",
+          "value": "예상비용",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C48",
+          "value": "평균 월 관리비",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D48",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E48",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F48",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G48",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H48",
+          "value": 5000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B49",
+          "value": "예상비용",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C49",
+          "value": "월 (임대료 + 관리비)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D49",
+          "value": 15000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E49",
+          "value": 15000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F49",
+          "value": 15000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G49",
+          "value": 15000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H49",
+          "value": 15000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B50",
+          "value": "예상비용",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C50",
+          "value": "연 실제 부담 고정금액",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "D50",
+          "value": 180000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "E50",
+          "value": 180000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "F50",
+          "value": 180000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "G50",
+          "value": 180000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "H50",
+          "value": 180000000,
+          "type": "n",
+          "style": {},
+          "format": "\\₩* #,##0"
+        },
+        {
+          "address": "B51",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "C51",
+          "type": "z",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B52",
+          "value": "* 용어 설명",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B53",
+          "value": "- Rent Free : 임대차 계약기간 동안 제공되는 무상 임대 기간 (임대료 면제, 관리비 납부)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B54",
+          "value": "- Fit Out : 인테리어 공사 기간 (임대료 면제, 관리비 납부)",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        },
+        {
+          "address": "B55",
+          "value": "- NOC(Net Occupancy Cost) : 전용면적 1평당 지출되는 월 고정비 (임대료+관리비) ",
+          "type": "s",
+          "style": {},
+          "format": "General"
+        }
+      ],
+      "margins": {
+        "left": 0.2362204724409449,
+        "right": 0.2362204724409449,
+        "top": 0.7480314960629921,
+        "bottom": 0.7480314960629921,
+        "header": 0.31496062992125984,
+        "footer": 0.31496062992125984
+      }
+    }
+  },
+  "fonts": {},
+  "colors": {},
+  "formats": {},
+  "images": [],
+  "summary": {
+    "sheetCount": 1,
+    "totalCells": 344,
+    "styledCells": 344,
+    "mergedCells": 10,
+    "formulas": 80
+  },
+  "workbookInfo": {
+    "AppVersion": {
+      "appName": "xl",
+      "appname": "xl",
+      "lastEdited": "7",
+      "lastedited": "7",
+      "lowestEdited": "7",
+      "lowestedited": "7",
+      "rupBuild": "20417",
+      "rupbuild": "20417"
+    },
+    "WBProps": {
+      "defaultThemeVersion": 166925,
+      "allowRefreshQuery": false,
+      "autoCompressPictures": true,
+      "backupFile": false,
+      "checkCompatibility": false,
+      "CodeName": "",
+      "date1904": false,
+      "filterPrivacy": false,
+      "hidePivotFieldList": false,
+      "promptedSolutions": false,
+      "publishItems": false,
+      "refreshAllConnections": false,
+      "saveExternalLinkValues": true,
+      "showBorderUnselectedTables": true,
+      "showInkAnnotation": true,
+      "showObjects": "all",
+      "showPivotChartFilter": false,
+      "updateLinks": "userSet"
+    },
+    "WBView": [
+      {
+        "xWindow": "0",
+        "xwindow": "0",
+        "yWindow": "0",
+        "ywindow": "0",
+        "windowWidth": "28800",
+        "windowwidth": "28800",
+        "windowHeight": "12180",
+        "windowheight": "12180",
+        "uid": "{542FEB79-6963-5446-8029-34F3921E05CF}",
+        "activeTab": 0,
+        "autoFilterDateGrouping": true,
+        "firstSheet": 0,
+        "minimized": false,
+        "showHorizontalScroll": true,
+        "showSheetTabs": true,
+        "showVerticalScroll": true,
+        "tabRatio": 600,
+        "visibility": "visible"
+      }
+    ],
+    "Sheets": [
+      {
+        "name": "후보지",
+        "sheetId": "1",
+        "sheetid": "1",
+        "id": "rId1",
+        "Hidden": 0
+      }
+    ],
+    "CalcPr": {
+      "calcId": "191029",
+      "calcid": "191029",
+      "calcCompleted": "true",
+      "calcMode": "auto",
+      "calcOnSave": "true",
+      "concurrentCalc": "true",
+      "fullCalcOnLoad": "false",
+      "fullPrecision": "true",
+      "iterate": "false",
+      "iterateCount": "100",
+      "iterateDelta": "0.001",
+      "refMode": "A1"
+    },
+    "Names": [],
+    "xmlns": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+    "Views": [
+      {}
+    ]
+  }
+}
