@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빌딩검색_CompList생성기</title>
+    
+    <!-- 파비콘 오류 방지 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 카카오맵 API -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1ac6eee9b1e4c2e0cc6f1d1ca1a6a559&libraries=services,clusterer,drawing"></script>
+    
+    <!-- ExcelJS 라이브러리 (SheetJS 대체) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    
+    <!-- FileSaver.js (파일 다운로드용) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <!-- 토글 버튼 -->
+        <button id="toggle-btn">◀</button>
+        
+        <!-- 좌측 패널 -->
+        <div id="sidebar">
+            <!-- 검색 섹션 -->
+            <div class="search-section">
+                <h3>빌딩 검색</h3>
+                <input type="text" id="search-name" placeholder="빌딩명" onkeypress="handleSearchKeyPress(event)">
+                <input type="text" id="search-address" placeholder="주소" onkeypress="handleSearchKeyPress(event)">
+                <input type="text" id="search-station" placeholder="지하철역" onkeypress="handleSearchKeyPress(event)">
+                <button onclick="searchBuildings()">검색</button>
+                <button onclick="resetSearch()" style="background: #6c757d; margin-top: 5px;">초기화</button>
+            </div>
+            
+            <!-- 탭 메뉴 -->
+            <div class="tab-menu">
+                <button class="tab-btn active" data-tab="list" onclick="switchTab('list')">
+                    빌딩 목록 <span class="tab-badge" id="list-count">0</span>
+                </button>
+                <button class="tab-btn" data-tab="selected" onclick="switchTab('selected')">
+                    선택 목록 <span class="tab-badge" id="selected-count">0</span>
+                </button>
+            </div>
+            
+            <!-- 탭 컨텐츠 -->
+            <div class="tab-content">
+                <!-- 빌딩 목록 탭 -->
+                <div id="list-tab" class="tab-pane active">
+                    <div id="building-list"></div>
+                </div>
+                
+                <!-- 선택 목록 탭 -->
+                <div id="selected-tab" class="tab-pane">
+                    <div id="selected-buildings-list"></div>
+                    <div class="export-section">
+                        <button id="export-btn" onclick="exportToExcel()">Comp List 엑셀파일 생성</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 지도 영역 -->
+        <div id="map">
+            <!-- 도구 모음 -->
+            <div id="drawing-tools">
+                <button id="minimize-btn" onclick="toggleMinimize()" title="최소화">−</button>
+                <button id="reset-position-btn" onclick="resetDrawingToolsPosition()" title="위치 초기화">↗</button>
+                <h4 style="margin: 0 0 10px 0; font-size: 14px;">도형 그리기</h4>
+                <div class="tool-content">
+                    <button class="tool-btn" onclick="setDrawingMode('rectangle')">사각형</button>
+                    <button class="tool-btn" onclick="setDrawingMode('circle')">원</button>
+                    <button class="tool-btn" onclick="setDrawingMode('polygon')">다각형</button>
+                    <button class="tool-btn" onclick="clearDrawing()">지우기</button>
+                    <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                        * 도형을 그려서 영역 내 빌딩을 검색하세요<br>
+                        * 다각형: 클릭으로 점 추가, 더블클릭으로 완성<br>
+                        * 도구 상단을 드래그하여 위치 이동 가능
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 통계 정보 -->
+            <div class="stats-info">
+                <span>전체: <span class="stat-number" id="stat-total">0</span>개</span>
+                <span>표시중: <span class="stat-number" id="stat-displayed">0</span>개</span>
+                <span>좌표있음: <span class="stat-number" id="stat-geocoded">0</span>개</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 빌딩 정보 모달 -->
+    <div id="buildingModal" class="popup-overlay" onclick="closePopup(event)">
+        <div class="popup-content" onclick="event.stopPropagation()">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <!-- 구버전 호환용 팝업 (나중에 제거 예정) -->
+    <div id="popup" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div id="popup-body"></div>
+        </div>
+    </div>
+    
+    <!-- 로딩 오버레이 -->
+    <div id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">빌딩 데이터를 불러오는 중...</div>
+        <div class="loading-progress" id="loading-progress"></div>
+    </div>
+    
+    <!-- JavaScript 파일들 -->
+    <script src="js/main.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/building.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/drawing.js"></script>
+    <script src="js/vacancy.js"></script>
+    
+    <!-- 탭 전환 스크립트 -->
+    <script>
+    function switchTab(tabName) {
+        // 모든 탭 버튼과 패널 비활성화
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        
+        // 선택된 탭 활성화
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        document.getElementById(`${tabName}-tab`).classList.add('active');
+        
+        // 선택 목록 탭이 활성화되면 선택된 빌딩 리스트 표시
+        if (tabName === 'selected') {
+            displaySelectedBuildingsList();
+        }
+    }
+    </script>
+</body>
+</html>
