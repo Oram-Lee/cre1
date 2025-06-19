@@ -449,8 +449,8 @@ async function exportToExcel() {
         
         // 4. 템플릿 기본 텍스트 설정
         const b3 = worksheet.getCell('B3');
-        b3.value = 'PRESENT TO';
-        b3.font = { name: '맑은 고딕', size: 9, bold: true, color: { argb: 'FFFFFFFF' } };
+        b3.value = 'PRESENT TO :';
+        b3.font = { name: 'Noto Sans KR', size: 9, bold: true, color: { argb: 'FFFFFFFF' } };
         b3.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2C2A2A' } };
         b3.alignment = { horizontal: 'center', vertical: 'middle' };
         b3.border = {
@@ -463,7 +463,7 @@ async function exportToExcel() {
         // B5 로고 영역
         const b5 = worksheet.getCell('B5');
         b5.value = '고객사 로고 삽입';
-        b5.font = { name: '맑은 고딕', size: 11, bold: true };
+        b5.font = { name: 'Noto Sans KR', size: 11, bold: true };
         b5.alignment = { horizontal: 'center', vertical: 'middle' };
         b5.border = {
             top: { style: 'thin' },
@@ -472,8 +472,8 @@ async function exportToExcel() {
             right: { style: 'thin' }
         };
         
-        // B6 셀 설정 (빌딩개요)
-        setCategoryCell(worksheet, 'B6', '빌딩개요', 'FFFFFFFF');
+        // B6 셀 설정 (빌딩개요/일반)
+        setCategoryCell(worksheet, 'B6', '빌딩개요/일반', 'FFFFFFFF');
         
         // 카테고리 설정
         setCategoryCell(worksheet, 'B7', '빌딩 현황', 'FFFFFFFF');
@@ -536,7 +536,7 @@ async function exportToExcel() {
         Object.entries(cColumnData).forEach(([row, value]) => {
             const cell = worksheet.getCell(`C${row}`);
             cell.value = value;
-            cell.font = { name: '맑은 고딕', size: 9 };
+            cell.font = { name: 'Noto Sans KR', size: 9 };
             
             // 모든 항목명 가운데 정렬
             cell.alignment = { 
@@ -558,7 +558,7 @@ async function exportToExcel() {
             // 빌딩명 헤더
             const headerCell = worksheet.getCell(`${col}4`);
             headerCell.value = building.name;
-            headerCell.font = { name: '맑은 고딕', size: 9, bold: true };
+            headerCell.font = { name: 'Noto Sans KR', size: 9, bold: true };
             headerCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCCCCC' } };
             headerCell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
             headerCell.border = {
@@ -567,6 +567,20 @@ async function exportToExcel() {
                 bottom: { style: 'thin' },
                 right: { style: 'thin' }
             };
+            
+            // 빌딩개요/일반 (B6에 description 입력)
+            if (index === 0 && building.description) {
+                const descCell = worksheet.getCell(`${col}6`);
+                descCell.value = building.description;
+                descCell.font = { name: 'Noto Sans KR', size: 9 };
+                descCell.alignment = { horizontal: 'left', vertical: 'middle', wrapText: true };
+                descCell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            }
             
             // 빌딩 데이터 입력
             fillBuildingData(worksheet, building, col);
@@ -610,7 +624,7 @@ function setCategoryCell(worksheet, cellAddress, value, bgColor, isRed = false) 
     const cell = worksheet.getCell(cellAddress);
     cell.value = value;
     cell.font = { 
-        name: '맑은 고딕', 
+        name: 'Noto Sans KR', 
         size: 9, 
         bold: true, 
         color: isRed ? { argb: 'FFFF0000' } : { argb: 'FF000000' } 
@@ -735,7 +749,7 @@ function setNumericCell(worksheet, cellAddress, value, format, alignment = 'cent
 
 // 데이터 셀 스타일 적용
 function applyDataCellStyle(cell, alignment = 'center') {
-    cell.font = { name: '맑은 고딕', size: 9 };
+    cell.font = { name: 'Noto Sans KR', size: 9 };
     cell.alignment = { horizontal: alignment, vertical: 'middle' };
     cell.border = {
         top: { style: 'thin' },
