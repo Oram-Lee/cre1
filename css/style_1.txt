@@ -1,0 +1,292 @@
+/* ===== 기존 스타일에 추가할 탭 관련 스타일 ===== */
+
+/* ===== 탭 메뉴 ===== */
+.tab-menu {
+    display: flex;
+    margin: 10px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.tab-btn:not(:last-child) {
+    border-right: 1px solid #dee2e6;
+}
+
+.tab-btn:hover {
+    background: #e9ecef;
+}
+
+.tab-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+.tab-badge {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 2px 6px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+.tab-btn.active .tab-badge {
+    background: rgba(255,255,255,0.3);
+}
+
+/* ===== 탭 컨텐츠 ===== */
+.tab-content {
+    flex: 1;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-pane {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tab-pane.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== 컴팩트한 빌딩 카드 디자인 ===== */
+#building-list {
+    padding: 10px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.building-item {
+    background: white;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.building-item:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+    background: #f0f8ff;
+}
+
+.building-item.selected {
+    background: #e3f2fd;
+    border: 1px solid #007bff;
+    padding: 9px 11px;
+}
+
+.building-item.highlighted {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 9px 11px;
+}
+
+.building-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.building-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.building-address {
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.building-badges {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.building-type {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: #e9ecef;
+    color: #495057;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.building-selected-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    background: #007bff;
+    color: white;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+/* ===== 선택된 빌딩 리스트 개선 ===== */
+#selected-buildings-list {
+    padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.selected-building-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    cursor: move;
+    transition: all 0.2s;
+}
+
+.selected-building-item:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+}
+
+.selected-building-item.dragging {
+    opacity: 0.5;
+}
+
+.selected-building-item .order-number {
+    width: 24px;
+    height: 24px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.selected-building-item .building-info {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selected-building-item .order-controls {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.selected-building-item button {
+    padding: 4px 8px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: background 0.2s;
+}
+
+.selected-building-item button:hover {
+    background: #5a6268;
+}
+
+/* ===== 엑스포트 섹션 ===== */
+.export-section {
+    padding: 15px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+#export-btn {
+    width: 100%;
+    padding: 12px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+#export-btn:hover {
+    background: #218838;
+}
+
+#export-btn:active {
+    transform: scale(0.98);
+}
+
+/* ===== 빈 상태 메시지 ===== */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #999;
+    text-align: center;
+}
+
+.empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    opacity: 0.3;
+}
+
+.empty-state-text {
+    font-size: 14px;
+}
+
+/* ===== 기존 스타일 수정 - 장바구니 섹션 숨기기 ===== */
+#cart-section {
+    display: none;
+}
+
+/* ===== 기존 스타일 수정 - 빌딩 카운트 제거 ===== */
+.building-count {
+    display: none;
+}
