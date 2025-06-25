@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comp List 생성기 v2 - 테스트</title>
+    
+    <!-- 파비콘 오류 방지 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <!-- ExcelJS 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    
+    <!-- FileSaver.js (파일 다운로드용) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .building-selector {
+            margin-bottom: 30px;
+        }
+        .building-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .building-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .building-info {
+            flex: 1;
+        }
+        .building-name {
+            font-weight: bold;
+            color: #333;
+        }
+        .building-address {
+            font-size: 14px;
+            color: #666;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        .selected-count {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .preview-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        .company-input {
+            margin: 20px 0;
+        }
+        .company-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .company-input input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comp List 생성기 v2 (새로운 양식)</h1>
+        
+        <div class="company-input">
+            <label for="company-name">회사명 (엑셀 헤더에 표시)</label>
+            <input type="text" id="company-name" placeholder="예: LG CNS" value="회사명">
+        </div>
+        
+        <div class="company-input">
+            <label for="report-title">보고서 제목</label>
+            <input type="text" id="report-title" placeholder="예: 구로&가산디지털단지/반포역 인근 단기임차 가능 공간" value="단기임차 가능 공간 비교">
+        </div>
+        
+        <div class="selected-count">선택된 빌딩: <span id="selected-count">0</span>개</div>
+        
+        <div class="building-selector" id="building-list">
+            <!-- 빌딩 리스트가 여기에 동적으로 추가됩니다 -->
+        </div>
+        
+        <button onclick="generateExcel()" id="generate-btn" disabled>새로운 양식으로 Comp List 생성</button>
+        <button onclick="generateExcelOriginal()" id="generate-original-btn" disabled>기존 양식으로 생성 (비교용)</button>
+        
+        <div class="preview-section">
+            <h3>미리보기</h3>
+            <p>선택한 빌딩들이 새로운 양식의 엑셀 파일로 생성됩니다.</p>
+            <ul>
+                <li>상단: 회사 로고 영역 및 제목</li>
+                <li>빌딩별 비교: 이미지, 위치, 규모, 임대조건 등</li>
+                <li>하단: 평면도 이미지 영역</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/building2.js"></script>
+    <script>
+        // 페이지 로드 시 빌딩 데이터 로드
+        window.onload = function() {
+            loadBuildingData();
+        };
+    </script>
+</body>
+</html>
