@@ -16,8 +16,8 @@ async function generateExcelLG() {
         return;
     }
     
-    if (selectedBuildings.length > 6) {
-        alert('LG 양식은 최대 6개까지만 비교할 수 있습니다.');
+    if (selectedBuildings.length > 7) {
+        alert('LG 양식은 최대 7개까지만 비교할 수 있습니다.');
         return;
     }
     
@@ -27,76 +27,67 @@ async function generateExcelLG() {
         
         // 회사명과 제목 가져오기
         const companyName = document.getElementById('company-name').value || 'LG CNS';
-        const reportTitle = document.getElementById('report-title').value || '구로&가산디지털단지/반포역 인근';
+        const reportTitle = document.getElementById('report-title').value || '구로&가산디지털단지/반포역 인근 단기임차 가능 공간';
         
         // 1. 열 너비 설정
         const columnWidths = [
-            3,      // A열
-            14,     // B열
-            25,     // C열
+            2,      // A열
+            10,     // B열 (위치)
+            20,     // C열 (제안)
         ];
         // 빌딩 수에 따라 D열부터 추가
         for (let i = 0; i < selectedBuildings.length; i++) {
-            columnWidths.push(26.5); // 각 빌딩별 열 너비
+            columnWidths.push(22); // 각 빌딩별 열 너비
         }
         
         worksheet.columns = columnWidths.map(width => ({ width }));
         
         // 2. 행 높이 설정
         worksheet.getRow(1).height = 30;   // 제목
-        worksheet.getRow(2).height = 20;   // 규모
-        worksheet.getRow(3).height = 20;   // 계약기간
-        worksheet.getRow(4).height = 20;   // 위치 설명
-        worksheet.getRow(5).height = 25;   // 위치 헤더
-        worksheet.getRow(9).height = 190;  // 사진
+        worksheet.getRow(2).height = 20;   // 계약기간
+        worksheet.getRow(3).height = 20;   // 위치
+        worksheet.getRow(4).height = 20;   // 빈 행
+        worksheet.getRow(5).height = 25;   // 헤더
+        worksheet.getRow(6).height = 180;  // 건물 외관
         
         // 나머지 행들 기본 높이
-        for (let i = 6; i <= 84; i++) {
-            if (i !== 9) worksheet.getRow(i).height = 18;
+        for (let i = 7; i <= 40; i++) {
+            worksheet.getRow(i).height = 18;
         }
         
         // 특별한 행 높이
-        for (let i = 10; i <= 18; i++) {
-            worksheet.getRow(i).height = 0; // 건물 외관 영역 숨김
-        }
-        worksheet.getRow(80).height = 60;  // 특이사항
+        worksheet.getRow(32).height = 120; // 평면도
         
         // 3. 상단 헤더 영역 설정
         const endCol = String.fromCharCode(67 + selectedBuildings.length);
         
-        // 제목 (1행 전체)
+        // 제목 (1행)
         worksheet.mergeCells(`A1:${endCol}1`);
         const titleCell = worksheet.getCell('A1');
         titleCell.value = `[${companyName} ${reportTitle}]`;
-        titleCell.font = { name: 'Arial', size: 14, bold: true };
+        titleCell.font = { name: 'Arial', size: 16, bold: true };
         titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
         setBordersLG(titleCell);
         
-        // 규모 (2행)
+        // 계약기간 (2행)
         worksheet.mergeCells(`A2:${endCol}2`);
-        const scaleCell = worksheet.getCell('A2');
-        scaleCell.value = `규모: 건물 ${selectedBuildings.length}개 곳간`;
-        scaleCell.font = { name: 'Arial', size: 10 };
-        scaleCell.alignment = { horizontal: 'center', vertical: 'middle' };
-        setBordersLG(scaleCell);
-        
-        // 계약기간 (3행)
-        worksheet.mergeCells(`A3:${endCol}3`);
-        const periodCell = worksheet.getCell('A3');
-        const nextYear = new Date();
-        nextYear.setFullYear(nextYear.getFullYear() + 1);
-        periodCell.value = `계약기간: ${getCurrentDateLG()}~${nextYear.getFullYear()}.${String(nextYear.getMonth() + 1).padStart(2, '0')}.${String(nextYear.getDate()).padStart(2, '0')} (12개월 간)`;
+        const periodCell = worksheet.getCell('A2');
+        periodCell.value = `- 계약기간: ${getCurrentDateLG()}~${getCurrentDateLG()} (12개월 간) -`;
         periodCell.font = { name: 'Arial', size: 10 };
         periodCell.alignment = { horizontal: 'center', vertical: 'middle' };
-        setBordersLG(periodCell);
         
-        // 위치 설명 (4행)
-        worksheet.mergeCells(`A4:${endCol}4`);
-        const locationDescCell = worksheet.getCell('A4');
-        locationDescCell.value = '위치: 구로&가산디지털단지역 인근 반포역 인근';
-        locationDescCell.font = { name: 'Arial', size: 10 };
-        locationDescCell.alignment = { horizontal: 'center', vertical: 'middle' };
-        setBordersLG(locationDescCell);
+        // 위치 (3행)
+        worksheet.mergeCells(`A3:${endCol}3`);
+        const locationCell = worksheet.getCell('A3');
+        locationCell.value = '- 위치: 구로&가산디지털단지역 인근 반포역 인근 -';
+        locationCell.font = { name: 'Arial', size: 10 };
+        locationCell.alignment = { horizontal: 'center', vertical: 'middle' };
+        
+        // 회사 로고 영역 (우측 상단)
+        const logoCol = String.fromCharCode(67 + selectedBuildings.length - 1);
+        worksheet.getCell(`${logoCol}1`).value = 'S&I Corp.';
+        worksheet.getCell(`${logoCol}1`).font = { name: 'Arial', size: 12, bold: true, color: { argb: 'FFFF0000' } };
+        worksheet.getCell(`${logoCol}1`).alignment = { horizontal: 'right', vertical: 'top' };
         
         // 4. 카테고리 설정
         setupCategoriesLG(worksheet);
@@ -104,7 +95,7 @@ async function generateExcelLG() {
         // 5. 빌딩별 데이터 입력
         selectedBuildings.forEach((building, index) => {
             const col = String.fromCharCode(68 + index); // D, E, F, G...
-            fillBuildingDetailsLG(worksheet, building, col);
+            fillBuildingDataLG(worksheet, building, col);
         });
         
         // 6. 테두리 설정
@@ -119,9 +110,9 @@ async function generateExcelLG() {
               `📊 빌딩 ${selectedBuildings.length}개의 정보가 입력되었습니다.\n\n` +
               `📝 추가 입력 필요 항목:\n` +
               `• 빌딩 외관 이미지\n` +
-              `• 재권분석 정보\n` +
-              `• 임차 층수 및 면적 정보\n` +
               `• 평면도 이미지\n` +
+              `• 재권분석 세부 정보\n` +
+              `• 현재 공실 상세\n` +
               `• 특이사항\n\n` +
               `💡 입력한 정보에 따라 비용이 자동 계산됩니다.`);
         
@@ -133,85 +124,157 @@ async function generateExcelLG() {
 
 // LG 양식 카테고리 설정
 function setupCategoriesLG(worksheet) {
-    // B열 카테고리 병합
-    worksheet.mergeCells('B5:C5');   // 위치
-    worksheet.mergeCells('B6:C7');   // 제안
-    worksheet.mergeCells('B9:C9');   // 사진
-    worksheet.mergeCells('B10:C18'); // 건물 외관
-    worksheet.mergeCells('B20:B21'); // 기본정보
-    worksheet.mergeCells('B27:B28'); // 재권분석
-    worksheet.mergeCells('C30:C32'); // 계약공시지가
-    worksheet.mergeCells('B41:B42'); // 대수가능 시기
-    worksheet.mergeCells('B43:B48'); // 채권
-    worksheet.mergeCells('B49:B50'); // 실질임대료(보증금변환시)
-    worksheet.mergeCells('B74:B82'); // 거리
-    
-    // 카테고리 텍스트 설정
+    // 5행 - 헤더
+    worksheet.mergeCells('B5:C5');
     setCategoryCell(worksheet, 'B5', '위치', 'FF808080', true);
-    setCategoryCell(worksheet, 'B6', '제안', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B9', '사진', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B10', '건물 외관', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B20', '기본\n정보', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B26', '소유자 (임대인)', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B27', '재권\n분석', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B41', '대수가능 시기', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B43', '채권', 'FFD9ECF2');
-    setCategoryCell(worksheet, 'B49', '실질\n임대료\n(보증금\n변환시)', 'FFF0F8FF');
-    setCategoryCell(worksheet, 'B54', '비용감면', 'FFFBCF3A');
-    setCategoryCell(worksheet, 'B56', '공사거리', 'FFFBCF3A');
-    setCategoryCell(worksheet, 'B58', '주차현황', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B61', '유료주차', 'FFFFFFFF');
-    setCategoryCell(worksheet, 'B74', '거리', 'FFFFFFFF');
+    setCategoryCell(worksheet, 'C5', '반포역', 'FFCCCCCC');
     
-    // C열 항목명 설정
-    const items = {
-        19: '주소',
-        20: '준공일',
-        21: '규모',
-        22: '연면적',
-        23: '기준층 전용면적',
-        24: '전용률',
-        25: '대지면적',
-        27: '재권담보 설정여부',
-        28: '선순위 담보 총액',
-        29: '공시지가 대비 담보율',
-        30: '계약공시지가(2024.1월 기준)',
-        33: '통지가격 적용',
-        35: '현재 공실',
-        40: '평당가격',
-        41: '대수가능 시기',
-        42: '제안 층',
-        43: '평형정보',
-        44: '임대면적',
-        45: '전용률',
-        46: '임대료',
-        47: '관리비',
-        48: '경비비',
-        49: '실질 보증률(월평환 변환)',
-        50: '연간 부상임대료 (Y.F)',
-        51: '보증금',
-        52: '평 임대료',
-        53: '평 관리비',
-        54: '관리비 내역',
-        56: '렌트프리',
-        57: '(21개월 기준) 순 년째 비용',
-        58: '임대인이 지급 가능',
-        59: '총 추가대손',
-        60: '무료주차 등(임대면적)',
-        61: '무료주차 제공/협의',
-        62: '유료주차(VAT별도)',
-        68: '평면도',
-        80: '특이사항',
-        84: '[X] 산업위원회(Rent Free 협의필 임재신): 1-2) 픽'
-    };
+    // 6행 - 건물 외관
+    worksheet.mergeCells('B6:C6');
+    setCategoryCell(worksheet, 'B6', '건물 외관', 'FFFFFFFF');
     
-    Object.entries(items).forEach(([row, text]) => {
-        const cell = worksheet.getCell(`C${row}`);
-        cell.value = text;
-        cell.font = { name: 'Arial', size: 9 };
-        cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
-        setBordersLG(cell);
-    });
+    // 7-8행 - 주소/위치
+    setCellLG(worksheet, 'B7', '주 소', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C7', '', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'B8', '위 치', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C8', '', false, 'FFF2F2F2');
+    
+    // 9-14행 - 기본정보
+    worksheet.mergeCells('B9:B14');
+    setCategoryCell(worksheet, 'B9', '기본\n정보', 'FFFFFFFF');
+    
+    setCellLG(worksheet, 'C9', '준공일', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C10', '규 모', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C11', '연면적', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C12', '기준층 전용면적', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C13', '전용률', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C14', '대지면적', false, 'FFF2F2F2');
+    
+    // 15행 - 소유자
+    setCellLG(worksheet, 'B15', '소유자 (임대인)', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C15', '', false, 'FFF2F2F2');
+    
+    // 16-20행 - 재권분석
+    worksheet.mergeCells('B16:B20');
+    setCategoryCell(worksheet, 'B16', '재권\n분석', 'FFFFFFFF');
+    
+    setCellLG(worksheet, 'C16', '재권담보 설정여부', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C17', '선순위 담보 총액', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C18', '공시지가 대비 담보율', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C19', '계약공시지가(2024.1월 기준)', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C20', '통지가격 적용', false, 'FFF2F2F2');
+    
+    // 21행 - 현재 공실
+    setCellLG(worksheet, 'B21', '현재 공실', false, 'FFF9D6AE');
+    setCellLG(worksheet, 'C21', '', false, 'FFF9D6AE');
+    
+    // 22-27행 - 채권
+    worksheet.mergeCells('B22:B27');
+    setCategoryCell(worksheet, 'B22', '채권', 'FFD9ECF2');
+    
+    setCellLG(worksheet, 'C22', '수요자', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C23', '계약기간', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C24', '임중가능 시기', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C25', '제안 층', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C26', '전용면적', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C27', '임대면적', false, 'FFF2F2F2');
+    
+    // 28-29행 - 비용감면
+    worksheet.mergeCells('B28:B29');
+    setCategoryCell(worksheet, 'B28', '비용감면', 'FFFBCF3A');
+    
+    setCellLG(worksheet, 'C28', '관리비 내역', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C29', '렌트프리(개월)', false, 'FFF2F2F2');
+    
+    // 30-31행 - 주차현황
+    worksheet.mergeCells('B30:B31');
+    setCategoryCell(worksheet, 'B30', '주차현황', 'FFFFFFFF');
+    
+    setCellLG(worksheet, 'C30', '무료주차 제공대수', false, 'FFF2F2F2');
+    setCellLG(worksheet, 'C31', '유료주차(VAT별도)', false, 'FFF2F2F2');
+    
+    // 32행 - 평면도
+    worksheet.mergeCells('B32:C32');
+    setCategoryCell(worksheet, 'B32', '평면도', 'FFFFFFFF');
+    
+    // 33행 - 특이사항
+    worksheet.mergeCells('B33:C33');
+    setCategoryCell(worksheet, 'B33', '특이사항', 'FFFFFFFF');
+}
+
+// 빌딩 데이터 입력
+function fillBuildingDataLG(worksheet, building, col) {
+    // 5행 - 빌딩별 위치
+    setCellLG(worksheet, `${col}5`, '가산디지털단지역', false, 'FFFF9900');
+    
+    // 6행 - 건물 외관 이미지
+    setCellLG(worksheet, `${col}6`, '', false, 'FFF5F5F5');
+    
+    // 7행 - 주소
+    const addressCell = worksheet.getCell(`${col}7`);
+    addressCell.value = `${building.addressJibun || ''}\n${building.address || ''}`;
+    addressCell.font = { name: 'Arial', size: 8 };
+    addressCell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+    setBordersLG(addressCell);
+    
+    // 8행 - 위치
+    setCellLG(worksheet, `${col}8`, building.station || '');
+    
+    // 9-14행 - 기본정보
+    setCellLG(worksheet, `${col}9`, building.completionYear || '');
+    setCellLG(worksheet, `${col}10`, building.floors || '');
+    setCellLG(worksheet, `${col}11`, building.grossFloorAreaPy ? `${building.grossFloorAreaPy} 평` : '');
+    setCellLG(worksheet, `${col}12`, building.baseFloorAreaDedicatedPy ? `${building.baseFloorAreaDedicatedPy} 평` : '');
+    setCellLG(worksheet, `${col}13`, building.dedicatedRate ? `${building.dedicatedRate}%` : '');
+    setCellLG(worksheet, `${col}14`, building.landAreaPy ? 
+        `${building.landAreaPy} 평\n(${building.landArea || 0} m²)` : '', true);
+    
+    // 15행 - 소유자
+    setCellLG(worksheet, `${col}15`, '에크자산개발주식회사');
+    
+    // 16-20행 - 재권분석
+    setCellLG(worksheet, `${col}16`, '전세권 설정 가능', false, 'FFFFCC00');
+    setCellLG(worksheet, `${col}17`, '-');
+    setCellLG(worksheet, `${col}18`, '0.00%', false, 'FFFF0000');
+    setNumericCellLG(worksheet, `${col}19`, 5995000, '₩#,##0/m²');
+    setCellLG(worksheet, `${col}20`, '104,363,358,000');
+    
+    // 21행 - 현재 공실
+    setCellLG(worksheet, `${col}21`, '4층        217평        467평', false, 'FFF9D6AE');
+    
+    // 22-27행 - 채권
+    setCellLG(worksheet, `${col}22`, 'LG CNS');
+    setCellLG(worksheet, `${col}23`, '2025.7~2027.6 (12개월)');
+    setCellLG(worksheet, `${col}24`, '즉시');
+    setCellLG(worksheet, `${col}25`, '4층 일부');
+    setCellLG(worksheet, `${col}26`, '217 평');
+    setCellLG(worksheet, `${col}27`, '467 평');
+    
+    // 28-29행 - 비용감면
+    setCellLG(worksheet, `${col}28`, '전기료, 수도료 포함 / 청소,시큐리티 별도');
+    setCellLG(worksheet, `${col}29`, '2개월');
+    
+    // 30-31행 - 주차현황
+    setCellLG(worksheet, `${col}30`, building.parkingSpace || '');
+    setCellLG(worksheet, `${col}31`, building.parkingFee || '');
+    
+    // 32행 - 평면도
+    setCellLG(worksheet, `${col}32`, '', false, 'FFF5F5F5');
+    
+    // 33행 - 특이사항
+    const remarkCell = worksheet.getCell(`${col}33`);
+    remarkCell.value = '렌트프리 2개월 (보증금 12개월 적용 조건)\n' +
+                      'Rent Free : 1층 제외\n' +
+                      '공실 영역 대형 호실만 사무실 사용';
+    remarkCell.font = { name: 'Arial', size: 8 };
+    remarkCell.alignment = { horizontal: 'left', vertical: 'top', wrapText: true };
+    setBordersLG(remarkCell);
+    
+    // 빌딩명 표시 (5행과 같은 행에 작은 글씨로)
+    const nameCell = worksheet.getCell(`${col}4`);
+    nameCell.value = building.name;
+    nameCell.font = { name: 'Arial', size: 10, bold: true };
+    nameCell.alignment = { horizontal: 'center', vertical: 'middle' };
 }
 
 // 카테고리 셀 설정 헬퍼 함수
@@ -229,113 +292,6 @@ function setCategoryCell(worksheet, cellAddress, value, bgColor, isWhiteText = f
     setBordersLG(cell);
 }
 
-// LG 양식 빌딩 상세 정보 입력
-function fillBuildingDetailsLG(worksheet, building, col) {
-    // 위치 (5행)
-    setCellLG(worksheet, `${col}5`, '가산디지털단지역', false, 'FFFF9900');
-    
-    // 제안 (6-7행)
-    worksheet.mergeCells(`${col}6:${col}7`);
-    const proposalCell = worksheet.getCell(`${col}6`);
-    proposalCell.value = building.name || '';
-    proposalCell.font = { name: 'Arial', size: 11, bold: true };
-    proposalCell.alignment = { horizontal: 'center', vertical: 'middle' };
-    proposalCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE7E6E6' } };
-    setBordersLG(proposalCell);
-    
-    // 사진 (9행)
-    setCellLG(worksheet, `${col}9`, '', false, 'FFF5F5F5');
-    
-    // 건물 외관 (10-18행)
-    worksheet.mergeCells(`${col}10:${col}18`);
-    setCellLG(worksheet, `${col}10`, '', false, 'FFF5F5F5');
-    
-    // 주소 (19행)
-    setCellLG(worksheet, `${col}19`, `${building.addressJibun || ''}\n${building.address || ''}`, true);
-    
-    // 기본정보
-    setCellLG(worksheet, `${col}20`, building.completionYear || '');
-    setCellLG(worksheet, `${col}21`, building.floors || '');
-    setCellLG(worksheet, `${col}22`, building.grossFloorAreaPy ? `${building.grossFloorAreaPy}평` : '');
-    setCellLG(worksheet, `${col}23`, building.baseFloorAreaDedicatedPy ? `${building.baseFloorAreaDedicatedPy}평` : '');
-    setCellLG(worksheet, `${col}24`, building.dedicatedRate ? `${building.dedicatedRate}%` : '');
-    setCellLG(worksheet, `${col}25`, building.landAreaPy ? `${building.landAreaPy}평` : '');
-    
-    // 소유자 (26행)
-    setCellLG(worksheet, `${col}26`, '');
-    
-    // 재권분석
-    setCellLG(worksheet, `${col}27`, '0.00%');
-    setNumericCellLG(worksheet, `${col}28`, 0, '₩#,##0');
-    setCellLG(worksheet, `${col}29`, '');
-    
-    // 계약공시지가 (30-32행)
-    worksheet.mergeCells(`${col}30:${col}32`);
-    setNumericCellLG(worksheet, `${col}30`, 104363358000, '₩#,##0');
-    
-    // 통지가격 적용 (33행)
-    setCellLG(worksheet, `${col}33`, '');
-    
-    // 현재 공실 (35행)
-    setCellLG(worksheet, `${col}35`, '');
-    
-    // 평당가격 (40행)
-    setCellLG(worksheet, `${col}40`, '');
-    
-    // 대수가능 시기
-    setCellLG(worksheet, `${col}41`, '');
-    setCellLG(worksheet, `${col}42`, '4층');
-    
-    // 채권 정보 - 평당 가격에서 숫자 추출
-    const rentPrice = parseFloat(building.rentPricePy?.replace(/[^0-9.]/g, '')) || 45;
-    const mgmtFee = parseFloat(building.managementFeePy?.replace(/[^0-9.]/g, '')) || 25;
-    
-    setCellLG(worksheet, `${col}43`, '217평');
-    setCellLG(worksheet, `${col}44`, '467평');
-    setCellLG(worksheet, `${col}45`, '46.39%');
-    setCellLG(worksheet, `${col}46`, '');
-    setCellLG(worksheet, `${col}47`, '');
-    setCellLG(worksheet, `${col}48`, '');
-    
-    // 실질임대료
-    setCellLG(worksheet, `${col}49`, `@${rentPrice*10000}+${mgmtFee*10000}`);
-    setCellLG(worksheet, `${col}50`, '@96,135');
-    setCellLG(worksheet, `${col}51`, '1.0개월');
-    setCellLG(worksheet, `${col}52`, '0.0개월');
-    setCellLG(worksheet, `${col}53`, '0.0개월');
-    
-    // 비용감면
-    setCellLG(worksheet, `${col}54`, '');
-    
-    // 공사거리
-    setCellLG(worksheet, `${col}56`, '없음');
-    setCellLG(worksheet, `${col}57`, '');
-    
-    // 주차현황
-    setCellLG(worksheet, `${col}58`, '');
-    setCellLG(worksheet, `${col}59`, '');
-    setCellLG(worksheet, `${col}60`, '');
-    setCellLG(worksheet, `${col}61`, '');
-    setCellLG(worksheet, `${col}62`, '');
-    
-    // 평면도 (68행)
-    setCellLG(worksheet, `${col}68`, '', false, 'FFF5F5F5');
-    
-    // 거리 (74-82행)
-    worksheet.mergeCells(`${col}74:${col}82`);
-    const distanceCell = worksheet.getCell(`${col}74`);
-    distanceCell.value = '';
-    distanceCell.font = { name: 'Arial', size: 8 };
-    distanceCell.alignment = { horizontal: 'left', vertical: 'top', wrapText: true };
-    setBordersLG(distanceCell);
-    
-    // 특이사항 (80행)
-    setCellLG(worksheet, `${col}80`, '', true);
-    
-    // 마지막 행 (84행)
-    setCellLG(worksheet, `${col}84`, '');
-}
-
 // LG 양식 셀 설정 헬퍼 함수
 function setCellLG(worksheet, address, value, wrap = false, bgColor = null) {
     const cell = worksheet.getCell(address);
@@ -347,10 +303,13 @@ function setCellLG(worksheet, address, value, wrap = false, bgColor = null) {
     applyDataCellStyleLG(cell);
 }
 
-function setNumericCellLG(worksheet, address, value, format = '#,##0') {
+function setNumericCellLG(worksheet, address, value, format = '#,##0', bgColor = null) {
     const cell = worksheet.getCell(address);
     cell.value = value;
     cell.numFmt = format;
+    if (bgColor) {
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: bgColor } };
+    }
     applyDataCellStyleLG(cell);
 }
 
@@ -375,12 +334,12 @@ function setBordersLG(cell) {
 function applyBordersLG(worksheet, buildingCount) {
     const endCol = 67 + buildingCount; // D열부터 시작
     
-    // 주요 데이터 영역에만 테두리 적용 (1-84행)
-    for (let row = 1; row <= 84; row++) {
-        // A열부터 C열
+    // 데이터 영역 (1-33행)
+    for (let row = 1; row <= 33; row++) {
+        // A, B, C열
         ['A', 'B', 'C'].forEach(col => {
             const cell = worksheet.getCell(`${col}${row}`);
-            if (!cell.border) {
+            if (!cell.border && cell.value !== undefined) {
                 setBordersLG(cell);
             }
         });
@@ -389,9 +348,15 @@ function applyBordersLG(worksheet, buildingCount) {
         for (let col = 68; col <= endCol; col++) {
             const colLetter = String.fromCharCode(col);
             const cell = worksheet.getCell(`${colLetter}${row}`);
-            if (!cell.border) {
+            if (!cell.border && cell.value !== undefined) {
                 setBordersLG(cell);
             }
         }
     }
+    
+    // 하단 주석
+    worksheet.getCell('A35').value = '1) 조세공과금(재산세,화재보험료,관리대행수수료 등)는 별도이며 2층 1/2평당 경우 입맞추어 발꿈 - 렌트프리 적용시 재정의';
+    worksheet.getCell('A35').font = { name: 'Arial', size: 8 };
+    worksheet.getCell('A36').value = '2) 무료주차는 - 매임대인 - 매임대인(입주기간: 매일 08:00-18:00 평일별 보유 및 매임대인: 33.0591 / Rent Free(임대료 관리비 면제 보증금 있음), 프리렌트 포리그 12-13개월 기준(렌트프리기간차)이트리출은 원칙적 허지 않겠습니다 보리)';
+    worksheet.getCell('A36').font = { name: 'Arial', size: 8 };
 }
