@@ -14,7 +14,7 @@ async function generateExcelLG() {
         
         // 2. 기본값 설정
         const companyName = 'LG CNS';
-        const reportTitle = '단기임차 가능 공간';
+        const defaultTitle = '단기임차 가능 공간';
         
         // 3. 로딩 표시 (옵션)
         showLoadingMessage('LG Comp List를 생성하는 중...');
