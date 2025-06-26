@@ -1,272 +1,195 @@
 // ===== LG Comp List 데이터 처리 =====
 
-// 빌딩 데이터를 LG 형식으로 변환
-function processLGBuildingData(building) {
-    const processedData = {};
+// 빌딩 데이터를 워크시트에 입력 (LG 버전)
+function fillBuildingDataLG(worksheet, building, buildingIndex) {
+    if (buildingIndex >= 6) return; // 최대 6개
     
-    // 기본 데이터 매핑
-    Object.entries(LG_TEMPLATE_CONFIG.dataMapping).forEach(([row, field]) => {
-        if (building[field] !== undefined) {
-            if (field === 'dedicatedRate') {
-                // 전용률은 이미 퍼센트 값이므로 100으로 나누지 않음
-                processedData[row] = building[field] || 0;
-            } else {
-                processedData[row] = building[field];
-            }
-        } else {
-            processedData[row] = '';
-        }
-    });
+    const startCol = LG_TEMPLATE_CONFIG.buildingColumns[buildingIndex];
+    const colIndex = LG_UTILS.getColumnIndex(startCol);
     
-    // 특수 처리가 필요한 필드들
-    processedData.description = building.description || '';
+    // 기초정보 입력
+    fillBasicInfo(worksheet, building, startCol);
     
-    // buildings.json에 있는 추가 데이터 처리
-    processedData.landAreaPy = building.landAreaPy || '';
-    processedData.depositPy = building.depositPy || '';
-    processedData.rentPricePy = building.rentPricePy || '';
-    processedData.managementFeePy = building.managementFeePy || '';
+    // 공실 현황 입력 (임시 - 실제로는 별도 데이터 필요)
+    fillVacancyInfo(worksheet, building, startCol, colIndex);
     
-    return processedData;
+    // 제안 정보 입력
+    fillProposalInfo(worksheet, building, startCol);
+    
+    // 주차 정보 입력
+    fillParkingInfo(worksheet, building, startCol);
+    
+    // 기본값 설정
+    setDefaultValues(worksheet, startCol);
 }
 
-// 빌딩 데이터를 워크시트에 입력 (LG 버전)
-function fillBuildingDataLG(worksheet, building, columnIndex) {
-    const col = String.fromCharCode(64 + columnIndex); // D=4, E=5, F=6, G=7, H=8
-    const processedData = processLGBuildingData(building);
+// 기초정보 입력
+function fillBasicInfo(worksheet, building, col) {
+    // 주소
+    setCellValue(worksheet, `${col}18`, building.address || building.addressJibun || '');
     
-    // 빌딩개요/일반 (6행)
-    if (processedData.description) {
-        setCellValue(worksheet, `${col}6`, processedData.description, {
-            wrapText: true,
-            alignment: 'left'
-        });
+    // 위치 (지하철역)
+    setCellValue(worksheet, `${col}19`, building.station || '');
+    
+    // 준공일
+    setCellValue(worksheet, `${col}20`, building.completionYear || '');
+    
+    // 규모 (층수)
+    setCellValue(worksheet, `${col}21`, building.floors || '');
+    
+    // 연면적
+    if (building.grossFloorAreaPy) {
+        setCellValue(worksheet, `${col}22`, `${formatNumber(building.grossFloorAreaPy)}평`);
     }
     
-    // 기본 정보 입력 (7-23행) - buildings.json의 실제 데이터와 매핑
-    setCellValue(worksheet, `${col}7`, building.addressJibun || '');
-    setCellValue(worksheet, `${col}8`, building.address || '');
-    setCellValue(worksheet, `${col}9`, building.station || '');
-    setCellValue(worksheet, `${col}10`, building.floors || '');
-    setCellValue(worksheet, `${col}11`, building.completionYear || '');
+    // 기준층 전용면적
+    if (building.baseFloorAreaDedicatedPy) {
+        setCellValue(worksheet, `${col}23`, `${formatNumber(building.baseFloorAreaDedicatedPy)}평`);
+    }
     
     // 전용률
-    setCellValue(worksheet, `${col}12`, (building.dedicatedRate || 0) / 100, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.percentage
-    });
+    if (building.dedicatedRate) {
+        setCellValue(worksheet, `${col}24`, `${building.dedicatedRate}%`);
+    }
     
-    // 면적 정보 - buildings.json의 실제 필드명 사용
-    setCellValue(worksheet, `${col}13`, building.baseFloorArea || 0, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.area_m2
-    });
-    setCellValue(worksheet, `${col}14`, building.baseFloorAreaPy || 0, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.area_py
-    });
-    setCellValue(worksheet, `${col}15`, building.baseFloorAreaDedicated || 0, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.area_m2
-    });
-    setCellValue(worksheet, `${col}16`, building.baseFloorAreaDedicatedPy || 0, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.area_py
-    });
-    
-    // 빌딩 세부현황
-    setCellValue(worksheet, `${col}17`, building.elevator || '');
-    setCellValue(worksheet, `${col}18`, building.hvac || '');
-    setCellValue(worksheet, `${col}19`, building.buildingUse || '');
-    setCellValue(worksheet, `${col}20`, building.structure || '');
-    setCellValue(worksheet, `${col}21`, building.parkingSpace || '');
-    
-    // 주차 관련
-    setCellValue(worksheet, `${col}22`, building.parkingFee || '');
-    setCellValue(worksheet, `${col}23`, building.parkingSpace || '');
-    
-    // 임차 제안 기본값 설정 (25-31행)
-    setDefaultProposalValues(worksheet, col, building);
-    
-    // 임대 기준 - buildings.json의 실제 데이터 활용
-    setRentValuesFromBuilding(worksheet, col, building);
-    
-    // 렌트프리 기본값 (41행)
-    setCellValue(worksheet, `${col}41`, 0, {
-        format: '0',
-        alignment: 'center'
-    });
+    // 대지면적
+    if (building.landAreaPy) {
+        setCellValue(worksheet, `${col}25`, `${formatNumber(building.landAreaPy)}평`);
+    }
 }
 
-// 임차 제안 기본값 설정
-function setDefaultProposalValues(worksheet, col, building) {
-    // 25: 최적 임차 층수
-    setCellValue(worksheet, `${col}25`, '-');
+// 공실 현황 입력
+function fillVacancyInfo(worksheet, building, col, colIndex) {
+    // 임시 데이터 (실제로는 층별 공실 정보 필요)
+    // 예시: 1개 층만 표시
+    const floorCol = col;
+    const dedicatedCol = LG_UTILS.getColumnLetter(colIndex + 1);
+    const rentCol = LG_UTILS.getColumnLetter(colIndex + 2);
     
-    // 26: 입주 가능 시기
-    setCellValue(worksheet, `${col}26`, '-');
-    
-    // 27: 거래유형
-    setCellValue(worksheet, `${col}27`, '-');
-    
-    // 30: 임대면적 (평) - 기준층 임대면적 사용
-    const rentAreaPy = building.baseFloorAreaPy || 100;
-    setCellValue(worksheet, `${col}30`, rentAreaPy, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.area_py
-    });
-    
-    // 31: 전용면적 (평) - 기준층 전용면적 사용
-    const dedicatedAreaPy = building.baseFloorAreaDedicatedPy || rentAreaPy * 0.65;
-    setCellValue(worksheet, `${col}31`, dedicatedAreaPy, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.area_py
-    });
-}
-
-// buildings.json의 임대 정보를 사용하여 임대 기준 설정
-function setRentValuesFromBuilding(worksheet, col, building) {
-    // depositPy, rentPricePy, managementFeePy에서 숫자 추출
-    const extractNumber = (str) => {
-        if (!str) return 0;
-        // "52만원", "5.20만원" 같은 형식에서 숫자 추출
-        const match = str.match(/[\d,]+\.?\d*/);
-        if (match) {
-            return parseFloat(match[0].replace(/,/g, ''));
+    // 34행에 샘플 데이터
+    if (building.vacancy) {
+        // vacancy 정보에서 층 추출 시도
+        const vacancyMatch = building.vacancy.match(/(\d+)층/);
+        if (vacancyMatch) {
+            setCellValue(worksheet, `${floorCol}34`, `${vacancyMatch[1]}층`);
+        } else {
+            setCellValue(worksheet, `${floorCol}34`, '10층');
         }
-        return 0;
-    };
+    } else {
+        setCellValue(worksheet, `${floorCol}34`, '10층');
+    }
     
-    // 32: 월 평당 보증금
-    const depositPy = extractNumber(building.depositPy) * 10000; // 만원 단위를 원 단위로
-    setCellValue(worksheet, `${col}32`, depositPy, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.currency,
-        alignment: 'right'
-    });
+    // 전용/임대 면적 (기준층 면적 사용)
+    const dedicatedArea = building.baseFloorAreaDedicatedPy || 0;
+    const rentArea = building.baseFloorAreaPy || 0;
     
-    // 33: 월 평당 임대료
-    const rentPy = extractNumber(building.rentPricePy) * 10000; // 만원 단위를 원 단위로
-    setCellValue(worksheet, `${col}33`, rentPy, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.currency,
-        alignment: 'right'
-    });
+    setCellValue(worksheet, `${dedicatedCol}34`, dedicatedArea);
+    setCellValue(worksheet, `${rentCol}34`, rentArea);
     
-    // 34: 월 평당 관리비
-    const managementPy = extractNumber(building.managementFeePy) * 10000; // 만원 단위를 원 단위로
-    setCellValue(worksheet, `${col}34`, managementPy, {
-        format: LG_TEMPLATE_CONFIG.numberFormats.currency,
-        alignment: 'right'
-    });
+    // 소계 수식
+    setCellFormula(worksheet, `${dedicatedCol}39`, `=SUM(${dedicatedCol}34:${dedicatedCol}38)`);
+    setCellFormula(worksheet, `${rentCol}39`, `=SUM(${rentCol}34:${rentCol}38)`);
 }
 
-// 셀 값 설정 헬퍼 함수
-function setCellValue(worksheet, cellRef, value, options = {}) {
+// 제안 정보 입력
+function fillProposalInfo(worksheet, building, col) {
+    // 전용/임대면적 수식 (공실 테이블에서 가져옴)
+    const colIndex = LG_UTILS.getColumnIndex(col);
+    const dedicatedCol = LG_UTILS.getColumnLetter(colIndex + 1);
+    const rentCol = LG_UTILS.getColumnLetter(colIndex + 2);
+    
+    setCellFormula(worksheet, `${col}43`, `=${dedicatedCol}34`);
+    setCellFormula(worksheet, `${col}44`, `=${rentCol}34`);
+    
+    // 임대 조건 (평당 금액에서 숫자 추출)
+    const depositPy = extractNumberFromPrice(building.depositPy);
+    const rentPy = extractNumberFromPrice(building.rentPricePy);
+    const managementPy = extractNumberFromPrice(building.managementFeePy);
+    
+    setCellValue(worksheet, `${col}45`, depositPy);
+    setCellValue(worksheet, `${col}46`, rentPy);
+    setCellValue(worksheet, `${col}47`, managementPy);
+    
+    // 실질 임대료 수식
+    setCellFormula(worksheet, `${col}48`, `=${col}46*(12-${col}49)/12`);
+    
+    // 비용 계산 수식
+    setCellFormula(worksheet, `${col}50`, `=${col}45*${col}44`);
+    setCellFormula(worksheet, `${col}51`, `=${col}46*${col}44`);
+    setCellFormula(worksheet, `${col}52`, `=${col}47*${col}44`);
+    setCellFormula(worksheet, `${col}54`, `=${col}51+${col}52`);
+    setCellFormula(worksheet, `${col}55`, `=${col}54*21`);
+}
+
+// 주차 정보 입력
+function fillParkingInfo(worksheet, building, col) {
+    // 총 주차대수
+    setCellValue(worksheet, `${col}59`, building.parkingSpace || '');
+    
+    // 무료주차 제공대수 계산 수식
+    setCellFormula(worksheet, `${col}61`, `=${col}44/${col}60`);
+    
+    // 유료주차비
+    setCellValue(worksheet, `${col}62`, building.parkingFee || '');
+}
+
+// 기본값 설정
+function setDefaultValues(worksheet, col) {
+    // R.F 개월수
+    setCellValue(worksheet, `${col}49`, 0);
+    
+    // 인테리어 기간
+    setCellValue(worksheet, `${col}56`, '미제공');
+    
+    // 인테리어 지원금
+    setCellValue(worksheet, `${col}57`, '미제공');
+    
+    // 무료주차 조건 (기본값)
+    setCellValue(worksheet, `${col}60`, 50); // 50평당 1대
+}
+
+// 채권분석 수식 설정
+function setBondAnalysisFormulas(worksheet, col) {
+    // 담보율 계산
+    setCellFormula(worksheet, `${col}30`, `=${col}29/${col}32`);
+    
+    // 토지가격 적용
+    const colIndex = LG_UTILS.getColumnIndex(col);
+    const landAreaCol = LG_UTILS.getColumnLetter(colIndex + 2); // 대지면적 열
+    setCellFormula(worksheet, `${col}32`, `=${col}31*${landAreaCol}25`);
+}
+
+// 셀 값 설정 헬퍼
+function setCellValue(worksheet, cellRef, value) {
     const cell = worksheet.getCell(cellRef);
     cell.value = value;
-    
-    // 폰트 설정 (LG Smart Regular 강제)
-    cell.font = {
-        name: 'LG Smart Regular',
-        size: 9,
-        bold: options.bold || false
-    };
-    
-    // 정렬 설정 (A1-A4가 아니면 기본 가운데 정렬)
-    if (!['A1', 'A2', 'A3', 'A4'].includes(cellRef)) {
-        cell.alignment = {
-            horizontal: options.alignment || 'center',
-            vertical: 'middle',
-            wrapText: options.wrapText || false
-        };
-    }
-    
-    // 숫자 포맷
-    if (options.format) {
-        cell.numFmt = options.format;
-    }
-    
-    // 테두리
-    cell.border = {
-        top: { style: 'thin' },
-        left: { style: 'thin' },
-        bottom: { style: 'thin' },
-        right: { style: 'thin' }
-    };
+    cell.alignment = { horizontal: 'center', vertical: 'middle' };
 }
 
-// 데이터 검증 함수
-function validateBuildingData(building) {
-    const errors = [];
-    
-    // 필수 필드 확인
-    if (!building.name) {
-        errors.push('빌딩명이 없습니다.');
-    }
-    
-    if (!building.address && !building.addressJibun) {
-        errors.push('주소 정보가 없습니다.');
-    }
-    
-    // 숫자 필드 검증
-    const numericFields = [
-        'dedicatedRate', 'baseFloorArea', 'baseFloorAreaPy',
-        'baseFloorAreaDedicated', 'baseFloorAreaDedicatedPy'
-    ];
-    
-    numericFields.forEach(field => {
-        if (building[field] !== undefined && isNaN(building[field])) {
-            errors.push(`${field} 필드가 숫자가 아닙니다.`);
-        }
-    });
-    
-    return {
-        isValid: errors.length === 0,
-        errors: errors
-    };
+// 수식 설정 헬퍼
+function setCellFormula(worksheet, cellRef, formula) {
+    const cell = worksheet.getCell(cellRef);
+    cell.value = { formula: formula };
+    cell.alignment = { horizontal: 'center', vertical: 'middle' };
 }
 
-// 데이터 정제 함수
-function sanitizeBuildingData(building) {
-    const sanitized = { ...building };
+// 가격 문자열에서 숫자 추출
+function extractNumberFromPrice(priceStr) {
+    if (!priceStr) return 0;
     
-    // 숫자 필드 정제
-    const numericFields = [
-        'dedicatedRate', 'baseFloorArea', 'baseFloorAreaPy',
-        'baseFloorAreaDedicated', 'baseFloorAreaDedicatedPy',
-        'landAreaPy', 'completionYear'
-    ];
-    
-    numericFields.forEach(field => {
-        if (sanitized[field]) {
-            // 문자열에서 숫자 추출
-            const numValue = parseFloat(String(sanitized[field]).replace(/[^0-9.-]/g, ''));
-            sanitized[field] = isNaN(numValue) ? 0 : numValue;
-        }
-    });
-    
-    // 텍스트 필드 정제
-    const textFields = ['name', 'address', 'addressJibun', 'station', 'floors'];
-    textFields.forEach(field => {
-        if (sanitized[field]) {
-            sanitized[field] = String(sanitized[field]).trim();
-        }
-    });
-    
-    return sanitized;
+    // "52만원", "5.20만원" 같은 형식에서 숫자 추출
+    const match = priceStr.match(/([\d,]+\.?\d*)/);
+    if (match) {
+        return parseFloat(match[1].replace(/,/g, ''));
+    }
+    return 0;
 }
 
-// 여러 빌딩 데이터 일괄 처리
-function processBuildingsBatch(buildings) {
-    return buildings.map(building => {
-        const sanitized = sanitizeBuildingData(building);
-        const validation = validateBuildingData(sanitized);
-        
-        if (!validation.isValid) {
-            console.warn(`빌딩 ${building.name} 데이터 검증 실패:`, validation.errors);
-        }
-        
-        return {
-            original: building,
-            processed: processLGBuildingData(sanitized),
-            validation: validation
-        };
-    });
+// 숫자 포맷팅
+function formatNumber(num) {
+    if (!num) return '0';
+    return Math.round(num).toLocaleString('ko-KR');
 }
 
 // 전역 함수로 등록
 window.fillBuildingDataLG = fillBuildingDataLG;
-window.processLGBuildingData = processLGBuildingData;
-window.validateBuildingData = validateBuildingData;
