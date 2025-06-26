@@ -207,5 +207,8 @@ function copyFormulas(worksheet, fromCol, toCol) {
 function recalculateFormulas(worksheet) {
     // ExcelJS는 자동으로 수식을 계산하므로 일반적으로 필요없음
     // 단, 강제 재계산이 필요한 경우 사용
+}
+
 // 전역 함수로 등록
 window.applyLGFormulas = applyLGFormulas;
+window.validateFormulas = validateFormulas;
