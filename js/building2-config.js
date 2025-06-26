@@ -1,241 +1,232 @@
-// ===== LG Comp List 템플릿 설정 =====
+// ===== LG Comp List 템플릿 설정 (실제 LG 템플릿 기반) =====
 const LG_TEMPLATE_CONFIG = {
-    // 열 너비 설정
-    columnWidths: {
-        'A': 2.6640625,
-        'B': 13.21875,
-        'C': 24.5546875,
-        'D': 26.33203125,
-        'E': 26.33203125,
-        'F': 26.33203125,
-        'G': 26.33203125,
-        'H': 26.33203125
+    // 시트명
+    sheetName: 'COMP',
+    
+    // 최대 행/열
+    maxRow: 109,
+    maxColumn: 22,  // V열까지
+    
+    // 빌딩 시작 열 (6개 빌딩)
+    buildingColumns: ['E', 'H', 'K', 'N', 'Q', 'T'],
+    
+    // 각 빌딩당 열 구성
+    columnsPerBuilding: 3,  // 각 빌딩당 3열 사용
+    
+    // 헤더 정보 (1-4행)
+    headerInfo: {
+        1: '[임차제안 제목을 입력하세요. ]',
+        2: '- 규모: 전용 0000PY 이상',
+        3: '- 계약기간: 2025.00.00~2025.00.00 (00개월 간)',
+        4: '- 위치: 0000역 인근'
     },
-
-    // 행 높이 설정
-    rowHeights: {
-        1: 16.9,
-        2: 49.9,
-        3: 16.9,
-        4: 16.9,
-        5: 190.15,  // 이미지 영역
-        6: 79.9,
-        7: 16.9,
-        8: 16.9,
-        9: 60.0,    // 위치 정보
-        10: 16.9,
-        11: 16.9,
-        12: 16.9,
-        13: 16.9,
-        14: 16.9,
-        15: 16.9,
-        16: 16.9,
-        17: 16.9,
-        18: 16.9,
-        19: 16.9,
-        20: 16.9,
-        21: 16.9,
-        22: 16.9,
-        23: 16.9,
-        24: 16.9,
-        25: 16.9,
-        26: 16.9,
-        27: 16.9,
-        28: 16.9,
-        29: 16.9,
-        30: 16.9,
-        31: 16.9,
-        32: 16.9,
-        33: 16.9,
-        34: 16.9,
-        35: 16.9,
-        36: 16.9,
-        37: 16.9,
-        38: 16.9,
-        39: 16.9,
-        40: 16.9,
-        41: 16.9,
-        42: 16.9,
-        43: 16.9,
-        44: 16.9,
-        45: 16.9,
-        46: 16.9,
-        47: 16.9,
-        48: 16.9,
-        49: 16.9,
-        50: 16.9
+    
+    // 섹션별 행 정보
+    sections: {
+        header: { start: 1, end: 4 },
+        location: { start: 6, end: 8 },
+        buildingImage: { start: 9, end: 17 },
+        basicInfo: { start: 18, end: 25 },
+        bondAnalysis: { start: 26, end: 32 },
+        vacancy: { start: 33, end: 39 },
+        proposal: { start: 40, end: 55 },
+        construction: { start: 56, end: 58 },
+        parking: { start: 59, end: 62 },
+        floorPlan: { start: 63, end: 72 },
+        remarks: { start: 73, end: 83 },
+        notes: { start: 84, end: 85 }
     },
-
-    // 병합 셀 정보
-    mergedCells: [
-        'B3:C4',    // PRESENT TO
-        'B5:C5',    // 로고 영역
-        'B6:C6',    // 빌딩개요/일반
-        'B7:B18',   // 빌딩 현황
-        'B19:B20',  // 빌딩 세부현황
-        'B21:B23',  // 주차 관련
-        'B25:B31',  // 임차 제안
-        'B32:B39',  // 임대 기준
-        'B40:B44',  // 임대 기준 조정
-        'B46:B50'   // 예상비용
-    ],
-
-    // 카테고리 스타일 설정
-    categories: {
-        'B3': {
-            text: 'PRESENT TO :',
-            bgColor: 'FF2C2A2A',
-            fontColor: 'FFFFFFFF',
-            fontSize: 9,
-            bold: true
-        },
-        'B6': {
-            text: '빌딩개요/일반',
-            bgColor: 'FFE0E0E0',  // 연한 그레이
-            fontColor: 'FF000000',
-            fontSize: 9,
-            bold: true
-        },
-        'B7': {
-            text: '빌딩 현황',
-            bgColor: 'FFE0E0E0',  // 연한 그레이
-            fontColor: 'FF000000',
-            fontSize: 9,
-            bold: true
-        },
-        'B19': {
-            text: '빌딩 세부현황',
-            bgColor: 'FFE0E0E0',  // 연한 그레이
-            fontColor: 'FF000000',
-            fontSize: 9,
-            bold: true
-        },
-        'B21': {
-            text: '주차 관련',
-            bgColor: 'FFE0E0E0',  // 연한 그레이
-            fontColor: 'FF000000',
-            fontSize: 9,
-            bold: true
-        },
-        'B25': {
-            text: '임차 제안',
-            bgColor: 'FFC0C0C0',  // 중간 그레이
-            fontColor: 'FF000000',
-            fontSize: 9,
-            bold: true
-        },
-        'B32': {
-            text: '임대 기준',
-            bgColor: 'FFA0A0A0',  // 진한 그레이
-            fontColor: 'FF000000',
-            fontSize: 9,
-            bold: true
-        },
-        'B40': {
-            text: '임대기준 조정',
-            bgColor: 'FFA0A0A0',  // 진한 그레이
-            fontColor: 'FF000000',
-            fontSize: 9,
-            bold: true
-        },
-        'B46': {
-            text: '예상비용',
-            bgColor: 'FF808080',  // 더 진한 그레이
-            fontColor: 'FFFFFFFF',
-            fontSize: 9,
-            bold: true
-        }
+    
+    // B열 라벨 정보
+    labels: {
+        // 기초정보
+        18: '주   소',
+        19: '위   치',
+        20: '준공일',
+        21: '규  모',
+        22: '연면적',
+        23: '기준층 전용면적',
+        24: '전용률',
+        25: '대지면적',
+        // 채권분석
+        26: '소유자 (임대인)',
+        27: '채권담보 설정여부',
+        28: '공동담보 총 대지지분',
+        29: '선순위 담보 총액',
+        30: '공시지가 대비 담보율',  // C열
+        31: '개별공시지가(25년 1월 기준)',
+        32: '토지가격 적용',  // C열
+        // 제안
+        40: '계약기간',
+        41: '입주가능 시기',
+        42: '제안 층',
+        43: '전용면적',
+        44: '임대면적',
+        45: '보증금',
+        46: '임대료',
+        47: '관리비',
+        48: '실질 임대료(RF만 반영)',
+        49: '연간 무상임대 (R.F)',
+        50: '보증금',
+        51: '월 임대료',
+        52: '월 관리비',
+        53: '관리비 내역',
+        54: '월납부액',
+        55: '(21개월 기준) 총 납부 비용',
+        56: '인테리어 기간 (F.O)',
+        57: '인테리어지원금 (T.I)',
+        // 주차현황
+        59: '총 주차대수',
+        60: '무료주차 조건(임대면적)',
+        61: '무료주차 제공대수',
+        62: '유료주차(VAT별도)',
+        // 기타
+        63: '평면도',
+        73: '특이사항'
     },
-
-    // C열 항목명 설정
-    rowLabels: {
-        7: '주소 지번',
-        8: '도로명 주소',
-        9: '위치',
-        10: '빌딩 규모',
-        11: '준공연도',
-        12: '전용률 (%)',
-        13: '기준층 임대면적 (m²)',
-        14: '기준층 임대면적 (평)',
-        15: '기준층 전용면적 (m²)',
-        16: '기준층 전용면적 (평)',
-        17: '엘레베이터',
-        18: '냉난방 방식',
-        19: '건물용도',
-        20: '구조',
-        21: '주차 대수 정보',
-        22: '주차비',
-        23: '주차 대수',
-        25: '최적 임차 층수',
-        26: '입주 가능 시기',
-        27: '거래유형',
-        28: '임대면적 (m²)',
-        29: '전용면적 (m²)',
-        30: '임대면적 (평)',
-        31: '전용면적 (평)',
-        32: '월 평당 보증금',
-        33: '월 평당 임대료',
-        34: '월 평당 관리비',
-        35: '월 평당 지출비용',
-        36: '총 보증금',
-        37: '월 임대료 총액',
-        38: '월 관리비 총액',
-        39: '월 전용면적당 지출비용',
-        40: '보증금',
-        41: '렌트프리 (개월/년)',
-        42: '평균 임대료',
-        43: '관리비',
-        44: 'NOC',
-        46: '보증금',
-        47: '평균 월 임대료',
-        48: '평균 월 관리비',
-        49: '월 (임대료 + 관리비)',
-        50: '연 실제 부담 고정금액'
+    
+    // 공실 현황 테이블 구조 (33-39행)
+    vacancyTable: {
+        header: 33,  // 층/전용/임대
+        dataStart: 34,
+        dataEnd: 38,
+        total: 39    // 소계
     },
-
+    
+    // 수식 정보
+    formulas: {
+        // 담보율 계산
+        담보율: (col) => `=${col}29/${col}32`,
+        토지가격: (col) => `=${col}31*${String.fromCharCode(col.charCodeAt(0)+2)}25`,
+        
+        // 면적 소계
+        전용소계: (col) => `=SUM(${col}34:${col}38)`,
+        임대소계: (col) => `=SUM(${String.fromCharCode(col.charCodeAt(0)+1)}34:${String.fromCharCode(col.charCodeAt(0)+1)}38)`,
+        
+        // 실질 임대료 (RF 반영)
+        실질임대료: (col) => `=${col}46*(12-${col}49)/12`,
+        
+        // 비용 계산
+        보증금총액: (col) => `=${col}45*${col}44`,
+        월임대료총액: (col) => `=${col}46*${col}44`,
+        월관리비총액: (col) => `=${col}47*${col}44`,
+        월납부액: (col) => `=${col}51+${col}52`,
+        총납부비용21개월: (col) => `=${col}54*21`,
+        
+        // 주차대수 계산
+        주차대수비율: (col) => `=${col}44/${col}60`
+    },
+    
+    // 병합 셀 주요 영역
+    majorMergedCells: {
+        // 헤더
+        title: 'A1:V4',
+        location: 'A6:D6',
+        proposal: 'A7:D8',
+        
+        // 이미지 영역
+        buildingExterior: 'A9:D17',
+        
+        // 빌딩별 이미지 영역
+        buildingImages: [
+            'E9:G17',
+            'H9:J17',
+            'K9:M17',
+            'N9:P17',
+            'Q9:S17',
+            'T9:V17'
+        ],
+        
+        // 섹션 타이틀
+        basicInfo: 'A18:A25',
+        bondAnalysis: 'A26:A32',
+        vacancy: 'A33:D39',
+        proposalTitle: 'A40:A44',
+        baseRent: 'A45:A47',
+        realRent: 'A48:A49',
+        costReview: 'A50:A55',
+        construction: 'A56:A58',
+        parking: 'A59:A62',
+        others: 'A63:A83',
+        
+        // 평면도 영역
+        floorPlans: [
+            'B63:D72',
+            'E63:G72',
+            'H63:J72',
+            'K63:M72',
+            'N63:P72',
+            'Q63:S72',
+            'T63:V72'
+        ],
+        
+        // 특이사항 영역
+        remarks: [
+            'B73:D83',
+            'E73:G83',
+            'H73:J83',
+            'K73:M83',
+            'N73:P83',
+            'Q73:S83',
+            'T73:V83'
+        ]
+    },
+    
+    // 데이터 매핑 (buildings.json 필드 → 엑셀 행)
+    dataMapping: {
+        18: 'address',           // 주소
+        19: 'station',           // 위치
+        20: 'completionYear',    // 준공일
+        21: 'floors',            // 규모
+        22: 'grossFloorAreaPy',  // 연면적
+        23: 'baseFloorAreaDedicatedPy', // 기준층 전용면적
+        24: 'dedicatedRate',     // 전용률
+        25: 'landAreaPy',        // 대지면적
+        26: '',                  // 소유자 (수동입력)
+        27: '',                  // 채권담보 설정여부 (수동입력)
+        31: '',                  // 개별공시지가 (수동입력)
+        
+        // 제안 관련
+        40: '',                  // 계약기간 (수동입력)
+        41: '',                  // 입주가능 시기 (수동입력)
+        42: '',                  // 제안 층 (수동입력)
+        43: '',                  // 전용면적 (공실 테이블에서 계산)
+        44: '',                  // 임대면적 (공실 테이블에서 계산)
+        45: 'depositPy',         // 보증금 (평당)
+        46: 'rentPricePy',       // 임대료 (평당)
+        47: 'managementFeePy',   // 관리비 (평당)
+        49: '',                  // R.F 개월수 (수동입력, 기본값 0)
+        
+        // 주차
+        59: 'parkingSpace',      // 총 주차대수
+        60: '',                  // 무료주차 조건 (수동입력)
+        62: 'parkingFee'         // 유료주차비
+    },
+    
     // 스타일 설정
     styles: {
-        // 기본 폰트
+        // 전체 기본 폰트
         defaultFont: {
-            name: 'LG Smart Regular',
-            size: 9
+            name: '맑은 고딕',
+            size: 10
         },
         
-        // 헤더 스타일
-        headerStyle: {
-            font: {
-                name: 'LG Smart Regular',
-                size: 9,
-                bold: true
-            },
-            fill: {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FFCCCCCC' }
-            },
-            alignment: {
-                horizontal: 'center',
-                vertical: 'middle',
-                wrapText: true
-            },
-            border: {
-                top: { style: 'thin' },
-                left: { style: 'thin' },
-                bottom: { style: 'thin' },
-                right: { style: 'thin' }
-            }
+        // 타이틀 스타일
+        titleStyle: {
+            font: { size: 14, bold: true },
+            alignment: { horizontal: 'left', vertical: 'top' }
+        },
+        
+        // 섹션 헤더 스타일
+        sectionHeader: {
+            fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE0E0E0' } },
+            font: { bold: true },
+            alignment: { horizontal: 'center', vertical: 'middle' }
         },
         
         // 데이터 셀 스타일
-        dataCellStyle: {
-            font: {
-                name: 'LG Smart Regular',
-                size: 9
-            },
-            alignment: {
-                horizontal: 'center',
-                vertical: 'middle'
-            },
+        dataCell: {
+            alignment: { horizontal: 'center', vertical: 'middle' },
             border: {
                 top: { style: 'thin' },
                 left: { style: 'thin' },
@@ -244,101 +235,51 @@ const LG_TEMPLATE_CONFIG = {
             }
         },
         
-        // 라벨 셀 스타일 (C열)
-        labelCellStyle: {
-            font: {
-                name: 'LG Smart Regular',
-                size: 9
-            },
-            alignment: {
-                horizontal: 'center',
-                vertical: 'middle'
-            },
-            border: {
-                top: { style: 'thin' },
-                left: { style: 'thin' },
-                bottom: { style: 'thin' },
-                right: { style: 'thin' }
-            }
+        // 수식 결과 스타일
+        formulaCell: {
+            font: { color: { argb: 'FF0000FF' } },
+            alignment: { horizontal: 'center', vertical: 'middle' }
         }
     },
-
-    // 수식 템플릿
-    formulas: {
-        // 면적 변환 (평 → m²)
-        pyToM2: (col, row) => `ROUNDDOWN(${col}${row}*3.305785,3)`,
-        
-        // 임대 기준 계산
-        monthlyExpense: (col) => `${col}33+${col}34`,
-        totalDeposit: (col) => `${col}32*${col}30`,
-        totalRent: (col) => `${col}33*${col}30`,
-        totalManagement: (col) => `${col}34*${col}30`,
-        expensePerDedicated: (col) => `IFERROR((${col}37+${col}38)/${col}31,0)`,
-        
-        // 렌트프리 적용
-        avgRent: (col) => `${col}33-((${col}33*${col}41)/12)`,
-        noc: (col) => `IFERROR(((${col}42+${col}43)*(${col}30/${col}31)),0)`,
-        
-        // 예상비용
-        expectedDeposit: (col) => `${col}40*${col}30`,
-        expectedMonthlyRent: (col) => `${col}42*${col}30`,
-        expectedMonthlyManagement: (col) => `${col}43*${col}30`,
-        monthlyTotal: (col) => `${col}47+${col}48`,
-        yearlyTotal: (col) => `${col}49*12`
-    },
-
-    // 숫자 포맷
-    numberFormats: {
-        currency: '₩#,##0',
-        percentage: '0.00%',
-        area_m2: '#,##0.000 "m²"',
-        area_py: '#,##0.000 "평"',
-        number: '#,##0'
-    },
-
-    // 용어 설명
-    terminology: {
-        52: '용어 설명',
-        53: 'NOC : Net Operating Cost의 약자로 임대료와 관리비를 합친 부동산 순 운영 비용',
-        54: '렌트프리 : 임대료만 면제 (관리비, 보증금 有)',
-        55: '프리렌트 : 임대료 + 관리비 면제 (보증금 有)'
-    },
-
-    // 데이터 매핑 (building 객체의 필드명과 엑셀 행 매핑)
-    dataMapping: {
-        7: 'addressJibun',
-        8: 'address',
-        9: 'station',
-        10: 'floors',
-        11: 'completionYear',
-        12: 'dedicatedRate',  // 퍼센트로 변환 필요
-        13: 'baseFloorArea',
-        14: 'baseFloorAreaPy',
-        15: 'baseFloorAreaDedicated',
-        16: 'baseFloorAreaDedicatedPy',
-        17: 'elevator',
-        18: 'hvac',
-        19: 'buildingUse',
-        20: 'structure',
-        21: 'parkingSpace',
-        22: 'parkingFee',
-        23: 'parkingSpace'
-    },
-
-    // 기본값 설정
+    
+    // 기본값
     defaultValues: {
-        30: 100,  // 임대면적 (평) 기본값
-        31: 50,   // 전용면적 (평) 기본값
-        32: 0,    // 월 평당 보증금
-        33: 0,    // 월 평당 임대료
-        34: 0,    // 월 평당 관리비
-        41: 0     // 렌트프리 개월수
+        49: 0,  // R.F 개월수 기본값
+        56: '미제공',  // 인테리어 기간
+        57: '미제공'   // 인테리어 지원금
     }
 };
 
-// 유틸리티 함수들
+// 유틸리티 함수
 const LG_UTILS = {
-    // 열 인덱스를 문자로 변환 (1 → A, 2 → B, ...)
+    // 빌딩 인덱스로 시작 열 가져오기
+    getBuildingStartColumn: (buildingIndex) => {
+        return LG_TEMPLATE_CONFIG.buildingColumns[buildingIndex];
+    },
+    
+    // 빌딩 개수 검증
+    validateBuildingCount: (count) => {
+        if (count === 0) {
+            alert('선택된 빌딩이 없습니다.');
+            return false;
+        }
+        if (count > 6) {
+            alert('최대 6개까지만 비교할 수 있습니다.');
+            return false;
+        }
+        return true;
+    },
+    
+    // 열 문자를 인덱스로 변환
+    getColumnIndex: (letter) => {
+        let index = 0;
+        for (let i = 0; i < letter.length; i++) {
+            index = index * 26 + (letter.charCodeAt(i) - 64);
+        }
+        return index;
+    },
+    
+    // 인덱스를 열 문자로 변환
     getColumnLetter: (index) => {
         let letter = '';
         while (index > 0) {
@@ -348,31 +289,9 @@ const LG_UTILS = {
         }
         return letter;
     },
-
-    // 열 문자를 인덱스로 변환 (A → 1, B → 2, ...)
-    getColumnIndex: (letter) => {
-        let index = 0;
-        for (let i = 0; i < letter.length; i++) {
-            index = index * 26 + (letter.charCodeAt(i) - 64);
-        }
-        return index;
-    },
-
+    
     // 날짜 포맷
     getCurrentDate: () => {
         return new Date().toISOString().split('T')[0];
-    },
-
-    // 빌딩 개수 제한 체크
-    validateBuildingCount: (count) => {
-        if (count === 0) {
-            alert('선택된 빌딩이 없습니다.');
-            return false;
-        }
-        if (count > 5) {
-            alert('최대 5개까지만 비교할 수 있습니다.');
-            return false;
-        }
-        return true;
     }
 };
