@@ -37,22 +37,14 @@ async function generateExcelLG() {
         console.log('빌딩 데이터 입력 시작...');
         console.log('fillBuildingDataLG 존재 여부:', typeof window.fillBuildingDataLG);
         selectedBuildings.forEach((building, index) => {
-            if (index < 5) { // 최대 5개
+            if (index < 6) { // 최대 6개
                 console.log(`빌딩 ${index + 1} 데이터 입력 중:`, building.name);
-                window.fillBuildingDataLG(worksheet, building, index + 4); // D열(4)부터 시작
+                window.fillBuildingDataLG(worksheet, building, index);
             }
         });
         console.log('빌딩 데이터 입력 완료');
         
-        // 7. 수식 적용 (window 함수 사용)
-        selectedBuildings.forEach((building, index) => {
-            if (index < 5) {
-                const col = String.fromCharCode(68 + index); // D, E, F, G, H
-                window.applyLGFormulas(worksheet, col);
-            }
-        });
-        
-        // 8. 스타일 적용 (window 함수 사용)
+        // 7. 스타일 적용 (window 함수 사용)
         window.applyLGStyles(worksheet);
         
         // 9. 인쇄 설정 (window 함수 사용)
