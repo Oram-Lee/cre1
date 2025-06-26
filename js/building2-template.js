@@ -202,5 +202,9 @@ function validateTemplate(worksheet) {
         }
     });
     
+    return isValid;
+}
+
 // 전역 함수로 등록
 window.createLGTemplate = createLGTemplate;
+window.validateTemplate = validateTemplate;
