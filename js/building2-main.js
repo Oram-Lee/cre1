@@ -2,6 +2,10 @@
 
 // 메인 export 함수
 async function generateExcelLG() {
+    console.log('=== generateExcelLG 함수 시작 ===');
+    console.log('선택된 빌딩 수:', selectedBuildings.length);
+    console.log('선택된 빌딩:', selectedBuildings);
+    
     try {
         // 1. 빌딩 개수 검증
         if (!LG_UTILS.validateBuildingCount(selectedBuildings.length)) {
@@ -20,14 +24,25 @@ async function generateExcelLG() {
         const worksheet = workbook.addWorksheet('COMP'); // LG 템플릿은 'COMP' 시트
         
         // 5. 템플릿 생성 (window 함수 사용)
+        console.log('템플릿 생성 시작...');
+        console.log('createLGTemplate 존재 여부:', typeof window.createLGTemplate);
+        
+        // 제목 설정
+        const reportTitle = `[임차제안] ${selectedBuildings.map(b => b.name).join(', ')}`;
+        
         window.createLGTemplate(workbook, worksheet, selectedBuildings, companyName, reportTitle);
+        console.log('템플릿 생성 완료');
         
         // 6. 빌딩 데이터 입력 (window 함수 사용)
+        console.log('빌딩 데이터 입력 시작...');
+        console.log('fillBuildingDataLG 존재 여부:', typeof window.fillBuildingDataLG);
         selectedBuildings.forEach((building, index) => {
             if (index < 5) { // 최대 5개
+                console.log(`빌딩 ${index + 1} 데이터 입력 중:`, building.name);
                 window.fillBuildingDataLG(worksheet, building, index + 4); // D열(4)부터 시작
             }
         });
+        console.log('빌딩 데이터 입력 완료');
         
         // 7. 수식 적용 (window 함수 사용)
         selectedBuildings.forEach((building, index) => {
