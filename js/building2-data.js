@@ -262,5 +262,11 @@ function processBuildingsBatch(buildings) {
             original: building,
             processed: processLGBuildingData(sanitized),
             validation: validation
+        };
+    });
+}
+
 // 전역 함수로 등록
 window.fillBuildingDataLG = fillBuildingDataLG;
+window.processLGBuildingData = processLGBuildingData;
+window.validateBuildingData = validateBuildingData;
