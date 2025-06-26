@@ -219,9 +219,8 @@ function applyBorderStyle(cell, style = 'thin') {
         left: { style: style },
         bottom: { style: style },
         right: { style: style }
-// 전역 함수로 등록
-window.applyLGStyles = applyLGStyles;
-window.applyPrintSettings = applyPrintSettings;
+    };
+}
 
 // 특정 범위에 스타일 일괄 적용
 function applyStyleToRange(worksheet, startCell, endCell, style) {
@@ -304,3 +303,8 @@ function validateStyles(worksheet) {
         errors: errors
     };
 }
+
+// 전역 함수로 등록
+window.applyLGStyles = applyLGStyles;
+window.applyPrintSettings = applyPrintSettings;
+window.validateStyles = validateStyles;
