@@ -8,9 +8,9 @@ async function generateExcelLG() {
             return;
         }
         
-        // 2. 사용자 입력 값 가져오기
-        const companyName = document.getElementById('company-name')?.value || 'LG CNS';
-        const reportTitle = document.getElementById('report-title')?.value || '단기임차 가능 공간';
+        // 2. 기본값 설정
+        const companyName = 'LG CNS';
+        const reportTitle = '단기임차 가능 공간';
         
         // 3. 로딩 표시 (옵션)
         showLoadingMessage('LG Comp List를 생성하는 중...');
@@ -75,22 +75,24 @@ function validateWorksheet(worksheet) {
     let isValid = true;
     
     // 템플릿 검증
-    if (!validateTemplate(worksheet)) {
+    if (window.validateTemplate && !window.validateTemplate(worksheet)) {
         warnings.push('템플릿 구조가 올바르지 않습니다.');
         isValid = false;
     }
     
     // 스타일 검증
-    const styleValidation = validateStyles(worksheet);
-    if (!styleValidation.isValid) {
-        warnings.push(...styleValidation.errors);
+    if (window.validateStyles) {
+        const styleValidation = window.validateStyles(worksheet);
+        if (!styleValidation.isValid) {
+            warnings.push(...styleValidation.errors);
+        }
     }
     
     // 수식 검증
     selectedBuildings.forEach((building, index) => {
-        if (index < 5) {
+        if (index < 5 && window.validateFormulas) {
             const col = String.fromCharCode(68 + index);
-            const formulaValidation = validateFormulas(worksheet, col);
+            const formulaValidation = window.validateFormulas(worksheet, col);
             if (!formulaValidation.isValid) {
                 warnings.push(...formulaValidation.errors);
             }
@@ -150,8 +152,8 @@ function quickGenerateLG() {
 async function generateExcelLGDebug() {
     console.log('=== LG Comp List 생성 시작 (디버그 모드) ===');
     console.log('선택된 빌딩:', selectedBuildings);
-    console.log('회사명:', document.getElementById('company-name')?.value);
-    console.log('보고서 제목:', document.getElementById('report-title')?.value);
+    console.log('회사명: LG CNS');
+    console.log('보고서 제목: 단기임차 가능 공간');
     
     try {
         await generateExcelLG();
@@ -183,16 +185,16 @@ function previewLGTemplate() {
     }];
     
     // 템플릿 생성
-    createLGTemplate(workbook, worksheet, sampleBuildings, 'LG CNS', '테스트 보고서');
+    window.createLGTemplate(workbook, worksheet, sampleBuildings, 'LG CNS', '테스트 보고서');
     
     // 데이터 입력
-    fillBuildingData(worksheet, sampleBuildings[0], 4); // D열
+    window.fillBuildingDataLG(worksheet, sampleBuildings[0], 4); // D열
     
     // 수식 적용
-    applyLGFormulas(worksheet, 'D');
+    window.applyLGFormulas(worksheet, 'D');
     
     // 스타일 적용
-    applyLGStyles(worksheet);
+    window.applyLGStyles(worksheet);
     
     console.log('템플릿 미리보기 생성됨:', worksheet);
     return worksheet;
