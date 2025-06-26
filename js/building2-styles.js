@@ -2,254 +2,222 @@
 
 // 전체 스타일 적용 메인 함수
 function applyLGStyles(worksheet) {
-    // 1. 전체 시트에 기본 폰트 적용
+    // 1. 열 너비 설정
+    setColumnWidths(worksheet);
+    
+    // 2. 섹션별 스타일 적용
+    applySectionStyles(worksheet);
+    
+    // 3. 빌딩명 스타일
+    applyBuildingNameStyles(worksheet);
+    
+    // 4. 공실 테이블 스타일
+    applyVacancyTableStyles(worksheet);
+    
+    // 5. 수식 셀 스타일
+    applyFormulaStyles(worksheet);
+    
+    // 6. 전체 폰트 설정
     applyDefaultFont(worksheet);
-    
-    // 2. 카테고리 스타일 적용
-    applyCategoryStyles(worksheet);
-    
-    // 3. 데이터 영역 스타일 적용
-    applyDataAreaStyles(worksheet);
-    
-    // 4. 특수 영역 스타일 적용
-    applySpecialAreaStyles(worksheet);
-    
-    // 5. 조건부 스타일 적용
-    applyConditionalStyles(worksheet);
 }
 
-// 기본 폰트 적용 (LG Smart Regular)
-function applyDefaultFont(worksheet) {
-    // 사용 범위의 모든 셀에 기본 폰트 적용
-    const maxRow = 55;
-    const maxCol = 8; // H열까지
+// 열 너비 설정
+function setColumnWidths(worksheet) {
+    // A열
+    worksheet.getColumn('A').width = 9.375;
     
-    for (let row = 1; row <= maxRow; row++) {
-        for (let col = 1; col <= maxCol; col++) {
-            const cellRef = LG_UTILS.getColumnLetter(col) + row;
-            const cell = worksheet.getCell(cellRef);
-            
-            // 기존 폰트 설정이 없으면 기본값 적용
-            if (!cell.font || !cell.font.name) {
-                cell.font = {
-                    ...cell.font,
-                    name: 'LG Smart Regular',
-                    size: cell.font?.size || 9
-                };
-            }
-        }
+    // B열
+    worksheet.getColumn('B').width = 4.5;
+    
+    // C-D열
+    worksheet.getColumn('C').width = 9.375;
+    worksheet.getColumn('D').width = 9.375;
+    
+    // E-V열 (빌딩 데이터 영역)
+    for (let i = 5; i <= 22; i++) { // E=5, V=22
+        worksheet.getColumn(i).width = 10.625;
     }
 }
 
-// 카테고리 스타일 적용
-function applyCategoryStyles(worksheet) {
-    Object.entries(LG_TEMPLATE_CONFIG.categories).forEach(([cellRef, config]) => {
+// 섹션별 스타일 적용
+function applySectionStyles(worksheet) {
+    // 헤더 스타일 (1-4행)
+    const titleCell = worksheet.getCell('A1');
+    titleCell.font = { size: 14, bold: true };
+    titleCell.alignment = { horizontal: 'left', vertical: 'top' };
+    
+    // 섹션 타이틀 스타일
+    const sectionCells = [
+        'A6', 'A7', 'A9', 'A18', 'A26', 'A33', 
+        'A40', 'A45', 'A48', 'A50', 'A56', 'A59', 'A63'
+    ];
+    
+    sectionCells.forEach(cellRef => {
         const cell = worksheet.getCell(cellRef);
-        
-        // 배경색 (그레이 계열)
         cell.fill = {
             type: 'pattern',
             pattern: 'solid',
-            fgColor: { argb: config.bgColor }
+            fgColor: { argb: 'FFE0E0E0' }
         };
-        
-        // 폰트
-        cell.font = {
-            name: 'LG Smart Regular',
-            size: config.fontSize,
-            bold: config.bold,
-            color: { argb: config.fontColor }
+        cell.font = { bold: true, size: 10 };
+        cell.alignment = { 
+            horizontal: 'center', 
+            vertical: 'middle',
+            wrapText: true
         };
-        
-        // 정렬 (가운데)
-        cell.alignment = {
-            horizontal: 'center',
-            vertical: 'middle'
-        };
-        
-        // 테두리
-        applyBorderStyle(cell);
-    });
-}
-
-// 데이터 영역 스타일 적용
-function applyDataAreaStyles(worksheet) {
-    // C열 라벨 스타일
-    Object.keys(LG_TEMPLATE_CONFIG.rowLabels).forEach(row => {
-        const cell = worksheet.getCell(`C${row}`);
-        
-        // 모든 라벨 가운데 정렬
-        cell.alignment = {
-            horizontal: 'center',
-            vertical: 'middle'
-        };
-        
-        cell.font = {
-            name: 'LG Smart Regular',
-            size: 9
-        };
-        
-        applyBorderStyle(cell);
     });
     
-    // D-H열 데이터 영역 (7-50행)
-    for (let row = 7; row <= 50; row++) {
-        for (let col = 4; col <= 8; col++) { // D부터 H까지
-            const cellRef = LG_UTILS.getColumnLetter(col) + row;
-            const cell = worksheet.getCell(cellRef);
-            
-            // A1-A4가 아닌 모든 셀 가운데 정렬
-            if (!['A1', 'A2', 'A3', 'A4'].includes(cellRef)) {
-                if (!cell.alignment) {
-                    cell.alignment = {};
-                }
-                
-                // 특정 행은 다른 정렬 적용
-                if ([32, 33, 34, 36, 37, 38, 39, 40, 42, 43, 46, 47, 48].includes(row)) {
-                    // 금액 관련 행은 우측 정렬
-                    cell.alignment.horizontal = 'right';
-                } else if ([44, 49, 50].includes(row)) {
-                    // NOC, 월 합계, 연 합계는 가운데 정렬
-                    cell.alignment.horizontal = 'center';
-                } else {
-                    // 나머지는 가운데 정렬
-                    cell.alignment.horizontal = 'center';
-                }
-                
-                cell.alignment.vertical = 'middle';
-            }
-            
-            // 폰트
-            if (!cell.font) {
-                cell.font = {};
-            }
-            cell.font.name = 'LG Smart Regular';
-            cell.font.size = cell.font.size || 9;
-            
-            // 테두리
-            applyBorderStyle(cell);
-        }
+    // B열 라벨 배경색
+    // 기준층 임대기준 (45-47행) - 연한 노란색
+    for (let row = 45; row <= 47; row++) {
+        const cell = worksheet.getCell(`B${row}`);
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFFF2CC' }
+        };
+    }
+    
+    // 실질 임대기준 (48-49행) - 연한 녹색
+    for (let row = 48; row <= 49; row++) {
+        const cell = worksheet.getCell(`B${row}`);
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFE2EFDA' }
+        };
     }
 }
 
-// 특수 영역 스타일 적용
-function applySpecialAreaStyles(worksheet) {
-    // B5 로고 영역
-    const logoCell = worksheet.getCell('B5');
-    logoCell.font = {
-        name: 'LG Smart Regular',
-        size: 20,
-        bold: true
-    };
-    logoCell.alignment = {
-        horizontal: 'center',
-        vertical: 'middle'
-    };
-    applyBorderStyle(logoCell);
-    
-    // 빌딩명 헤더 (D4-H4)
-    for (let col = 4; col <= 8; col++) {
-        const cell = worksheet.getCell(LG_UTILS.getColumnLetter(col) + '4');
+// 빌딩명 스타일 적용
+function applyBuildingNameStyles(worksheet) {
+    LG_TEMPLATE_CONFIG.buildingColumns.forEach(col => {
+        const cell = worksheet.getCell(`${col}6`);
         if (cell.value) {
             cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
-                fgColor: { argb: 'FFCCCCCC' }
+                fgColor: { argb: 'FF4472C4' }
             };
             cell.font = {
-                name: 'LG Smart Regular',
-                size: 9,
-                bold: true
+                size: 12,
+                bold: true,
+                color: { argb: 'FFFFFFFF' }
             };
             cell.alignment = {
                 horizontal: 'center',
-                vertical: 'middle',
-                wrapText: true
+                vertical: 'middle'
             };
-            applyBorderStyle(cell);
         }
-    }
-    
-    // 용어 설명 영역 (52-55행)
-    const termHeaderCell = worksheet.getCell('B52');
-    termHeaderCell.font = {
-        name: 'LG Smart Regular',
-        size: 10,
-        bold: true
-    };
-    
-    [53, 54, 55].forEach(row => {
-        const cell = worksheet.getCell(`B${row}`);
-        cell.font = {
-            name: 'LG Smart Regular',
-            size: 10
-        };
-        cell.alignment = {
-            horizontal: 'left',
-            vertical: 'middle'
+    });
+}
+
+// 공실 테이블 스타일 적용
+function applyVacancyTableStyles(worksheet) {
+    LG_TEMPLATE_CONFIG.buildingColumns.forEach(startCol => {
+        const colIndex = LG_UTILS.getColumnIndex(startCol);
+        
+        // 헤더 스타일 (33행)
+        for (let offset = 0; offset < 3; offset++) {
+            const col = LG_UTILS.getColumnLetter(colIndex + offset);
+            const cell = worksheet.getCell(`${col}33`);
+            
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFD9D9D9' }
+            };
+            cell.font = { bold: true, size: 10 };
+            cell.alignment = {
+                horizontal: 'center',
+                vertical: 'middle'
+            };
+        }
+        
+        // 데이터 영역 스타일 (34-38행)
+        for (let row = 34; row <= 38; row++) {
+            for (let offset = 0; offset < 3; offset++) {
+                const col = LG_UTILS.getColumnLetter(colIndex + offset);
+                const cell = worksheet.getCell(`${col}${row}`);
+                
+                cell.alignment = {
+                    horizontal: 'center',
+                    vertical: 'middle'
+                };
+                
+                // 숫자 포맷 (전용/임대 열)
+                if (offset > 0) {
+                    cell.numFmt = '#,##0';
+                }
+            }
+        }
+        
+        // 소계 행 스타일 (39행)
+        const totalCell = worksheet.getCell(`${startCol}39`);
+        totalCell.font = { bold: true };
+        totalCell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFF2F2F2' }
         };
     });
 }
 
-// 조건부 스타일 적용
-function applyConditionalStyles(worksheet) {
-    // 음수 값 빨간색 표시
-    const moneyRows = [32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 44, 46, 47, 48, 49, 50];
+// 수식 셀 스타일 적용
+function applyFormulaStyles(worksheet) {
+    // 수식이 있는 행들
+    const formulaRows = [30, 32, 39, 43, 44, 48, 50, 51, 52, 54, 55, 61];
     
-    for (let col = 4; col <= 8; col++) {
-        moneyRows.forEach(row => {
-            const cell = worksheet.getCell(LG_UTILS.getColumnLetter(col) + row);
+    LG_TEMPLATE_CONFIG.buildingColumns.forEach(col => {
+        formulaRows.forEach(row => {
+            const cell = worksheet.getCell(`${col}${row}`);
             
-            // 조건부 서식은 ExcelJS에서 직접 지원하지 않으므로
-            // 값을 확인하여 스타일 적용
-            if (cell.value && typeof cell.value === 'number' && cell.value < 0) {
-                cell.font = {
-                    ...cell.font,
-                    color: { argb: 'FFFF0000' } // 빨간색
+            if (cell.formula) {
+                // 수식 결과 정렬
+                cell.alignment = {
+                    horizontal: 'center',
+                    vertical: 'middle'
                 };
+                
+                // 특정 행 숫자 포맷
+                if ([30, 61].includes(row)) {
+                    // 비율
+                    cell.numFmt = '0.00%';
+                } else if ([50, 51, 52, 54, 55].includes(row)) {
+                    // 금액
+                    cell.numFmt = '#,##0"원"';
+                } else if ([43, 44].includes(row)) {
+                    // 면적
+                    cell.numFmt = '#,##0"평"';
+                }
             }
         });
-    }
+    });
 }
 
-// 테두리 스타일 적용 헬퍼
-function applyBorderStyle(cell, style = 'thin') {
-    cell.border = {
-        top: { style: style },
-        left: { style: style },
-        bottom: { style: style },
-        right: { style: style }
-    };
-}
-
-// 특정 범위에 스타일 일괄 적용
-function applyStyleToRange(worksheet, startCell, endCell, style) {
-    const startCol = startCell.charCodeAt(0) - 64;
-    const startRow = parseInt(startCell.substring(1));
-    const endCol = endCell.charCodeAt(0) - 64;
-    const endRow = parseInt(endCell.substring(1));
-    
-    for (let row = startRow; row <= endRow; row++) {
-        for (let col = startCol; col <= endCol; col++) {
-            const cellRef = LG_UTILS.getColumnLetter(col) + row;
-            const cell = worksheet.getCell(cellRef);
+// 전체 기본 폰트 설정
+function applyDefaultFont(worksheet) {
+    // 사용 범위의 모든 셀에 기본 폰트 적용
+    for (let row = 1; row <= 85; row++) {
+        for (let col = 1; col <= 22; col++) { // A-V열
+            const cell = worksheet.getCell(row, col);
             
-            // 스타일 적용
-            if (style.font) cell.font = { ...cell.font, ...style.font };
-            if (style.alignment) cell.alignment = { ...cell.alignment, ...style.alignment };
-            if (style.fill) cell.fill = style.fill;
-            if (style.border) cell.border = style.border;
-            if (style.numFmt) cell.numFmt = style.numFmt;
+            if (!cell.font || !cell.font.name) {
+                cell.font = {
+                    ...cell.font,
+                    name: '맑은 고딕',
+                    size: cell.font?.size || 10
+                };
+            }
         }
     }
 }
 
 // 인쇄 설정
 function applyPrintSettings(worksheet) {
-    // 페이지 설정
     worksheet.pageSetup = {
         paperSize: 9, // A4
-        orientation: 'portrait',
+        orientation: 'landscape', // 가로
         fitToPage: true,
         fitToWidth: 1,
         fitToHeight: 0,
@@ -264,47 +232,9 @@ function applyPrintSettings(worksheet) {
     };
     
     // 인쇄 영역 설정
-    worksheet.pageSetup.printArea = 'A1:H55';
-    
-    // 반복 행 설정 (헤더)
-    worksheet.pageSetup.printTitlesRow = '1:4';
-}
-
-// 스타일 검증
-function validateStyles(worksheet) {
-    const errors = [];
-    
-    // LG Smart Regular 폰트 확인
-    for (let row = 1; row <= 55; row++) {
-        for (let col = 1; col <= 8; col++) {
-            const cellRef = LG_UTILS.getColumnLetter(col) + row;
-            const cell = worksheet.getCell(cellRef);
-            
-            if (cell.value && (!cell.font || cell.font.name !== 'LG Smart Regular')) {
-                errors.push(`${cellRef}: LG Smart Regular 폰트가 적용되지 않음`);
-            }
-        }
-    }
-    
-    // A1-A4 제외 가운데 정렬 확인
-    for (let row = 5; row <= 50; row++) {
-        for (let col = 1; col <= 8; col++) {
-            const cellRef = LG_UTILS.getColumnLetter(col) + row;
-            const cell = worksheet.getCell(cellRef);
-            
-            if (cell.value && !cell.alignment) {
-                errors.push(`${cellRef}: 정렬이 설정되지 않음`);
-            }
-        }
-    }
-    
-    return {
-        isValid: errors.length === 0,
-        errors: errors
-    };
+    worksheet.pageSetup.printArea = 'A1:V85';
 }
 
 // 전역 함수로 등록
 window.applyLGStyles = applyLGStyles;
 window.applyPrintSettings = applyPrintSettings;
-window.validateStyles = validateStyles;
