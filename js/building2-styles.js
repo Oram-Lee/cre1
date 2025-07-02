@@ -58,7 +58,7 @@ function applyDefaultFont(worksheet) {
             }
             cell.font = {
                 ...cell.font,
-                name: 'LG Smart Regular',  // 요구사항2: LG스마트체 Regular
+                name: 'Noto Sans KR',  // 요구사항2: LG스마트체 Regular
                 size: cell.font.size || 10,
                 color: cell.font.color || { argb: 'FF000000' }
             };
@@ -71,7 +71,7 @@ function applySectionStyles(worksheet) {
     // 헤더 스타일 (1-4행) - 요구사항3 반영
     const titleCell = worksheet.getCell('A1');
     titleCell.font = { 
-        name: 'LG Smart Regular',
+        name: 'Noto Sans KR',
         size: 14, 
         bold: true,
         color: { argb: 'FF000000' }
@@ -110,7 +110,7 @@ function applySectionStyles(worksheet) {
         
         // 폰트 설정
         cell.font = { 
-            name: 'LG Smart Regular',
+            name: 'Noto Sans KR',
             bold: true, 
             size: 10,
             color: { argb: 'FF000000' }
@@ -135,7 +135,7 @@ function applySectionStyles(worksheet) {
         };
         // 폰트 재설정
         cell.font = {
-            name: 'LG Smart Regular',
+            name: 'Noto Sans KR',
             size: 10,
             color: { argb: 'FF000000' }
         };
@@ -151,7 +151,7 @@ function applySectionStyles(worksheet) {
         };
         // 폰트 재설정
         cell.font = {
-            name: 'LG Smart Regular',
+            name: 'Noto Sans KR',
             size: 10,
             color: { argb: 'FF000000' }
         };
@@ -172,7 +172,7 @@ function applyBuildingNameStyles(worksheet) {
             
             // 폰트 설정
             cell.font = {
-                name: 'LG Smart Regular',
+                name: 'Noto Sans KR',
                 size: 12,
                 bold: true,
                 color: { argb: 'FF000000' }  // 검은색 텍스트
@@ -206,7 +206,7 @@ function applyColorRequirements(worksheet) {
             fgColor: { argb: LG_TEMPLATE_CONFIG.colors.proposal }  // 파랑 80% 밝게
         };
         cell8.font = {
-            name: 'LG Smart Regular',
+            name: 'Noto Sans KR',
             size: 10,
             color: { argb: 'FF000000' }
         };
@@ -219,7 +219,7 @@ function applyColorRequirements(worksheet) {
             fgColor: { argb: LG_TEMPLATE_CONFIG.colors.location }  // 검정 35% 밝게
         };
         cell7.font = {
-            name: 'LG Smart Regular',
+            name: 'Noto Sans KR',
             size: 10,
             color: { argb: 'FF000000' }
         };
@@ -245,7 +245,7 @@ function applyVacancyTableStyles(worksheet) {
             
             // 폰트
             cell.font = { 
-                name: 'LG Smart Regular',
+                name: 'Noto Sans KR',
                 bold: true, 
                 size: 10,
                 color: { argb: 'FF000000' }
@@ -272,7 +272,7 @@ function applyVacancyTableStyles(worksheet) {
                 const col = LG_UTILS.getColumnLetter(colIndex + offset);
                 const cell = worksheet.getCell(`${col}${row}`);
                 
-                cell.font = { name: 'LG Smart Regular', size: 10 };
+                cell.font = { name: 'Noto Sans KR', size: 10 };
                 cell.alignment = {
                     horizontal: 'center',
                     vertical: 'middle'
@@ -307,7 +307,7 @@ function applyVacancyTableStyles(worksheet) {
             
             // 폰트
             cell.font = { 
-                name: 'LG Smart Regular',
+                name: 'Noto Sans KR',
                 bold: true,
                 size: 10,
                 color: { argb: 'FF000000' }
@@ -335,7 +335,7 @@ function applyFormulaStyles(worksheet) {
             
             // LG Smart Regular 폰트 적용
             cell.font = {
-                name: 'LG Smart Regular',
+                name: 'Noto Sans KR',
                 size: 10
             };
             
@@ -435,7 +435,7 @@ function validateStyles(worksheet) {
     for (let row = 1; row <= 85; row++) {
         for (let col = 1; col <= 34; col++) {
             const cell = worksheet.getCell(row, col);
-            if (cell.value && cell.font && cell.font.name !== 'LG Smart Regular') {
+            if (cell.value && cell.font && cell.font.name !== 'Noto Sans KR') {
                 errors.push(`${cell.address}: 폰트가 LG Smart Regular가 아닙니다.`);
                 isValid = false;
             }
@@ -492,7 +492,7 @@ function applyBuildingSpecificStyles(worksheet, col, index) {
             fgColor: { argb: LG_TEMPLATE_CONFIG.colors.buildingName }
         };
         nameCell.font = {
-            name: 'LG Smart Regular',
+            name: 'Noto Sans KR',
             size: 12,
             bold: true,
             color: { argb: 'FF000000' }
