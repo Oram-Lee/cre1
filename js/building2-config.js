@@ -263,8 +263,8 @@ const LG_UTILS = {
             alert('선택된 빌딩이 없습니다.');
             return false;
         }
-        if (count > 6) {
-            alert('최대 6개까지만 비교할 수 있습니다.');
+        if (count > 10) {
+            alert('최대 10개까지만 비교할 수 있습니다.');
             return false;
         }
         return true;
