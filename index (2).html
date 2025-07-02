@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빌딩검색_CompList생성기 v2 (LG양식)</title>
+    
+    <!-- 파비콘 오류 방지 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 카카오맵 API -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1ac6eee9b1e4c2e0cc6f1d1ca1a6a559&libraries=services,clusterer,drawing"></script>
+    
+    <!-- ExcelJS 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    
+    <!-- FileSaver.js (파일 다운로드용) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <style>
+        /* LG 버튼 스타일 */
+        #export-btn-lg {
+            background-color: red !important;
+            color: white !important;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        #export-btn-lg:hover {
+            background-color: darkred !important;
+        }
+        #export-btn-lg:active {
+            background-color: #8b0000 !important;
+        }
+        
+        /* 장바구니 안내 문구 스타일 */
+        .cart-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- 토글 버튼 -->
+        <button id="toggle-btn">◀</button>
+        
+        <!-- 좌측 패널 -->
+        <div id="sidebar">
+            <!-- 검색 섹션 -->
+            <div class="search-section">
+                <h3>빌딩 검색</h3>
+                <input type="text" id="search-name" placeholder="빌딩명" onkeypress="handleSearchKeyPress(event)">
+                <input type="text" id="search-address" placeholder="주소" onkeypress="handleSearchKeyPress(event)">
+                <input type="text" id="search-station" placeholder="지하철역" onkeypress="handleSearchKeyPress(event)">
+                <button onclick="searchBuildings()">검색</button>
+                <button onclick="resetSearch()" style="background: #6c757d; margin-top: 5px;">초기화</button>
+            </div>
+            
+            <!-- 빌딩 개수 표시 -->
+            <div class="building-count" id="building-count">
+                전체 빌딩: 0개
+            </div>
+            
+            <!-- 빌딩 리스트 -->
+            <div id="building-list"></div>
+            
+            <!-- 장바구니 섹션 -->
+            <div id="cart-section">
+                <h3>선택된 빌딩 (<span id="cart-count">0</span>개)</h3>
+                <div class="cart-info">
+                    ※ 최대 10개까지 선택 가능합니다
+                </div>
+                <div id="selected-buildings-list"></div>
+                
+                <button id="export-btn" onclick="exportToExcel()">기본 Comp List 생성 (최대 10개)</button>
+                <button id="export-btn-lg" onclick="window.generateExcelLG()">LG용 Comp List 생성</button>
+            </div>
+        </div>
+        
+        <!-- 지도 영역 -->
+        <div id="map">
+            <!-- 도구 모음 -->
+            <div id="drawing-tools">
+                <button id="minimize-btn" onclick="toggleMinimize()" title="최소화">−</button>
+                <button id="reset-position-btn" onclick="resetDrawingToolsPosition()" title="위치 초기화">↗</button>
+                <h4 style="margin: 0 0 10px 0; font-size: 14px;">도형 그리기</h4>
+                <div class="tool-content">
+                    <button class="tool-btn" onclick="setDrawingMode('rectangle')">사각형</button>
+                    <button class="tool-btn" onclick="setDrawingMode('circle')">원</button>
+                    <button class="tool-btn" onclick="setDrawingMode('polygon')">다각형</button>
+                    <button class="tool-btn" onclick="clearDrawing()">지우기</button>
+                    <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                        * 도형을 그려서 영역 내 빌딩을 검색하세요<br>
+                        * 다각형: 클릭으로 점 추가, 더블클릭으로 완성<br>
+                        * 도구 상단을 드래그하여 위치 이동 가능
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 통계 정보 -->
+            <div class="stats-info">
+                <span>전체: <span class="stat-number" id="stat-total">0</span>개</span>
+                <span>표시중: <span class="stat-number" id="stat-displayed">0</span>개</span>
+                <span>좌표있음: <span class="stat-number" id="stat-geocoded">0</span>개</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 빌딩 정보 모달 -->
+    <div id="buildingModal" class="popup-overlay" onclick="closePopup(event)">
+        <div class="popup-content" onclick="event.stopPropagation()">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <!-- 구버전 호환용 팝업 (나중에 제거 예정) -->
+    <div id="popup" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div id="popup-body"></div>
+        </div>
+    </div>
+    
+    <!-- 로딩 오버레이 -->
+    <div id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">빌딩 데이터를 불러오는 중...</div>
+        <div class="loading-progress" id="loading-progress"></div>
+    </div>
+    
+    <!-- LG용 building2 모듈들을 먼저 로드 -->
+    <script src="js/building2-config.js"></script>
+    <script src="js/building2-template.js"></script>
+    <script src="js/building2-data.js"></script>
+    <script src="js/building2-styles.js"></script>
+    <script src="js/building2-main.js"></script>
+    
+    <!-- 기존 JavaScript 파일들 -->
+    <script src="js/main.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/building.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/drawing.js"></script>
+    <script src="js/vacancy.js"></script>
+</body>
+</html>
