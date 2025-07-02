@@ -52,7 +52,7 @@ function createHeaderSection(worksheet, reportTitle, buildingCount) {
     // A1: 임차제안 제목 (요구사항3)
     const titleCell = worksheet.getCell('A1');
     titleCell.value = reportTitle || LG_TEMPLATE_CONFIG.headerInfo[1];
-    titleCell.font = { name: 'LG Smart Regular', size: 14, bold: true };
+    titleCell.font = { name: 'Noto Sans KR', size: 14, bold: true };
     titleCell.alignment = { horizontal: 'left', vertical: 'top' };
     
     // A2-A4: 제안 정보
@@ -63,7 +63,7 @@ function createHeaderSection(worksheet, reportTitle, buildingCount) {
     // 스타일 적용
     for (let i = 2; i <= 4; i++) {
         const cell = worksheet.getCell(`A${i}`);
-        cell.font = { name: 'LG Smart Regular', size: 10 };
+        cell.font = { name: 'Noto Sans KR', size: 10 };
         cell.alignment = { horizontal: 'left', vertical: 'middle' };
     }
     
@@ -96,7 +96,7 @@ function createSectionTitles(worksheet, buildingCount) {
     Object.entries(sections).forEach(([cellRef, sectionInfo]) => {
         const cell = worksheet.getCell(cellRef);
         cell.value = sectionInfo.title;
-        cell.font = { name: 'LG Smart Regular', size: 10, bold: true };
+        cell.font = { name: 'Noto Sans KR', size: 10, bold: true };
         cell.alignment = { 
             horizontal: 'center', 
             vertical: 'middle',
@@ -126,7 +126,7 @@ function createRowLabels(worksheet) {
     Object.entries(LG_TEMPLATE_CONFIG.labels).forEach(([row, label]) => {
         const cell = worksheet.getCell(`B${row}`);
         cell.value = label;
-        cell.font = { name: 'LG Smart Regular', size: 10 };
+        cell.font = { name: 'Noto Sans KR', size: 10 };
         cell.alignment = { horizontal: 'center', vertical: 'middle' };
         
         // 배경색 설정
@@ -150,11 +150,11 @@ function createRowLabels(worksheet) {
     // C열 특수 라벨
     const c30 = worksheet.getCell('C30');
     c30.value = '공시지가 대비 담보율';
-    c30.font = { name: 'LG Smart Regular', size: 10 };
+    c30.font = { name: 'Noto Sans KR', size: 10 };
     
     const c32 = worksheet.getCell('C32');
     c32.value = '토지가격 적용';
-    c32.font = { name: 'LG Smart Regular', size: 10 };
+    c32.font = { name: 'Noto Sans KR', size: 10 };
 }
 
 // 빌딩 열 설정
@@ -168,7 +168,7 @@ function createBuildingColumns(worksheet, buildings) {
         // 빌딩명 (6행) - 요구사항7: 녹색 80% 밝게
         const nameCell = worksheet.getCell(`${startCol}6`);
         nameCell.value = building.name;
-        nameCell.font = { name: 'LG Smart Regular', size: 12, bold: true };
+        nameCell.font = { name: 'Noto Sans KR', size: 12, bold: true };
         nameCell.alignment = { horizontal: 'center', vertical: 'middle' };
         nameCell.fill = {
             type: 'pattern',
@@ -190,7 +190,7 @@ function createBuildingColumns(worksheet, buildings) {
             const col = LG_UTILS.getColumnLetter(colIndex + offset);
             const cell = worksheet.getCell(`${col}33`);
             cell.value = header;
-            cell.font = { name: 'LG Smart Regular', size: 10, bold: true };
+            cell.font = { name: 'Noto Sans KR', size: 10, bold: true };
             cell.alignment = { horizontal: 'center', vertical: 'middle' };
             cell.fill = {
                 type: 'pattern',
@@ -202,7 +202,7 @@ function createBuildingColumns(worksheet, buildings) {
         // 소계 라벨 (39행)
         const totalCell = worksheet.getCell(`${startCol}39`);
         totalCell.value = '소계';
-        totalCell.font = { name: 'LG Smart Regular', bold: true };
+        totalCell.font = { name: 'Noto Sans KR', bold: true };
     });
 }
 
@@ -315,7 +315,7 @@ function addFooterNotes(worksheet) {
     notes.forEach((note, index) => {
         const cell = worksheet.getCell(`A${84 + index}`);
         cell.value = note;
-        cell.font = { name: 'LG Smart Regular', size: 9 };
+        cell.font = { name: 'Noto Sans KR', size: 9 };
         cell.alignment = { horizontal: 'left', vertical: 'middle' };
     });
 }
