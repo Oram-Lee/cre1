@@ -163,7 +163,7 @@ function setBondAnalysisFormulas(worksheet, col) {
 function setCellValue(worksheet, cellRef, value) {
     const cell = worksheet.getCell(cellRef);
     cell.value = value;
-    cell.font = { name: 'LG Smart Regular', size: 10 };  // 요구사항2: LG스마트체 Regular
+    cell.font = { name: 'Noto Sans KR', size: 10 };  // 요구사항2: LG스마트체 Regular
     cell.alignment = { horizontal: 'center', vertical: 'middle' };
     cell.border = {
         top: { style: 'thin' },
@@ -177,7 +177,7 @@ function setCellValue(worksheet, cellRef, value) {
 function setCellFormula(worksheet, cellRef, formula) {
     const cell = worksheet.getCell(cellRef);
     cell.value = { formula: formula };
-    cell.font = { name: 'LG Smart Regular', size: 10 };  // 요구사항2: LG스마트체 Regular
+    cell.font = { name: 'Noto Sans KR', size: 10 };  // 요구사항2: LG스마트체 Regular
     cell.alignment = { horizontal: 'center', vertical: 'middle' };
     cell.border = {
         top: { style: 'thin' },
