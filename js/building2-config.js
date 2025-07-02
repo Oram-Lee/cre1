@@ -183,26 +183,26 @@ const LG_TEMPLATE_CONFIG = {
     styles: {
         // 전체 기본 폰트
         defaultFont: {
-            name: 'LG Smart Regular',  // 요구사항2: LG스마트체 Regular
+            name: 'Noto Sans KR',  // 요구사항2: LG스마트체 Regular
             size: 10
         },
         
         // 타이틀 스타일
         titleStyle: {
-            font: { name: 'LG Smart Regular', size: 14, bold: true },
+            font: { name: 'Noto Sans KR', size: 14, bold: true },
             alignment: { horizontal: 'left', vertical: 'top' }
         },
         
         // 섹션 헤더 스타일
         sectionHeader: {
             fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE0E0E0' } },
-            font: { name: 'LG Smart Regular', bold: true },
+            font: { name: 'Noto Sans KR', bold: true },
             alignment: { horizontal: 'center', vertical: 'middle' }
         },
         
         // 데이터 셀 스타일
         dataCell: {
-            font: { name: 'LG Smart Regular' },
+            font: { name: 'Noto Sans KR' },
             alignment: { horizontal: 'center', vertical: 'middle' },
             border: {
                 top: { style: 'thin' },
@@ -214,7 +214,7 @@ const LG_TEMPLATE_CONFIG = {
         
         // 수식 결과 스타일
         formulaCell: {
-            font: { name: 'LG Smart Regular', color: { argb: 'FF0000FF' } },
+            font: { name: 'Noto Sans KR', color: { argb: 'FF0000FF' } },
             alignment: { horizontal: 'center', vertical: 'middle' }
         }
     },
