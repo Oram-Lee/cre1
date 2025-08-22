@@ -679,7 +679,7 @@
             getDownloadURL
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
         
-        // Firebase 설정 - 실제 값으로 교체된 상태
+        // Firebase 설정
         const firebaseConfig = {
             apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",
             authDomain: "rentroll-32a01.firebaseapp.com",
@@ -696,7 +696,7 @@
         window.storage = null;
         window.currentUser = null;
         window.currentBuildingId = null;
-        window.currentBuildingData = null;  // 빌딩 데이터 저장
+        window.currentBuildingData = null;
         window.isAdmin = false;
         window.editingRentrollId = null;
         
@@ -724,9 +724,9 @@
             console.log('LocalStorage 모드로 실행');
         }
         
-        // 빌딩 정보 표시 함수 수정 (building.js에서 호출됨)
+        // 빌딩 정보 표시 함수 수정
         window.showBuildingInfo = function(building) {
-            // 빌딩 ID와 데이터 설정 (매우 중요!)
+            // 빌딩 ID와 데이터 설정
             window.currentBuildingId = building.id || building.name.replace(/\s+/g, '-').toLowerCase();
             window.currentBuildingData = building;
             
@@ -756,7 +756,6 @@
                         <span class="info-label">기준층 전용면적:</span>
                         <span class="info-value">${building.area || '-'}평</span>
                     </div>
-                    <!-- 추가 정보들... -->
                 </div>
             `;
             
@@ -811,7 +810,7 @@
             }
         };
         
-        // 인증 함수 (수정됨)
+        // 인증 함수 (수정됨 - @ 기호도 _로 변환)
         window.authenticate = async function() {
             const email = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
@@ -830,8 +829,10 @@
             
             try {
                 if (window.database) {
-                    // email에서 . 을 _ 로 변환
-                    const userKey = email.replace(/\./g, '_');
+                    // @ 기호와 . 모두 _ 로 변환
+                    const userKey = email.replace(/[@.]/g, '_');
+                    console.log('변환된 userKey:', userKey); // 디버깅용
+                    
                     const userRef = window.firebaseRef(window.database, `users/${userKey}`);
                     const snapshot = await window.firebaseGet(userRef);
                     
@@ -853,11 +854,14 @@
                             });
                             
                             console.log('로그인 성공:', email);
+                            alert(`${email}님 환영합니다!`);
                         } else {
                             alert('비밀번호가 일치하지 않습니다');
+                            console.log('비밀번호 불일치');
                         }
                     } else {
                         alert('등록되지 않은 사용자입니다');
+                        console.log('사용자를 찾을 수 없음. 시도한 키:', userKey);
                     }
                 } else {
                     // LocalStorage 모드
@@ -906,7 +910,7 @@
             document.getElementById('postPassword').value = '';
         };
         
-        // 렌트롤 저장 (빌딩별로 저장)
+        // 렌트롤 저장
         window.saveRentroll = async function() {
             if (!window.currentUser) {
                 alert('먼저 로그인하세요');
@@ -990,7 +994,7 @@
             window.editingRentrollId = null;
         };
         
-        // 렌트롤 목록 로드 (빌딩별로 로드)
+        // 렌트롤 목록 로드
         window.loadRentrolls = async function() {
             const rentrollList = document.getElementById('rentrollList');
             
@@ -1143,7 +1147,6 @@
             vacancyList.innerHTML = '<div class="empty-state">공실 정보를 불러오는 중...</div>';
             
             // 실제 구현시 CRE 레파지토리 데이터와 연동
-            // 현재 빌딩의 주소와 매칭되는 데이터 찾기
             setTimeout(() => {
                 if (window.currentBuildingData) {
                     vacancyList.innerHTML = `
@@ -1165,7 +1168,7 @@
             }, 1000);
         };
         
-        // 문서 관리 (빌딩별로 저장)
+        // 문서 관리
         window.selectFiles = function() {
             document.getElementById('fileInput').click();
         };
@@ -1196,7 +1199,7 @@
             document.getElementById('uploadSection').classList.remove('dragover');
         };
         
-        // 파일 업로드 (빌딩별로 저장)
+        // 파일 업로드
         window.uploadFiles = async function(files) {
             if (!window.currentUser) {
                 alert('먼저 로그인하세요');
@@ -1250,7 +1253,7 @@
             loadDocuments();
         };
         
-        // 문서 목록 로드 (빌딩별로 로드)
+        // 문서 목록 로드
         window.loadDocuments = async function() {
             const documentsGrid = document.getElementById('documentsGrid');
             
