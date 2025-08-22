@@ -94,43 +94,93 @@
             color: #666;
         }
         
-        /* 탭 네비게이션 스타일 추가 */
+        /* 수정된 탭 네비게이션 스타일 */
         .tab-navigation {
             display: flex;
-            background: #f0f0f0;
-            border-bottom: 2px solid #ddd;
-            margin: -20px -20px 20px -20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            margin: -20px -20px 15px -20px;
+            border-radius: 8px 8px 0 0;
         }
         
         .tab-button {
             flex: 1;
             background: none;
             border: none;
-            padding: 15px;
-            font-size: 14px;
-            color: #666;
+            padding: 10px 15px;
+            font-size: 13px;
+            color: #6c757d;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            position: relative;
+            font-weight: 500;
         }
         
         .tab-button:hover {
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 123, 255, 0.05);
+            color: #495057;
         }
         
         .tab-button.active {
-            color: #333;
-            font-weight: bold;
+            color: #007bff;
+            font-weight: 600;
             background: white;
-            border-bottom: 3px solid #007bff;
-            margin-bottom: -2px;
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #007bff;
         }
         
         .tab-content {
             display: none;
+            max-height: 500px;
+            overflow-y: auto;
         }
         
         .tab-content.active {
             display: block;
+        }
+        
+        /* 빌딩 정보 그리드 스타일 추가 */
+        .building-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 10px 0;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #007bff;
+        }
+        
+        .info-label {
+            font-size: 11px;
+            color: #6c757d;
+            margin-bottom: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            color: #212529;
+            font-weight: 500;
+        }
+        
+        .info-item.full-width {
+            grid-column: 1 / -1;
         }
         
         /* 렌트롤 스타일 */
@@ -724,7 +774,7 @@
             console.log('LocalStorage 모드로 실행');
         }
         
-        // 빌딩 정보 표시 함수 수정
+        // 빌딩 정보 표시 함수 수정 - 모든 정보 표시
         window.showBuildingInfo = function(building) {
             // 빌딩 ID와 데이터 설정
             window.currentBuildingId = building.id || building.name.replace(/\s+/g, '-').toLowerCase();
@@ -741,20 +791,80 @@
             document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
             document.getElementById('docBuildingName').textContent = building.name;
             
-            // 기존 빌딩 정보 표시
+            // 모든 빌딩 정보 표시 (원래대로 복원)
             document.getElementById('modalBody').innerHTML = `
                 <div class="building-info-grid">
                     <div class="info-item">
-                        <span class="info-label">주소:</span>
+                        <span class="info-label">주소</span>
                         <span class="info-value">${building.address || '-'}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">지하철역:</span>
+                        <span class="info-label">지하철역</span>
                         <span class="info-value">${building.station || '-'}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">기준층 전용면적:</span>
+                        <span class="info-label">기준층 전용면적</span>
                         <span class="info-value">${building.area || '-'}평</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">층수</span>
+                        <span class="info-value">${building.floors || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">준공년도</span>
+                        <span class="info-value">${building.year || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">주차대수</span>
+                        <span class="info-value">${building.parking || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">엘리베이터</span>
+                        <span class="info-value">${building.elevator || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">천장고</span>
+                        <span class="info-value">${building.ceiling || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">기준층 임대료</span>
+                        <span class="info-value">${building.rent || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">관리비</span>
+                        <span class="info-value">${building.managementFee || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">보증금</span>
+                        <span class="info-value">${building.deposit || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">권리금</span>
+                        <span class="info-value">${building.premium || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">입주시기</span>
+                        <span class="info-value">${building.moveIn || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">공조시설</span>
+                        <span class="info-value">${building.aircon || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">OA Floor</span>
+                        <span class="info-value">${building.oaFloor || '-'}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">화장실</span>
+                        <span class="info-value">${building.toilet || '-'}</span>
+                    </div>
+                    <div class="info-item full-width">
+                        <span class="info-label">특이사항</span>
+                        <span class="info-value">${building.notes || '-'}</span>
+                    </div>
+                    <div class="info-item full-width">
+                        <span class="info-label">비고</span>
+                        <span class="info-value">${building.remarks || '-'}</span>
                     </div>
                 </div>
             `;
