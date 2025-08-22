@@ -453,20 +453,6 @@
         .password-modal.active {
             display: block;
         }
-        
-        /* 빌딩 정보 표시 */
-        .building-info-display {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .building-info-display strong {
-            color: #333;
-        }
     </style>
 </head>
 <body>
@@ -575,12 +561,6 @@
             
             <!-- 렌트롤 탭 -->
             <div id="rentrollTab" class="tab-content">
-                <!-- 현재 빌딩 정보 표시 -->
-                <div class="building-info-display">
-                    현재 빌딩: <strong id="currentBuildingName">-</strong> | 
-                    빌딩 ID: <strong id="currentBuildingIdDisplay">-</strong>
-                </div>
-                
                 <!-- 인증 섹션 -->
                 <div class="auth-section">
                     <div class="auth-form" id="authForm">
@@ -620,9 +600,6 @@
             
             <!-- 문서 탭 -->
             <div id="documentsTab" class="tab-content">
-                <div class="building-info-display">
-                    현재 빌딩: <strong id="docBuildingName">-</strong>
-                </div>
                 <div class="upload-section" id="uploadSection" onclick="selectFiles()" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
                     <div style="font-size: 48px;">📁</div>
                     <div>파일을 드래그하거나 클릭하여 업로드</div>
@@ -679,15 +656,15 @@
             getDownloadURL
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
         
-        // Firebase 설정 - 실제 값으로 교체된 상태
+        // Firebase 설정 - 실제 값으로 교체하세요!
         const firebaseConfig = {
-            apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",
+            apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",  // 실제 API 키
             authDomain: "rentroll-32a01.firebaseapp.com",
             databaseURL: "https://rentroll-32a01-default-rtdb.firebaseio.com",
             projectId: "rentroll-32a01",
             storageBucket: "rentroll-32a01.appspot.com",
-            messagingSenderId: "2538299262",
-            appId: "1:2538299262:web:cdf4f01f5dc012e1299d2f"
+            messagingSenderId: "2538299262",  // 실제 Sender ID
+            appId: "1:2538299262:web:cdf4f01f5dc012e1299d2f"  // 실제 App ID
         };
         
         // 전역 변수로 노출
@@ -696,7 +673,6 @@
         window.storage = null;
         window.currentUser = null;
         window.currentBuildingId = null;
-        window.currentBuildingData = null;  // 빌딩 데이터 저장
         window.isAdmin = false;
         window.editingRentrollId = null;
         
@@ -724,57 +700,6 @@
             console.log('LocalStorage 모드로 실행');
         }
         
-        // 빌딩 정보 표시 함수 수정 (building.js에서 호출됨)
-        window.showBuildingInfo = function(building) {
-            // 빌딩 ID와 데이터 설정 (매우 중요!)
-            window.currentBuildingId = building.id || building.name.replace(/\s+/g, '-').toLowerCase();
-            window.currentBuildingData = building;
-            
-            console.log('빌딩 팝업 열기:', {
-                name: building.name,
-                id: window.currentBuildingId
-            });
-            
-            // 빌딩 정보 표시
-            document.getElementById('modalTitle').textContent = building.name;
-            document.getElementById('currentBuildingName').textContent = building.name;
-            document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
-            document.getElementById('docBuildingName').textContent = building.name;
-            
-            // 기존 빌딩 정보 표시
-            document.getElementById('modalBody').innerHTML = `
-                <div class="building-info-grid">
-                    <div class="info-item">
-                        <span class="info-label">주소:</span>
-                        <span class="info-value">${building.address || '-'}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">지하철역:</span>
-                        <span class="info-value">${building.station || '-'}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">기준층 전용면적:</span>
-                        <span class="info-value">${building.area || '-'}평</span>
-                    </div>
-                    <!-- 추가 정보들... -->
-                </div>
-            `;
-            
-            // 탭 초기화
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector('.tab-button').classList.add('active');
-            
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById('infoTab').classList.add('active');
-            
-            // 모달 표시
-            document.getElementById('buildingModal').style.display = 'flex';
-        };
-        
         // 탭 전환 함수
         window.switchTab = function(tabName) {
             // 모든 탭 버튼 비활성화
@@ -797,48 +722,35 @@
             if (tabName === 'vacancy') {
                 loadVacancies();
             } else if (tabName === 'rentroll') {
-                // 빌딩 정보 업데이트
-                if (window.currentBuildingData) {
-                    document.getElementById('currentBuildingName').textContent = window.currentBuildingData.name;
-                    document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
-                }
                 loadRentrolls();
             } else if (tabName === 'documents') {
-                if (window.currentBuildingData) {
-                    document.getElementById('docBuildingName').textContent = window.currentBuildingData.name;
-                }
                 loadDocuments();
             }
         };
         
-        // 인증 함수 (수정됨)
+        // 인증 함수
         window.authenticate = async function() {
-            const email = document.getElementById('emailInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
-            
-            console.log('로그인 시도:', email);
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
             
             if (!email || !password) {
                 alert('이메일과 비밀번호를 입력하세요');
                 return;
             }
             
-            if (!/^\d{6}$/.test(String(password))) {
+            if (!/^\d{6}$/.test(password)) {
                 alert('비밀번호는 6자리 숫자여야 합니다');
                 return;
             }
             
             try {
                 if (window.database) {
-                    // email에서 . 을 _ 로 변환
-                    const userKey = email.replace(/\./g, '_');
-                    const userRef = window.firebaseRef(window.database, `users/${userKey}`);
+                    const userRef = window.firebaseRef(window.database, `users/${email.replace(/\./g, '_')}`);
                     const snapshot = await window.firebaseGet(userRef);
                     
                     if (snapshot.exists()) {
                         const userData = snapshot.val();
-                        // 문자열로 비교
-                        if (String(userData.password) === String(password)) {
+                        if (userData.password === password) {
                             window.currentUser = email;
                             window.isAdmin = userData.role === 'admin';
                             showAuthStatus();
@@ -851,8 +763,6 @@
                                 buildingId: window.currentBuildingId,
                                 timestamp: Date.now()
                             });
-                            
-                            console.log('로그인 성공:', email);
                         } else {
                             alert('비밀번호가 일치하지 않습니다');
                         }
@@ -906,15 +816,10 @@
             document.getElementById('postPassword').value = '';
         };
         
-        // 렌트롤 저장 (빌딩별로 저장)
+        // 렌트롤 저장
         window.saveRentroll = async function() {
             if (!window.currentUser) {
                 alert('먼저 로그인하세요');
-                return;
-            }
-            
-            if (!window.currentBuildingId) {
-                alert('빌딩 정보가 없습니다');
                 return;
             }
             
@@ -937,8 +842,7 @@
                     password: password,
                     author: window.currentUser,
                     timestamp: Date.now(),
-                    buildingId: window.currentBuildingId,
-                    buildingName: window.currentBuildingData?.name || ''
+                    buildingId: window.currentBuildingId
                 };
                 
                 if (window.database) {
@@ -975,7 +879,6 @@
                 window.editingRentrollId = null;
                 
                 loadRentrolls();
-                alert('저장되었습니다');
                 
             } catch (error) {
                 console.error('저장 오류:', error);
@@ -990,7 +893,7 @@
             window.editingRentrollId = null;
         };
         
-        // 렌트롤 목록 로드 (빌딩별로 로드)
+        // 렌트롤 목록 로드
         window.loadRentrolls = async function() {
             const rentrollList = document.getElementById('rentrollList');
             
@@ -998,8 +901,6 @@
                 rentrollList.innerHTML = '<div class="empty-state">빌딩을 선택하세요</div>';
                 return;
             }
-            
-            console.log(`렌트롤 로드: ${window.currentBuildingId}`);
             
             try {
                 let rentrolls = [];
@@ -1019,7 +920,7 @@
                 }
                 
                 if (rentrolls.length === 0) {
-                    rentrollList.innerHTML = `<div class="empty-state">${window.currentBuildingData?.name || '이 빌딩'}의 렌트롤 정보가 없습니다</div>`;
+                    rentrollList.innerHTML = '<div class="empty-state">렌트롤 정보가 없습니다</div>';
                     return;
                 }
                 
@@ -1142,30 +1043,24 @@
             const vacancyList = document.getElementById('vacancyList');
             vacancyList.innerHTML = '<div class="empty-state">공실 정보를 불러오는 중...</div>';
             
-            // 실제 구현시 CRE 레파지토리 데이터와 연동
-            // 현재 빌딩의 주소와 매칭되는 데이터 찾기
+            // 실제 구현시 CRE 레파지토리 데이터 연동
             setTimeout(() => {
-                if (window.currentBuildingData) {
-                    vacancyList.innerHTML = `
-                        <div class="vacancy-card">
-                            <div class="vacancy-company">CBRE</div>
-                            <div class="vacancy-info">
-                                <div>
-                                    <div><strong>빌딩:</strong> ${window.currentBuildingData.name}</div>
-                                    <div><strong>공실층:</strong> 15F, 16F</div>
-                                    <div><strong>전용면적:</strong> 680평</div>
-                                </div>
-                                <button class="pdf-button" onclick="alert('PDF 뷰어 연동 예정')">PDF 보기</button>
+                vacancyList.innerHTML = `
+                    <div class="vacancy-card">
+                        <div class="vacancy-company">CBRE</div>
+                        <div class="vacancy-info">
+                            <div>
+                                <div><strong>공실층:</strong> 15F, 16F</div>
+                                <div><strong>전용면적:</strong> 680평</div>
                             </div>
+                            <button class="pdf-button" onclick="alert('PDF 뷰어 연동 예정')">PDF 보기</button>
                         </div>
-                    `;
-                } else {
-                    vacancyList.innerHTML = '<div class="empty-state">공실 정보가 없습니다</div>';
-                }
+                    </div>
+                `;
             }, 1000);
         };
         
-        // 문서 관리 (빌딩별로 저장)
+        // 문서 관리
         window.selectFiles = function() {
             document.getElementById('fileInput').click();
         };
@@ -1196,22 +1091,16 @@
             document.getElementById('uploadSection').classList.remove('dragover');
         };
         
-        // 파일 업로드 (빌딩별로 저장)
+        // 파일 업로드
         window.uploadFiles = async function(files) {
             if (!window.currentUser) {
                 alert('먼저 로그인하세요');
                 return;
             }
             
-            if (!window.currentBuildingId) {
-                alert('빌딩 정보가 없습니다');
-                return;
-            }
-            
             for (const file of files) {
                 try {
                     if (window.storage) {
-                        // 빌딩별 폴더에 저장
                         const fileRef = window.storageRef(window.storage, `documents/${window.currentBuildingId}/${Date.now()}_${file.name}`);
                         const snapshot = await window.uploadBytes(fileRef, file);
                         const downloadURL = await window.getDownloadURL(snapshot.ref);
@@ -1224,9 +1113,7 @@
                                 size: file.size,
                                 type: file.type,
                                 author: window.currentUser,
-                                timestamp: Date.now(),
-                                buildingId: window.currentBuildingId,
-                                buildingName: window.currentBuildingData?.name || ''
+                                timestamp: Date.now()
                             }
                         );
                     } else {
@@ -1250,14 +1137,9 @@
             loadDocuments();
         };
         
-        // 문서 목록 로드 (빌딩별로 로드)
+        // 문서 목록 로드
         window.loadDocuments = async function() {
             const documentsGrid = document.getElementById('documentsGrid');
-            
-            if (!window.currentBuildingId) {
-                documentsGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">빌딩을 선택하세요</div>';
-                return;
-            }
             
             try {
                 let documents = [];
@@ -1277,7 +1159,7 @@
                 }
                 
                 if (documents.length === 0) {
-                    documentsGrid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">${window.currentBuildingData?.name || '이 빌딩'}의 문서가 없습니다</div>`;
+                    documentsGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">업로드된 문서가 없습니다</div>';
                     return;
                 }
                 
@@ -1339,18 +1221,6 @@
             if (type.includes('powerpoint') || type.includes('presentation')) return '📽️';
             return '📎';
         }
-        
-        // 엔터키 지원 추가
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('passwordInput');
-            if (passwordInput) {
-                passwordInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        window.authenticate();
-                    }
-                });
-            }
-        });
     </script>
     
     <!-- LG용 building2 모듈들을 먼저 로드 -->
