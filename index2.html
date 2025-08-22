@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빌딩검색_CompList생성기 v2 (LG양식)</title>
+    
+    <!-- 파비콘 오류 방지 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 카카오맵 API -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1ac6eee9b1e4c2e0cc6f1d1ca1a6a559&libraries=services,clusterer,drawing"></script>
+    
+    <!-- ExcelJS 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    
+    <!-- FileSaver.js (파일 다운로드용) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <style>
+        /* 기존 스타일 유지 */
+        #export-btn-lg {
+            background-color: red !important;
+            color: white !important;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        #export-btn-lg:hover {
+            background-color: darkred !important;
+        }
+        #export-btn-lg:active {
+            background-color: #8b0000 !important;
+        }
+        
+        .cart-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .area-search-container {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .area-search-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .area-search-inputs {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .area-search-inputs input {
+            flex: 1;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .area-search-inputs input::-webkit-outer-spin-button,
+        .area-search-inputs input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .area-search-inputs input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        .area-search-inputs span {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* 탭 네비게이션 스타일 추가 */
+        .tab-navigation {
+            display: flex;
+            background: #f0f0f0;
+            border-bottom: 2px solid #ddd;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .tab-button {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 15px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-button:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        
+        .tab-button.active {
+            color: #333;
+            font-weight: bold;
+            background: white;
+            border-bottom: 3px solid #007bff;
+            margin-bottom: -2px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 렌트롤 스타일 */
+        .auth-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .auth-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .auth-form.hidden {
+            display: none;
+        }
+        
+        .auth-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .auth-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .auth-button:hover {
+            background: #0056b3;
+        }
+        
+        .auth-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .auth-status.hidden {
+            display: none;
+        }
+        
+        .user-info {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .logout-button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .rentroll-input-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .rentroll-input-section.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .rentroll-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        
+        .input-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .password-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .password-input input {
+            width: 80px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .save-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .cancel-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .rentroll-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .rentroll-item {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .rentroll-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .rentroll-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .rentroll-content {
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        
+        .rentroll-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .edit-button, .delete-button {
+            padding: 3px 10px;
+            border: 1px solid;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .edit-button {
+            border-color: #007bff;
+            color: #007bff;
+        }
+        
+        .delete-button {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        
+        .admin-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        /* 문서 관리 스타일 */
+        .upload-section {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-section:hover {
+            background: #e9ecef;
+            border-color: #007bff;
+        }
+        
+        .upload-section.dragover {
+            background: #e7f3ff;
+            border-color: #007bff;
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .document-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .document-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .document-thumbnail {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .document-name {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .document-meta {
+            font-size: 10px;
+            color: #999;
+        }
+        
+        /* 공실 현황 스타일 */
+        .vacancy-list {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .vacancy-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .vacancy-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .vacancy-company {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .vacancy-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .pdf-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        /* 비밀번호 모달 */
+        .password-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10001;
+            display: none;
+        }
+        
+        .password-modal.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- 토글 버튼 -->
+        <button id="toggle-btn">◀</button>
+        
+        <!-- 좌측 패널 -->
+        <div id="sidebar">
+            <!-- 검색 섹션 -->
+            <div class="search-section">
+                <h3>빌딩 검색</h3>
+                <input type="text" id="search-name" placeholder="빌딩명" onkeypress="handleSearchKeyPress(event)">
+                <input type="text" id="search-address" placeholder="주소" onkeypress="handleSearchKeyPress(event)">
+                <input type="text" id="search-station" placeholder="지하철역" onkeypress="handleSearchKeyPress(event)">
+                
+                <!-- 기준층 전용면적 검색 추가 -->
+                <div class="area-search-container">
+                    <label class="area-search-label">기준층 전용면적 (평)</label>
+                    <div class="area-search-inputs">
+                        <input type="number" id="search-area-from" placeholder="최소" onkeypress="handleSearchKeyPress(event)" min="0" step="1">
+                        <span>~</span>
+                        <input type="number" id="search-area-to" placeholder="최대" onkeypress="handleSearchKeyPress(event)" min="0" step="1">
+                    </div>
+                </div>
+                
+                <button onclick="searchBuildings()">검색</button>
+                <button onclick="resetSearch()" style="background: #6c757d; margin-top: 5px;">초기화</button>
+            </div>
+            
+            <!-- 빌딩 개수 표시 -->
+            <div class="building-count" id="building-count">
+                전체 빌딩: 0개
+            </div>
+            
+            <!-- 빌딩 리스트 -->
+            <div id="building-list"></div>
+            
+            <!-- 장바구니 섹션 -->
+            <div id="cart-section">
+                <h3>선택된 빌딩 (<span id="cart-count">0</span>개)</h3>
+                <div class="cart-info">
+                    ※ 최대 10개까지 선택 가능합니다
+                </div>
+                <div id="selected-buildings-list"></div>
+                
+                <button id="export-btn" onclick="exportToExcel()">기본 Comp List 생성 (최대 10개)</button>
+                <button id="export-btn-lg" onclick="window.generateExcelLG()">LG용 Comp List 생성 (최대 10개)</button>
+            </div>
+        </div>
+        
+        <!-- 지도 영역 -->
+        <div id="map">
+            <!-- 도구 모음 -->
+            <div id="drawing-tools">
+                <button id="minimize-btn" onclick="toggleMinimize()" title="최소화">−</button>
+                <button id="reset-position-btn" onclick="resetDrawingToolsPosition()" title="위치 초기화">↗</button>
+                <h4 style="margin: 0 0 10px 0; font-size: 14px;">도형 그리기</h4>
+                <div class="tool-content">
+                    <button class="tool-btn" onclick="setDrawingMode('rectangle')">사각형</button>
+                    <button class="tool-btn" onclick="setDrawingMode('circle')">원</button>
+                    <button class="tool-btn" onclick="setDrawingMode('polygon')">다각형</button>
+                    <button class="tool-btn" onclick="clearDrawing()">지우기</button>
+                    <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                        * 도형을 그려서 영역 내 빌딩을 검색하세요<br>
+                        * 다각형: 클릭으로 점 추가, 더블클릭으로 완성<br>
+                        * 도구 상단을 드래그하여 위치 이동 가능
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 통계 정보 -->
+            <div class="stats-info">
+                <span>전체: <span class="stat-number" id="stat-total">0</span>개</span>
+                <span>표시중: <span class="stat-number" id="stat-displayed">0</span>개</span>
+                <span>좌표있음: <span class="stat-number" id="stat-geocoded">0</span>개</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 수정된 빌딩 정보 모달 (탭 추가) -->
+    <div id="buildingModal" class="popup-overlay" onclick="closePopup(event)">
+        <div class="popup-content" onclick="event.stopPropagation()">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            
+            <!-- 탭 네비게이션 추가 -->
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('info')">📋 빌딩정보</button>
+                <button class="tab-button" onclick="switchTab('vacancy')">🏢 공실현황</button>
+                <button class="tab-button" onclick="switchTab('rentroll')">📊 렌트롤</button>
+                <button class="tab-button" onclick="switchTab('documents')">📁 문서</button>
+            </div>
+            
+            <!-- 빌딩 정보 탭 (기존 modalBody 내용) -->
+            <div id="infoTab" class="tab-content active">
+                <div id="modalBody"></div>
+            </div>
+            
+            <!-- 공실 현황 탭 -->
+            <div id="vacancyTab" class="tab-content">
+                <div class="vacancy-list" id="vacancyList">
+                    <div class="empty-state">공실 정보를 불러오는 중...</div>
+                </div>
+            </div>
+            
+            <!-- 렌트롤 탭 -->
+            <div id="rentrollTab" class="tab-content">
+                <!-- 인증 섹션 -->
+                <div class="auth-section">
+                    <div class="auth-form" id="authForm">
+                        <input type="email" class="auth-input" id="emailInput" placeholder="이메일 주소">
+                        <input type="password" class="auth-input" id="passwordInput" placeholder="비밀번호 (6자리)" maxlength="6">
+                        <button class="auth-button" onclick="authenticate()">인증하기</button>
+                    </div>
+                    <div class="auth-status hidden" id="authStatus">
+                        <div class="user-info">
+                            <span id="currentUser">user@example.com</span>
+                            <span class="admin-badge hidden" id="adminBadge">관리자</span>
+                        </div>
+                        <button class="logout-button" onclick="logout()">로그아웃</button>
+                    </div>
+                </div>
+                
+                <!-- 렌트롤 입력 영역 -->
+                <div class="rentroll-input-section disabled" id="rentrollInputSection">
+                    <textarea class="rentroll-textarea" id="rentrollTextarea" placeholder="렌트롤 정보를 입력하세요..."></textarea>
+                    <div class="input-footer">
+                        <div class="password-input">
+                            <label>글 비밀번호:</label>
+                            <input type="password" id="postPassword" placeholder="4자리" maxlength="4">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="cancel-button" onclick="cancelRentroll()">취소</button>
+                            <button class="save-button" onclick="saveRentroll()">저장</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 렌트롤 리스트 -->
+                <div class="rentroll-list" id="rentrollList">
+                    <div class="empty-state">렌트롤 정보가 없습니다</div>
+                </div>
+            </div>
+            
+            <!-- 문서 탭 -->
+            <div id="documentsTab" class="tab-content">
+                <div class="upload-section" id="uploadSection" onclick="selectFiles()" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <div style="font-size: 48px;">📁</div>
+                    <div>파일을 드래그하거나 클릭하여 업로드</div>
+                    <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFileSelect(event)">
+                </div>
+                <div class="documents-grid" id="documentsGrid"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 비밀번호 입력 모달 -->
+    <div class="password-modal" id="passwordModal">
+        <h3>비밀번호 입력</h3>
+        <input type="password" id="modalPassword" placeholder="4자리 비밀번호" maxlength="4">
+        <div style="margin-top: 15px; text-align: right;">
+            <button class="cancel-button" onclick="closePasswordModal()" style="margin-right: 10px;">취소</button>
+            <button class="auth-button" id="modalConfirmButton">확인</button>
+        </div>
+    </div>
+    
+    <!-- 구버전 호환용 팝업 (나중에 제거 예정) -->
+    <div id="popup" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div id="popup-body"></div>
+        </div>
+    </div>
+    
+    <!-- 로딩 오버레이 -->
+    <div id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">빌딩 데이터를 불러오는 중...</div>
+        <div class="loading-progress" id="loading-progress"></div>
+    </div>
+    
+    <!-- Firebase SDK 먼저 로드 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getDatabase, 
+            ref, 
+            push, 
+            onValue, 
+            remove,
+            update,
+            set,
+            get
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        
+        import {
+            getStorage,
+            ref as storageRef,
+            uploadBytes,
+            getDownloadURL
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        
+        // Firebase 설정 - 실제 값으로 교체하세요!
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",  // 실제 API 키
+            authDomain: "rentroll-32a01.firebaseapp.com",
+            databaseURL: "https://rentroll-32a01-default-rtdb.firebaseio.com",
+            projectId: "rentroll-32a01",
+            storageBucket: "rentroll-32a01.firebasestorage.app",
+            messagingSenderId: "2538299262",  // 실제 Sender ID
+            appId: "1:2538299262:web:cdf4f01f5dc012e1299d2f"  // 실제 App ID
+        };
+        
+        // 전역 변수로 노출
+        window.firebaseApp = null;
+        window.database = null;
+        window.storage = null;
+        window.currentUser = null;
+        window.currentBuildingId = null;
+        window.isAdmin = false;
+        window.editingRentrollId = null;
+        
+        // Firebase 초기화
+        try {
+            window.firebaseApp = initializeApp(firebaseConfig);
+            window.database = getDatabase(window.firebaseApp);
+            window.storage = getStorage(window.firebaseApp);
+            console.log('Firebase 연결 성공');
+            
+            // Firebase 함수들을 전역으로 노출
+            window.firebaseRef = ref;
+            window.firebasePush = push;
+            window.firebaseGet = get;
+            window.firebaseSet = set;
+            window.firebaseUpdate = update;
+            window.firebaseRemove = remove;
+            window.firebaseOnValue = onValue;
+            window.storageRef = storageRef;
+            window.uploadBytes = uploadBytes;
+            window.getDownloadURL = getDownloadURL;
+            
+        } catch (error) {
+            console.error('Firebase 초기화 실패:', error);
+            console.log('LocalStorage 모드로 실행');
+        }
+        
+        // 탭 전환 함수
+        window.switchTab = function(tabName) {
+            // 모든 탭 버튼 비활성화
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 클릭한 탭 버튼 활성화
+            event.target.classList.add('active');
+            
+            // 모든 탭 컨텐츠 숨기기
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 선택한 탭 컨텐츠 표시
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            // 각 탭별 데이터 로드
+            if (tabName === 'vacancy') {
+                loadVacancies();
+            } else if (tabName === 'rentroll') {
+                loadRentrolls();
+            } else if (tabName === 'documents') {
+                loadDocuments();
+            }
+        };
+        
+        // 인증 함수
+        window.authenticate = async function() {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            
+            if (!email || !password) {
+                alert('이메일과 비밀번호를 입력하세요');
+                return;
+            }
+            
+            if (!/^\d{6}$/.test(password)) {
+                alert('비밀번호는 6자리 숫자여야 합니다');
+                return;
+            }
+            
+            try {
+                if (window.database) {
+                    const userRef = window.firebaseRef(window.database, `users/${email.replace(/\./g, '_')}`);
+                    const snapshot = await window.firebaseGet(userRef);
+                    
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        if (userData.password === password) {
+                            window.currentUser = email;
+                            window.isAdmin = userData.role === 'admin';
+                            showAuthStatus();
+                            
+                            // 로그 저장
+                            const logRef = window.firebasePush(window.firebaseRef(window.database, 'logs'));
+                            await window.firebaseSet(logRef, {
+                                user: email,
+                                action: 'login',
+                                buildingId: window.currentBuildingId,
+                                timestamp: Date.now()
+                            });
+                        } else {
+                            alert('비밀번호가 일치하지 않습니다');
+                        }
+                    } else {
+                        alert('등록되지 않은 사용자입니다');
+                    }
+                } else {
+                    // LocalStorage 모드
+                    const users = JSON.parse(localStorage.getItem('authorized_users') || '{}');
+                    if (users[email] && users[email].password === password) {
+                        window.currentUser = email;
+                        window.isAdmin = users[email].role === 'admin';
+                        showAuthStatus();
+                    } else {
+                        alert('인증 실패');
+                    }
+                }
+            } catch (error) {
+                console.error('인증 오류:', error);
+                alert('인증 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 인증 상태 표시
+        function showAuthStatus() {
+            document.getElementById('authForm').classList.add('hidden');
+            document.getElementById('authStatus').classList.remove('hidden');
+            document.getElementById('currentUser').textContent = window.currentUser;
+            
+            if (window.isAdmin) {
+                document.getElementById('adminBadge').classList.remove('hidden');
+            }
+            
+            document.getElementById('rentrollInputSection').classList.remove('disabled');
+            loadRentrolls();
+        }
+        
+        // 로그아웃
+        window.logout = function() {
+            window.currentUser = null;
+            window.isAdmin = false;
+            
+            document.getElementById('authForm').classList.remove('hidden');
+            document.getElementById('authStatus').classList.add('hidden');
+            document.getElementById('rentrollInputSection').classList.add('disabled');
+            document.getElementById('adminBadge').classList.add('hidden');
+            
+            document.getElementById('emailInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('rentrollTextarea').value = '';
+            document.getElementById('postPassword').value = '';
+        };
+        
+        // 렌트롤 저장
+        window.saveRentroll = async function() {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            const content = document.getElementById('rentrollTextarea').value.trim();
+            const password = document.getElementById('postPassword').value;
+            
+            if (!content) {
+                alert('내용을 입력하세요');
+                return;
+            }
+            
+            if (!/^\d{4}$/.test(password)) {
+                alert('비밀번호는 4자리 숫자여야 합니다');
+                return;
+            }
+            
+            try {
+                const rentrollData = {
+                    content: content,
+                    password: password,
+                    author: window.currentUser,
+                    timestamp: Date.now(),
+                    buildingId: window.currentBuildingId
+                };
+                
+                if (window.database) {
+                    if (window.editingRentrollId) {
+                        await window.firebaseUpdate(
+                            window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}/${window.editingRentrollId}`),
+                            rentrollData
+                        );
+                    } else {
+                        await window.firebasePush(
+                            window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}`),
+                            rentrollData
+                        );
+                    }
+                } else {
+                    // LocalStorage
+                    const rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                    
+                    if (window.editingRentrollId) {
+                        const index = rentrolls.findIndex(r => r.id === window.editingRentrollId);
+                        if (index !== -1) {
+                            rentrolls[index] = { ...rentrolls[index], ...rentrollData };
+                        }
+                    } else {
+                        rentrollData.id = Date.now().toString();
+                        rentrolls.push(rentrollData);
+                    }
+                    
+                    localStorage.setItem(`rentrolls_${window.currentBuildingId}`, JSON.stringify(rentrolls));
+                }
+                
+                document.getElementById('rentrollTextarea').value = '';
+                document.getElementById('postPassword').value = '';
+                window.editingRentrollId = null;
+                
+                loadRentrolls();
+                
+            } catch (error) {
+                console.error('저장 오류:', error);
+                alert('저장 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 렌트롤 취소
+        window.cancelRentroll = function() {
+            document.getElementById('rentrollTextarea').value = '';
+            document.getElementById('postPassword').value = '';
+            window.editingRentrollId = null;
+        };
+        
+        // 렌트롤 목록 로드
+        window.loadRentrolls = async function() {
+            const rentrollList = document.getElementById('rentrollList');
+            
+            if (!window.currentBuildingId) {
+                rentrollList.innerHTML = '<div class="empty-state">빌딩을 선택하세요</div>';
+                return;
+            }
+            
+            try {
+                let rentrolls = [];
+                
+                if (window.database) {
+                    const rentrollRef = window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}`);
+                    const snapshot = await window.firebaseGet(rentrollRef);
+                    
+                    if (snapshot.exists()) {
+                        rentrolls = Object.entries(snapshot.val()).map(([id, data]) => ({
+                            id,
+                            ...data
+                        }));
+                    }
+                } else {
+                    rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                }
+                
+                if (rentrolls.length === 0) {
+                    rentrollList.innerHTML = '<div class="empty-state">렌트롤 정보가 없습니다</div>';
+                    return;
+                }
+                
+                rentrolls.sort((a, b) => b.timestamp - a.timestamp);
+                
+                rentrollList.innerHTML = rentrolls.map(rentroll => `
+                    <div class="rentroll-item">
+                        <div class="rentroll-header">
+                            <div class="rentroll-meta">
+                                <strong>${rentroll.author}</strong>
+                                <span style="margin-left: 10px;">${formatDateTime(rentroll.timestamp)}</span>
+                            </div>
+                            <div class="rentroll-actions">
+                                ${(rentroll.author === window.currentUser || window.isAdmin) ? `
+                                    <button class="edit-button" onclick="editRentroll('${rentroll.id}')">수정</button>
+                                    <button class="delete-button" onclick="deleteRentroll('${rentroll.id}')">삭제</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div class="rentroll-content">${escapeHtml(rentroll.content)}</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('렌트롤 로드 오류:', error);
+                rentrollList.innerHTML = '<div class="empty-state">데이터 로드 실패</div>';
+            }
+        };
+        
+        // 렌트롤 수정
+        window.editRentroll = function(rentrollId) {
+            showPasswordModal('edit', rentrollId);
+        };
+        
+        // 렌트롤 삭제
+        window.deleteRentroll = function(rentrollId) {
+            if (window.isAdmin) {
+                if (confirm('정말 삭제하시겠습니까?')) {
+                    performDelete(rentrollId);
+                }
+            } else {
+                showPasswordModal('delete', rentrollId);
+            }
+        };
+        
+        // 비밀번호 모달 표시
+        window.showPasswordModal = function(action, rentrollId) {
+            const modal = document.getElementById('passwordModal');
+            const confirmButton = document.getElementById('modalConfirmButton');
+            
+            modal.classList.add('active');
+            
+            confirmButton.onclick = async function() {
+                const password = document.getElementById('modalPassword').value;
+                
+                if (!/^\d{4}$/.test(password)) {
+                    alert('4자리 숫자를 입력하세요');
+                    return;
+                }
+                
+                let rentroll = null;
+                
+                if (window.database) {
+                    const snapshot = await window.firebaseGet(
+                        window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}/${rentrollId}`)
+                    );
+                    if (snapshot.exists()) {
+                        rentroll = snapshot.val();
+                    }
+                } else {
+                    const rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                    rentroll = rentrolls.find(r => r.id === rentrollId);
+                }
+                
+                if (rentroll && rentroll.password === password) {
+                    closePasswordModal();
+                    
+                    if (action === 'edit') {
+                        document.getElementById('rentrollTextarea').value = rentroll.content;
+                        document.getElementById('postPassword').value = password;
+                        window.editingRentrollId = rentrollId;
+                        document.getElementById('rentrollTextarea').focus();
+                    } else if (action === 'delete') {
+                        performDelete(rentrollId);
+                    }
+                } else {
+                    alert('비밀번호가 일치하지 않습니다');
+                }
+            };
+        };
+        
+        // 비밀번호 모달 닫기
+        window.closePasswordModal = function() {
+            document.getElementById('passwordModal').classList.remove('active');
+            document.getElementById('modalPassword').value = '';
+        };
+        
+        // 삭제 실행
+        window.performDelete = async function(rentrollId) {
+            try {
+                if (window.database) {
+                    await window.firebaseRemove(
+                        window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}/${rentrollId}`)
+                    );
+                } else {
+                    let rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                    rentrolls = rentrolls.filter(r => r.id !== rentrollId);
+                    localStorage.setItem(`rentrolls_${window.currentBuildingId}`, JSON.stringify(rentrolls));
+                }
+                
+                loadRentrolls();
+            } catch (error) {
+                console.error('삭제 오류:', error);
+                alert('삭제 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 공실 현황 로드
+        window.loadVacancies = async function() {
+            const vacancyList = document.getElementById('vacancyList');
+            vacancyList.innerHTML = '<div class="empty-state">공실 정보를 불러오는 중...</div>';
+            
+            // 실제 구현시 CRE 레파지토리 데이터 연동
+            setTimeout(() => {
+                vacancyList.innerHTML = `
+                    <div class="vacancy-card">
+                        <div class="vacancy-company">CBRE</div>
+                        <div class="vacancy-info">
+                            <div>
+                                <div><strong>공실층:</strong> 15F, 16F</div>
+                                <div><strong>전용면적:</strong> 680평</div>
+                            </div>
+                            <button class="pdf-button" onclick="alert('PDF 뷰어 연동 예정')">PDF 보기</button>
+                        </div>
+                    </div>
+                `;
+            }, 1000);
+        };
+        
+        // 문서 관리
+        window.selectFiles = function() {
+            document.getElementById('fileInput').click();
+        };
+        
+        window.handleFileSelect = async function(event) {
+            const files = event.target.files;
+            await uploadFiles(files);
+        };
+        
+        window.handleDrop = async function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadSection').classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            await uploadFiles(files);
+        };
+        
+        window.handleDragOver = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadSection').classList.add('dragover');
+        };
+        
+        window.handleDragLeave = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadSection').classList.remove('dragover');
+        };
+        
+        // 파일 업로드
+        window.uploadFiles = async function(files) {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            for (const file of files) {
+                try {
+                    if (window.storage) {
+                        const fileRef = window.storageRef(window.storage, `documents/${window.currentBuildingId}/${Date.now()}_${file.name}`);
+                        const snapshot = await window.uploadBytes(fileRef, file);
+                        const downloadURL = await window.getDownloadURL(snapshot.ref);
+                        
+                        await window.firebasePush(
+                            window.firebaseRef(window.database, `documents/${window.currentBuildingId}`),
+                            {
+                                name: file.name,
+                                url: downloadURL,
+                                size: file.size,
+                                type: file.type,
+                                author: window.currentUser,
+                                timestamp: Date.now()
+                            }
+                        );
+                    } else {
+                        const documents = JSON.parse(localStorage.getItem(`documents_${window.currentBuildingId}`) || '[]');
+                        documents.push({
+                            id: Date.now().toString(),
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            author: window.currentUser,
+                            timestamp: Date.now()
+                        });
+                        localStorage.setItem(`documents_${window.currentBuildingId}`, JSON.stringify(documents));
+                    }
+                } catch (error) {
+                    console.error('업로드 오류:', error);
+                    alert(`파일 업로드 실패: ${file.name}`);
+                }
+            }
+            
+            loadDocuments();
+        };
+        
+        // 문서 목록 로드
+        window.loadDocuments = async function() {
+            const documentsGrid = document.getElementById('documentsGrid');
+            
+            try {
+                let documents = [];
+                
+                if (window.database) {
+                    const docsRef = window.firebaseRef(window.database, `documents/${window.currentBuildingId}`);
+                    const snapshot = await window.firebaseGet(docsRef);
+                    
+                    if (snapshot.exists()) {
+                        documents = Object.entries(snapshot.val()).map(([id, data]) => ({
+                            id,
+                            ...data
+                        }));
+                    }
+                } else {
+                    documents = JSON.parse(localStorage.getItem(`documents_${window.currentBuildingId}`) || '[]');
+                }
+                
+                if (documents.length === 0) {
+                    documentsGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">업로드된 문서가 없습니다</div>';
+                    return;
+                }
+                
+                documentsGrid.innerHTML = documents.map(doc => `
+                    <div class="document-card" onclick="downloadDocument('${doc.url || doc.id}', '${doc.name}')">
+                        <div class="document-thumbnail">${getFileIcon(doc.type)}</div>
+                        <div class="document-name" title="${doc.name}">${doc.name}</div>
+                        <div class="document-meta">${doc.author}<br>${formatDate(doc.timestamp)}</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('문서 로드 오류:', error);
+            }
+        };
+        
+        // 문서 다운로드
+        window.downloadDocument = function(url, name) {
+            if (url.startsWith('http')) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name;
+                a.click();
+            } else {
+                alert('데모 모드에서는 다운로드가 지원되지 않습니다');
+            }
+        };
+        
+        // 유틸리티 함수들
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear().toString().slice(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            const seconds = date.getSeconds().toString().padStart(2, '0');
+            
+            return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+        }
+        
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('ko-KR');
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function getFileIcon(type) {
+            if (!type) return '📎';
+            if (type.includes('pdf')) return '📄';
+            if (type.includes('image')) return '🖼️';
+            if (type.includes('word')) return '📝';
+            if (type.includes('excel') || type.includes('sheet')) return '📊';
+            if (type.includes('powerpoint') || type.includes('presentation')) return '📽️';
+            return '📎';
+        }
+    </script>
+    
+    <!-- LG용 building2 모듈들을 먼저 로드 -->
+    <script src="js/building2-config.js"></script>
+    <script src="js/building2-template.js"></script>
+    <script src="js/building2-data.js"></script>
+    <script src="js/building2-styles.js"></script>
+    <script src="js/building2-main.js"></script>
+    
+    <!-- 기존 JavaScript 파일들 -->
+    <script src="js/main.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/building.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/drawing.js"></script>
+    <script src="js/vacancy.js"></script>
+</body>
+</html>
