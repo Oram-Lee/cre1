@@ -772,119 +772,99 @@
             console.log('LocalStorage 모드로 실행');
         }
         
-        // 기존 showBuildingInfo 함수를 보강하는 함수
-        window.showBuildingInfoWithTabs = function(building) {
-            // 먼저 기존 showBuildingInfo 호출하여 기본 정보 설정
-            if (window.originalShowBuildingInfo) {
-                // 기존 함수가 있으면 호출
-                window.originalShowBuildingInfo(building);
-            }
-            
+        // 빌딩 정보 표시 함수 수정 - 테이블 형식으로 변경
+        window.showBuildingInfo = function(building) {
             // 빌딩 ID와 데이터 설정
-            window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase() || building.name?.replace(/\s+/g, '-').toLowerCase();
+            window.currentBuildingId = building.id || building.name.replace(/\s+/g, '-').toLowerCase();
             window.currentBuildingData = building;
             
             console.log('빌딩 팝업 열기:', {
-                name: building['빌딩명'] || building.name,
-                id: window.currentBuildingId,
-                data: building
+                name: building.name,
+                id: window.currentBuildingId
             });
             
             // 빌딩 정보 표시
-            const buildingName = building['빌딩명'] || building.name || '-';
-            document.getElementById('modalTitle').textContent = buildingName;
-            document.getElementById('currentBuildingName').textContent = buildingName;
+            document.getElementById('modalTitle').textContent = building.name;
+            document.getElementById('currentBuildingName').textContent = building.name;
             document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
-            document.getElementById('docBuildingName').textContent = buildingName;
+            document.getElementById('docBuildingName').textContent = building.name;
             
-            // 임대안내문 처리
-            let rentalGuideHtml = '';
-            if (building['임대안내문']) {
-                rentalGuideHtml = `
-                    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <h4 style="margin: 0 0 10px 0; color: #007bff; font-size: 14px;">📄 임대안내문</h4>
-                        <div style="white-space: pre-wrap; line-height: 1.6; color: #333; font-size: 13px;">${building['임대안내문']}</div>
-                    </div>
-                `;
-            }
-            
-            // 테이블 형식으로 빌딩 정보 표시 (실제 데이터 매핑)
+            // 테이블 형식으로 빌딩 정보 표시 (index.html 스타일)
             document.getElementById('modalBody').innerHTML = `
                 <table class="building-info-table">
                     <tr>
                         <th>주소</th>
-                        <td>${building['주소'] || building.address || '-'}</td>
+                        <td>${building.address || '-'}</td>
                     </tr>
                     <tr>
                         <th>지하철역</th>
-                        <td>${building['지하철역'] || building.station || '-'}</td>
+                        <td>${building.station || '-'}</td>
                     </tr>
                     <tr>
                         <th>기준층 전용면적</th>
-                        <td>${building['기준층 전용면적'] || building.area || '-'}</td>
+                        <td>${building.area || '-'}평</td>
                     </tr>
                     <tr>
                         <th>층수</th>
-                        <td>${building['층수'] || building.floors || '-'}</td>
+                        <td>${building.floors || '-'}</td>
                     </tr>
                     <tr>
                         <th>준공년도</th>
-                        <td>${building['준공년도'] || building.year || '-'}</td>
+                        <td>${building.year || '-'}</td>
                     </tr>
                     <tr>
                         <th>주차대수</th>
-                        <td>${building['주차대수'] || building.parking || '-'}</td>
+                        <td>${building.parking || '-'}</td>
                     </tr>
                     <tr>
                         <th>엘리베이터</th>
-                        <td>${building['엘리베이터'] || building.elevator || '-'}</td>
+                        <td>${building.elevator || '-'}</td>
                     </tr>
                     <tr>
                         <th>천장고</th>
-                        <td>${building['천장고'] || building.ceiling || '-'}</td>
+                        <td>${building.ceiling || '-'}</td>
                     </tr>
                     <tr>
                         <th>기준층 임대료</th>
-                        <td>${building['기준층 임대료'] || building.rent || '-'}</td>
+                        <td>${building.rent || '-'}</td>
                     </tr>
                     <tr>
                         <th>관리비</th>
-                        <td>${building['관리비'] || building.managementFee || '-'}</td>
+                        <td>${building.managementFee || '-'}</td>
                     </tr>
                     <tr>
                         <th>보증금</th>
-                        <td>${building['보증금'] || building.deposit || '-'}</td>
+                        <td>${building.deposit || '-'}</td>
                     </tr>
                     <tr>
                         <th>권리금</th>
-                        <td>${building['권리금'] || building.premium || '-'}</td>
+                        <td>${building.premium || '-'}</td>
                     </tr>
                     <tr>
                         <th>입주시기</th>
-                        <td>${building['입주시기'] || building.moveIn || '-'}</td>
+                        <td>${building.moveIn || '-'}</td>
                     </tr>
                     <tr>
                         <th>공조시설</th>
-                        <td>${building['공조시설'] || building.aircon || '-'}</td>
+                        <td>${building.aircon || '-'}</td>
                     </tr>
                     <tr>
                         <th>OA Floor</th>
-                        <td>${building['OA Floor'] || building.oaFloor || '-'}</td>
+                        <td>${building.oaFloor || '-'}</td>
                     </tr>
                     <tr>
                         <th>화장실</th>
-                        <td>${building['화장실'] || building.toilet || '-'}</td>
+                        <td>${building.toilet || '-'}</td>
                     </tr>
                     <tr>
                         <th>특이사항</th>
-                        <td>${building['특이사항'] || building.notes || '-'}</td>
+                        <td>${building.notes || '-'}</td>
                     </tr>
                     <tr>
                         <th>비고</th>
-                        <td>${building['비고'] || building.remarks || '-'}</td>
+                        <td>${building.remarks || '-'}</td>
                     </tr>
                 </table>
-                ${rentalGuideHtml}
             `;
             
             // 탭 초기화
@@ -901,19 +881,6 @@
             // 모달 표시
             document.getElementById('buildingModal').style.display = 'flex';
         };
-        
-        // DOMContentLoaded 이벤트에서 기존 함수 백업 및 교체
-        document.addEventListener('DOMContentLoaded', function() {
-            // 기존 showBuildingInfo 함수를 백업
-            if (window.showBuildingInfo) {
-                window.originalShowBuildingInfo = window.showBuildingInfo;
-                // 새로운 함수로 교체
-                window.showBuildingInfo = window.showBuildingInfoWithTabs;
-            } else {
-                // 기존 함수가 없으면 새 함수를 직접 할당
-                window.showBuildingInfo = window.showBuildingInfoWithTabs;
-            }
-        });
         
         // 탭 전환 함수
         window.switchTab = function(tabName) {
@@ -1484,21 +1451,8 @@
             return '📎';
         }
         
-        // DOMContentLoaded 이벤트 처리 통합
+        // 엔터키 지원 추가
         document.addEventListener('DOMContentLoaded', function() {
-            // 기존 showBuildingInfo 함수를 백업 및 교체
-            setTimeout(function() {
-                if (window.showBuildingInfo) {
-                    window.originalShowBuildingInfo = window.showBuildingInfo;
-                    // 새로운 함수로 교체
-                    window.showBuildingInfo = window.showBuildingInfoWithTabs;
-                } else {
-                    // 기존 함수가 없으면 새 함수를 직접 할당
-                    window.showBuildingInfo = window.showBuildingInfoWithTabs;
-                }
-            }, 100); // building.js가 로드된 후 실행되도록 약간의 지연
-            
-            // 엔터키 지원 추가
             const passwordInput = document.getElementById('passwordInput');
             if (passwordInput) {
                 passwordInput.addEventListener('keypress', function(e) {
