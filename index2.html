@@ -774,12 +774,37 @@
         
         // 기존 showBuildingInfo 함수를 보강하는 함수
         window.showBuildingInfoWithTabs = function(building) {
-            // 먼저 기존 showBuildingInfo 호출하여 기본 정보 설정
-            if (window.originalShowBuildingInfo) {
-                // 기존 함수가 있으면 호출
+            // 무한 재귀 방지: 원본 함수가 존재하고 자기 자신이 아닌 경우에만 호출
+            if (window.originalShowBuildingInfo && 
+                window.originalShowBuildingInfo !== window.showBuildingInfoWithTabs &&
+                window.originalShowBuildingInfo !== window.showBuildingInfo) {
+                // 기존 함수 호출
                 window.originalShowBuildingInfo(building);
+                
+                // 탭 초기화만 추가
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector('.tab-button').classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById('infoTab').classList.add('active');
+                
+                // 추가 데이터 설정
+                window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase() || building.name?.replace(/\s+/g, '-').toLowerCase();
+                window.currentBuildingData = building;
+                
+                const buildingName = building['빌딩명'] || building.name || '-';
+                document.getElementById('currentBuildingName').textContent = buildingName;
+                document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
+                document.getElementById('docBuildingName').textContent = buildingName;
+                
+                return;
             }
             
+            // 원본 함수가 없거나 문제가 있는 경우, 직접 구현
             // 빌딩 ID와 데이터 설정
             window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase() || building.name?.replace(/\s+/g, '-').toLowerCase();
             window.currentBuildingData = building;
