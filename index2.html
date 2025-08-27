@@ -772,60 +772,59 @@
             console.log('LocalStorage 모드로 실행');
         }
         
-        // 기존 showBuildingInfo 함수를 보강하는 함수
-        window.showBuildingInfoWithTabs = function(building) {
-            // 무한 재귀 방지: 원본 함수가 존재하고 자기 자신이 아닌 경우에만 호출
-            if (window.originalShowBuildingInfo && 
-                window.originalShowBuildingInfo !== window.showBuildingInfoWithTabs &&
-                window.originalShowBuildingInfo !== window.showBuildingInfo) {
-                // 기존 함수 호출
-                window.originalShowBuildingInfo(building);
-                
-                // 탭 초기화만 추가
-                document.querySelectorAll('.tab-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                document.querySelector('.tab-button').classList.add('active');
-                
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                document.getElementById('infoTab').classList.add('active');
-                
-                // 추가 데이터 설정
-                window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase() || building.name?.replace(/\s+/g, '-').toLowerCase();
-                window.currentBuildingData = building;
-                
-                const buildingName = building['빌딩명'] || building.name || '-';
-                document.getElementById('currentBuildingName').textContent = buildingName;
-                document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
-                document.getElementById('docBuildingName').textContent = buildingName;
-                
-                return;
-            }
+        // showBuildingInfo 함수를 완전히 대체
+        window.showBuildingInfo = function(building) {
+            console.log('빌딩 정보:', building);
             
-            // 원본 함수가 없거나 문제가 있는 경우, 직접 구현
             // 빌딩 ID와 데이터 설정
-            window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase() || building.name?.replace(/\s+/g, '-').toLowerCase();
+            window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
             window.currentBuildingData = building;
             
-            console.log('빌딩 팝업 열기:', {
-                name: building['빌딩명'] || building.name,
-                id: window.currentBuildingId,
-                data: building
-            });
-            
-            // 빌딩 정보 표시
-            const buildingName = building['빌딩명'] || building.name || '-';
+            // 빌딩명 설정 
+            const buildingName = building['빌딩명'] || '-';
             document.getElementById('modalTitle').textContent = buildingName;
             document.getElementById('currentBuildingName').textContent = buildingName;
             document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
             document.getElementById('docBuildingName').textContent = buildingName;
             
+            // 데이터 매핑 정의 (index.html의 building.js 구조와 동일)
+            const fields = [
+                { label: '주소', key: '주소' },
+                { label: '지하철역', key: '지하철역' },
+                { label: '기준층 전용면적', key: '기준층 전용면적' },
+                { label: '층수', key: '층수' },
+                { label: '준공년도', key: '준공년도' },
+                { label: '주차대수', key: '주차대수' },
+                { label: '엘리베이터', key: '엘리베이터' },
+                { label: '천장고', key: '천장고' },
+                { label: '기준층 임대료', key: '기준층 임대료' },
+                { label: '관리비', key: '관리비' },
+                { label: '보증금', key: '보증금' },
+                { label: '권리금', key: '권리금' },
+                { label: '입주시기', key: '입주시기' },
+                { label: '공조시설', key: '공조시설' },
+                { label: 'OA Floor', key: 'OA Floor' },
+                { label: '화장실', key: '화장실' },
+                { label: '특이사항', key: '특이사항' },
+                { label: '비고', key: '비고' }
+            ];
+            
+            // 테이블 생성
+            let tableHtml = '<table class="building-info-table">';
+            fields.forEach(field => {
+                let value = building[field.key] || '-';
+                tableHtml += `
+                    <tr>
+                        <th>${field.label}</th>
+                        <td>${value}</td>
+                    </tr>
+                `;
+            });
+            tableHtml += '</table>';
+            
             // 임대안내문 처리
-            let rentalGuideHtml = '';
             if (building['임대안내문']) {
-                rentalGuideHtml = `
+                tableHtml += `
                     <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
                         <h4 style="margin: 0 0 10px 0; color: #007bff; font-size: 14px;">📄 임대안내문</h4>
                         <div style="white-space: pre-wrap; line-height: 1.6; color: #333; font-size: 13px;">${building['임대안내문']}</div>
@@ -833,84 +832,8 @@
                 `;
             }
             
-            // 테이블 형식으로 빌딩 정보 표시 (실제 데이터 매핑)
-            document.getElementById('modalBody').innerHTML = `
-                <table class="building-info-table">
-                    <tr>
-                        <th>주소</th>
-                        <td>${building['주소'] || building.address || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>지하철역</th>
-                        <td>${building['지하철역'] || building.station || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>기준층 전용면적</th>
-                        <td>${building['기준층 전용면적'] || building.area || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>층수</th>
-                        <td>${building['층수'] || building.floors || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>준공년도</th>
-                        <td>${building['준공년도'] || building.year || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>주차대수</th>
-                        <td>${building['주차대수'] || building.parking || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>엘리베이터</th>
-                        <td>${building['엘리베이터'] || building.elevator || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>천장고</th>
-                        <td>${building['천장고'] || building.ceiling || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>기준층 임대료</th>
-                        <td>${building['기준층 임대료'] || building.rent || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>관리비</th>
-                        <td>${building['관리비'] || building.managementFee || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>보증금</th>
-                        <td>${building['보증금'] || building.deposit || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>권리금</th>
-                        <td>${building['권리금'] || building.premium || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>입주시기</th>
-                        <td>${building['입주시기'] || building.moveIn || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>공조시설</th>
-                        <td>${building['공조시설'] || building.aircon || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>OA Floor</th>
-                        <td>${building['OA Floor'] || building.oaFloor || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>화장실</th>
-                        <td>${building['화장실'] || building.toilet || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>특이사항</th>
-                        <td>${building['특이사항'] || building.notes || '-'}</td>
-                    </tr>
-                    <tr>
-                        <th>비고</th>
-                        <td>${building['비고'] || building.remarks || '-'}</td>
-                    </tr>
-                </table>
-                ${rentalGuideHtml}
-            `;
+            // HTML 삽입
+            document.getElementById('modalBody').innerHTML = tableHtml;
             
             // 탭 초기화
             document.querySelectorAll('.tab-button').forEach(btn => {
@@ -1549,5 +1472,44 @@
     <script src="js/search.js"></script>
     <script src="js/drawing.js"></script>
     <script src="js/vacancy.js"></script>
+    
+    <!-- building.js 로드 후 showBuildingInfo 함수 오버라이드 -->
+    <script>
+        // 원본 showBuildingInfo 함수 백업
+        window.addEventListener('load', function() {
+            // 원본 함수 백업
+            const originalShowBuildingInfo = window.showBuildingInfo;
+            
+            // 새로운 함수로 오버라이드
+            window.showBuildingInfo = function(building) {
+                // 원본 함수 실행 (index.html과 똑같이 표시)
+                if (originalShowBuildingInfo) {
+                    originalShowBuildingInfo(building);
+                }
+                
+                // 추가: 탭 관련 데이터만 설정
+                window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
+                window.currentBuildingData = building;
+                
+                const buildingName = building['빌딩명'] || '-';
+                document.getElementById('currentBuildingName').textContent = buildingName;
+                document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
+                document.getElementById('docBuildingName').textContent = buildingName;
+                
+                // 탭 초기화
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector('.tab-button').classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById('infoTab').classList.add('active');
+            };
+            
+            console.log('showBuildingInfo 함수 오버라이드 완료');
+        });
+    </script>
 </body>
 </html>
