@@ -116,7 +116,7 @@
             font-weight: 500;
         }
         
-        .tab-button:hover:not(.disabled) {
+        .tab-button:hover {
             background: rgba(0, 123, 255, 0.05);
             color: #495057;
         }
@@ -135,44 +135,6 @@
             right: 0;
             height: 2px;
             background: #007bff;
-        }
-        
-        .tab-button.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-        
-        /* 뱃지 스타일 */
-        .tab-badge {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            background: #dc3545;
-            color: white;
-            border-radius: 10px;
-            padding: 2px 6px;
-            font-size: 10px;
-            font-weight: bold;
-            min-width: 18px;
-            text-align: center;
-        }
-        
-        .tab-badge.new {
-            background: #ff6b6b;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
         }
         
         .tab-content {
@@ -639,15 +601,12 @@
             <span class="popup-close" onclick="closePopup()">&times;</span>
             <h2 id="modalTitle"></h2>
             
-            <!-- 탭 네비게이션 수정 (순서 변경 및 disabled 처리) -->
+            <!-- 탭 네비게이션 추가 -->
             <div class="tab-navigation">
                 <button class="tab-button active" onclick="switchTab('info')">📋 빌딩정보</button>
-                <button class="tab-button" onclick="switchTab('rentroll')">
-                    📊 렌트롤&메모
-                    <span class="tab-badge" id="rentrollBadge" style="display:none;"></span>
-                </button>
-                <button class="tab-button disabled" onclick="switchTab('vacancy')">🏢 공실현황&추이</button>
-                <button class="tab-button disabled" onclick="switchTab('documents')">📁 관련문서</button>
+                <button class="tab-button" onclick="switchTab('vacancy')">🏢 공실현황</button>
+                <button class="tab-button" onclick="switchTab('rentroll')">📊 렌트롤</button>
+                <button class="tab-button" onclick="switchTab('documents')">📁 문서</button>
             </div>
             
             <!-- 빌딩 정보 탭 (테이블 형식으로 변경) -->
@@ -662,7 +621,7 @@
                 </div>
             </div>
             
-            <!-- 렌트롤&메모 탭 -->
+            <!-- 렌트롤 탭 -->
             <div id="rentrollTab" class="tab-content">
                 <!-- 현재 빌딩 정보 표시 -->
                 <div class="building-info-display">
@@ -686,9 +645,9 @@
                     </div>
                 </div>
                 
-                <!-- 렌트롤&메모 입력 영역 -->
+                <!-- 렌트롤 입력 영역 -->
                 <div class="rentroll-input-section disabled" id="rentrollInputSection">
-                    <textarea class="rentroll-textarea" id="rentrollTextarea" placeholder="렌트롤 정보 또는 메모를 입력하세요..."></textarea>
+                    <textarea class="rentroll-textarea" id="rentrollTextarea" placeholder="렌트롤 정보를 입력하세요..."></textarea>
                     <div class="input-footer">
                         <div class="password-input">
                             <label>글 비밀번호:</label>
@@ -701,9 +660,9 @@
                     </div>
                 </div>
                 
-                <!-- 렌트롤&메모 리스트 -->
+                <!-- 렌트롤 리스트 -->
                 <div class="rentroll-list" id="rentrollList">
-                    <div class="empty-state">렌트롤/메모 정보가 없습니다</div>
+                    <div class="empty-state">렌트롤 정보가 없습니다</div>
                 </div>
             </div>
             
@@ -1072,7 +1031,7 @@
                     author: window.currentUser,
                     timestamp: Date.now(),
                     buildingId: window.currentBuildingId,
-                    buildingName: window.currentBuildingData?.['빌딩명'] || ''
+                    buildingName: window.currentBuildingData?.name || ''
                 };
                 
                 if (window.database) {
@@ -1109,7 +1068,6 @@
                 window.editingRentrollId = null;
                 
                 loadRentrolls();
-                window.updateRentrollBadge(); // 뱃지 업데이트 추가
                 alert('저장되었습니다');
                 
             } catch (error) {
@@ -1154,36 +1112,29 @@
                 }
                 
                 if (rentrolls.length === 0) {
-                    rentrollList.innerHTML = `<div class="empty-state">${window.currentBuildingData?.['빌딩명'] || '이 빌딩'}의 렌트롤/메모 정보가 없습니다</div>`;
+                    rentrollList.innerHTML = `<div class="empty-state">${window.currentBuildingData?.name || '이 빌딩'}의 렌트롤 정보가 없습니다</div>`;
                     return;
                 }
                 
                 rentrolls.sort((a, b) => b.timestamp - a.timestamp);
                 
-                // 3일 이내 새 글 표시
-                const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);
-                
-                rentrollList.innerHTML = rentrolls.map(rentroll => {
-                    const isNew = rentroll.timestamp > threeDaysAgo;
-                    return `
-                        <div class="rentroll-item">
-                            <div class="rentroll-header">
-                                <div class="rentroll-meta">
-                                    <strong>${rentroll.author}</strong>
-                                    ${isNew ? '<span style="background: #ff6b6b; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; margin-left: 5px;">NEW</span>' : ''}
-                                    <span style="margin-left: 10px;">${formatDateTime(rentroll.timestamp)}</span>
-                                </div>
-                                <div class="rentroll-actions">
-                                    ${(rentroll.author === window.currentUser || window.isAdmin) ? `
-                                        <button class="edit-button" onclick="editRentroll('${rentroll.id}')">수정</button>
-                                        <button class="delete-button" onclick="deleteRentroll('${rentroll.id}')">삭제</button>
-                                    ` : ''}
-                                </div>
+                rentrollList.innerHTML = rentrolls.map(rentroll => `
+                    <div class="rentroll-item">
+                        <div class="rentroll-header">
+                            <div class="rentroll-meta">
+                                <strong>${rentroll.author}</strong>
+                                <span style="margin-left: 10px;">${formatDateTime(rentroll.timestamp)}</span>
                             </div>
-                            <div class="rentroll-content">${escapeHtml(rentroll.content)}</div>
+                            <div class="rentroll-actions">
+                                ${(rentroll.author === window.currentUser || window.isAdmin) ? `
+                                    <button class="edit-button" onclick="editRentroll('${rentroll.id}')">수정</button>
+                                    <button class="delete-button" onclick="deleteRentroll('${rentroll.id}')">삭제</button>
+                                ` : ''}
+                            </div>
                         </div>
-                    `;
-                }).join('');
+                        <div class="rentroll-content">${escapeHtml(rentroll.content)}</div>
+                    </div>
+                `).join('');
                 
             } catch (error) {
                 console.error('렌트롤 로드 오류:', error);
@@ -1273,7 +1224,6 @@
                 }
                 
                 loadRentrolls();
-                window.updateRentrollBadge(); // 뱃지 업데이트 추가
             } catch (error) {
                 console.error('삭제 오류:', error);
                 alert('삭제 중 오류가 발생했습니다');
@@ -1556,9 +1506,6 @@
                     content.classList.remove('active');
                 });
                 document.getElementById('infoTab').classList.add('active');
-                
-                // 렌트롤 뱃지 업데이트
-                window.updateRentrollBadge();
             };
             
             console.log('showBuildingInfo 함수 오버라이드 완료');
