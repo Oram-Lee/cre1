@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
     <style>
-        /* LG 버튼 스타일 */
+        /* 기존 스타일 유지 */
         #export-btn-lg {
             background-color: red !important;
             color: white !important;
@@ -42,7 +42,6 @@
             background-color: #8b0000 !important;
         }
         
-        /* 장바구니 안내 문구 스타일 */
         .cart-info {
             font-size: 12px;
             color: #666;
@@ -53,7 +52,6 @@
             border-radius: 4px;
         }
         
-        /* 면적 검색 스타일 */
         .area-search-container {
             margin-top: 10px;
             padding-top: 10px;
@@ -96,7 +94,7 @@
             color: #666;
         }
         
-        /* 탭 네비게이션 스타일 추가 */
+        /* 수정된 탭 네비게이션 스타일 */
         .tab-navigation {
             display: flex;
             background: #f8f9fa;
@@ -166,9 +164,15 @@
         }
         
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
         
         .tab-content {
@@ -181,7 +185,41 @@
             display: block;
         }
         
-        /* 렌트롤 관련 스타일 */
+        /* index.html과 동일한 빌딩 정보 테이블 스타일 */
+        .building-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        .building-info-table tr {
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .building-info-table tr:last-child {
+            border-bottom: none;
+        }
+        
+        .building-info-table th {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            text-align: left;
+            width: 30%;
+            color: #495057;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .building-info-table td {
+            padding: 8px 12px;
+            color: #212529;
+        }
+        
+        .building-info-table tr:hover {
+            background-color: rgba(0, 123, 255, 0.02);
+        }
+        
+        /* 렌트롤 스타일 */
         .auth-section {
             background: #f8f9fa;
             padding: 15px;
@@ -381,17 +419,107 @@
             color: #999;
         }
         
-        .building-info-display {
+        /* 문서 관리 스타일 */
+        .upload-section {
             background: #f8f9fa;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #666;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        .building-info-display strong {
-            color: #333;
+        .upload-section:hover {
+            background: #e9ecef;
+            border-color: #007bff;
+        }
+        
+        .upload-section.dragover {
+            background: #e7f3ff;
+            border-color: #007bff;
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .document-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .document-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .document-thumbnail {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .document-name {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .document-meta {
+            font-size: 10px;
+            color: #999;
+        }
+        
+        /* 공실 현황 스타일 */
+        .vacancy-list {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .vacancy-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .vacancy-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .vacancy-company {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .vacancy-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .pdf-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
         }
         
         /* 비밀번호 모달 */
@@ -410,6 +538,20 @@
         
         .password-modal.active {
             display: block;
+        }
+        
+        /* 빌딩 정보 표시 */
+        .building-info-display {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .building-info-display strong {
+            color: #333;
         }
     </style>
 </head>
@@ -491,35 +633,44 @@
         </div>
     </div>
     
-    <!-- 빌딩 정보 모달 (탭 추가) -->
+    <!-- 수정된 빌딩 정보 모달 (탭 추가) -->
     <div id="buildingModal" class="popup-overlay" onclick="closePopup(event)">
         <div class="popup-content" onclick="event.stopPropagation()">
             <span class="popup-close" onclick="closePopup()">&times;</span>
             <h2 id="modalTitle"></h2>
             
-            <!-- 탭 네비게이션 추가 -->
+            <!-- 탭 네비게이션 수정 (순서 변경 및 disabled 처리) -->
             <div class="tab-navigation">
                 <button class="tab-button active" onclick="switchTab('info')">📋 빌딩정보</button>
                 <button class="tab-button" onclick="switchTab('rentroll')">
                     📊 렌트롤&메모
                     <span class="tab-badge" id="rentrollBadge" style="display:none;"></span>
                 </button>
-                <button class="tab-button disabled">🏢 공실현황&추이</button>
-                <button class="tab-button disabled">📁 관련문서</button>
+                <button class="tab-button disabled" onclick="switchTab('vacancy')">🏢 공실현황&추이</button>
+                <button class="tab-button disabled" onclick="switchTab('documents')">📁 관련문서</button>
             </div>
             
-            <!-- 빌딩 정보 탭 -->
+            <!-- 빌딩 정보 탭 (테이블 형식으로 변경) -->
             <div id="infoTab" class="tab-content active">
                 <div id="modalBody"></div>
             </div>
             
+            <!-- 공실 현황 탭 -->
+            <div id="vacancyTab" class="tab-content">
+                <div class="vacancy-list" id="vacancyList">
+                    <div class="empty-state">공실 정보를 불러오는 중...</div>
+                </div>
+            </div>
+            
             <!-- 렌트롤&메모 탭 -->
             <div id="rentrollTab" class="tab-content">
+                <!-- 현재 빌딩 정보 표시 -->
                 <div class="building-info-display">
                     현재 빌딩: <strong id="currentBuildingName">-</strong> | 
                     빌딩 ID: <strong id="currentBuildingIdDisplay">-</strong>
                 </div>
                 
+                <!-- 인증 섹션 -->
                 <div class="auth-section">
                     <div class="auth-form" id="authForm">
                         <input type="email" class="auth-input" id="emailInput" placeholder="이메일 주소">
@@ -535,6 +686,7 @@
                     </div>
                 </div>
                 
+                <!-- 렌트롤&메모 입력 영역 -->
                 <div class="rentroll-input-section disabled" id="rentrollInputSection">
                     <textarea class="rentroll-textarea" id="rentrollTextarea" placeholder="렌트롤 정보 또는 메모를 입력하세요..."></textarea>
                     <div class="input-footer">
@@ -549,9 +701,23 @@
                     </div>
                 </div>
                 
+                <!-- 렌트롤&메모 리스트 -->
                 <div class="rentroll-list" id="rentrollList">
                     <div class="empty-state">렌트롤/메모 정보가 없습니다</div>
                 </div>
+            </div>
+            
+            <!-- 문서 탭 -->
+            <div id="documentsTab" class="tab-content">
+                <div class="building-info-display">
+                    현재 빌딩: <strong id="docBuildingName">-</strong>
+                </div>
+                <div class="upload-section" id="uploadSection" onclick="selectFiles()" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <div style="font-size: 48px;">📁</div>
+                    <div>파일을 드래그하거나 클릭하여 업로드</div>
+                    <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFileSelect(event)">
+                </div>
+                <div class="documents-grid" id="documentsGrid"></div>
             </div>
         </div>
     </div>
@@ -581,7 +747,7 @@
         <div class="loading-progress" id="loading-progress"></div>
     </div>
     
-    <!-- Firebase 및 탭 기능 추가 -->
+    <!-- Firebase SDK 먼저 로드 -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { 
@@ -595,6 +761,13 @@
             get
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
         
+        import {
+            getStorage,
+            ref as storageRef,
+            uploadBytes,
+            getDownloadURL
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        
         // Firebase 설정
         const firebaseConfig = {
             apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",
@@ -606,9 +779,10 @@
             appId: "1:2538299262:web:cdf4f01f5dc012e1299d2f"
         };
         
-        // 전역 변수
+        // 전역 변수로 노출
         window.firebaseApp = null;
         window.database = null;
+        window.storage = null;
         window.currentUser = null;
         window.currentBuildingId = null;
         window.currentBuildingData = null;
@@ -619,6 +793,7 @@
         try {
             window.firebaseApp = initializeApp(firebaseConfig);
             window.database = getDatabase(window.firebaseApp);
+            window.storage = getStorage(window.firebaseApp);
             console.log('Firebase 연결 성공');
             
             // Firebase 함수들을 전역으로 노출
@@ -629,87 +804,148 @@
             window.firebaseUpdate = update;
             window.firebaseRemove = remove;
             window.firebaseOnValue = onValue;
+            window.storageRef = storageRef;
+            window.uploadBytes = uploadBytes;
+            window.getDownloadURL = getDownloadURL;
             
         } catch (error) {
             console.error('Firebase 초기화 실패:', error);
+            console.log('LocalStorage 모드로 실행');
         }
         
-        // 탭 전환 함수
-        window.switchTab = function(tabName) {
-            if (event.target.classList.contains('disabled')) {
-                return;
+        // showBuildingInfo 함수를 완전히 대체
+        window.showBuildingInfo = function(building) {
+            console.log('빌딩 정보:', building);
+            
+            // 빌딩 ID와 데이터 설정
+            window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
+            window.currentBuildingData = building;
+            
+            // 빌딩명 설정 
+            const buildingName = building['빌딩명'] || '-';
+            document.getElementById('modalTitle').textContent = buildingName;
+            document.getElementById('currentBuildingName').textContent = buildingName;
+            document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
+            document.getElementById('docBuildingName').textContent = buildingName;
+            
+            // 데이터 매핑 정의 (index.html의 building.js 구조와 동일)
+            const fields = [
+                { label: '주소', key: '주소' },
+                { label: '지하철역', key: '지하철역' },
+                { label: '기준층 전용면적', key: '기준층 전용면적' },
+                { label: '층수', key: '층수' },
+                { label: '준공년도', key: '준공년도' },
+                { label: '주차대수', key: '주차대수' },
+                { label: '엘리베이터', key: '엘리베이터' },
+                { label: '천장고', key: '천장고' },
+                { label: '기준층 임대료', key: '기준층 임대료' },
+                { label: '관리비', key: '관리비' },
+                { label: '보증금', key: '보증금' },
+                { label: '권리금', key: '권리금' },
+                { label: '입주시기', key: '입주시기' },
+                { label: '공조시설', key: '공조시설' },
+                { label: 'OA Floor', key: 'OA Floor' },
+                { label: '화장실', key: '화장실' },
+                { label: '특이사항', key: '특이사항' },
+                { label: '비고', key: '비고' }
+            ];
+            
+            // 테이블 생성
+            let tableHtml = '<table class="building-info-table">';
+            fields.forEach(field => {
+                let value = building[field.key] || '-';
+                tableHtml += `
+                    <tr>
+                        <th>${field.label}</th>
+                        <td>${value}</td>
+                    </tr>
+                `;
+            });
+            tableHtml += '</table>';
+            
+            // 임대안내문 처리
+            if (building['임대안내문']) {
+                tableHtml += `
+                    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <h4 style="margin: 0 0 10px 0; color: #007bff; font-size: 14px;">📄 임대안내문</h4>
+                        <div style="white-space: pre-wrap; line-height: 1.6; color: #333; font-size: 13px;">${building['임대안내문']}</div>
+                    </div>
+                `;
             }
             
+            // HTML 삽입
+            document.getElementById('modalBody').innerHTML = tableHtml;
+            
+            // 탭 초기화
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            document.querySelector('.tab-button').classList.add('active');
             
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
+            document.getElementById('infoTab').classList.add('active');
+            
+            // 모달 표시
+            document.getElementById('buildingModal').style.display = 'flex';
+        };
+        
+        // DOMContentLoaded 이벤트에서 기존 함수 백업 및 교체
+        document.addEventListener('DOMContentLoaded', function() {
+            // 기존 showBuildingInfo 함수를 백업
+            if (window.showBuildingInfo) {
+                window.originalShowBuildingInfo = window.showBuildingInfo;
+                // 새로운 함수로 교체
+                window.showBuildingInfo = window.showBuildingInfoWithTabs;
+            } else {
+                // 기존 함수가 없으면 새 함수를 직접 할당
+                window.showBuildingInfo = window.showBuildingInfoWithTabs;
+            }
+        });
+        
+        // 탭 전환 함수
+        window.switchTab = function(tabName) {
+            // 모든 탭 버튼 비활성화
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 클릭한 탭 버튼 활성화
+            event.target.classList.add('active');
+            
+            // 모든 탭 컨텐츠 숨기기
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 선택한 탭 컨텐츠 표시
             document.getElementById(`${tabName}Tab`).classList.add('active');
             
-            if (tabName === 'rentroll') {
+            // 각 탭별 데이터 로드
+            if (tabName === 'vacancy') {
+                loadVacancies();
+            } else if (tabName === 'rentroll') {
+                // 빌딩 정보 업데이트
                 if (window.currentBuildingData) {
-                    document.getElementById('currentBuildingName').textContent = window.currentBuildingData['빌딩명'] || '-';
+                    document.getElementById('currentBuildingName').textContent = window.currentBuildingData.name;
                     document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
                 }
                 loadRentrolls();
+            } else if (tabName === 'documents') {
+                if (window.currentBuildingData) {
+                    document.getElementById('docBuildingName').textContent = window.currentBuildingData.name;
+                }
+                loadDocuments();
             }
         };
         
-        // 렌트롤 뱃지 업데이트
-        window.updateRentrollBadge = async function() {
-            if (!window.currentBuildingId) return;
-            
-            const badge = document.getElementById('rentrollBadge');
-            if (!badge) return;
-            
-            try {
-                let rentrolls = [];
-                
-                if (window.database) {
-                    const rentrollRef = window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}`);
-                    const snapshot = await window.firebaseGet(rentrollRef);
-                    
-                    if (snapshot.exists()) {
-                        rentrolls = Object.entries(snapshot.val()).map(([id, data]) => ({
-                            id,
-                            ...data
-                        }));
-                    }
-                } else {
-                    rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
-                }
-                
-                if (rentrolls.length === 0) {
-                    badge.style.display = 'none';
-                    return;
-                }
-                
-                const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);
-                const hasNewPost = rentrolls.some(r => r.timestamp > threeDaysAgo);
-                
-                if (hasNewPost) {
-                    badge.textContent = 'New';
-                    badge.classList.add('new');
-                } else {
-                    badge.textContent = rentrolls.length;
-                    badge.classList.remove('new');
-                }
-                badge.style.display = 'block';
-                
-            } catch (error) {
-                console.error('뱃지 업데이트 오류:', error);
-                badge.style.display = 'none';
-            }
-        };
-        
-        // 인증 함수
+        // 인증 함수 (수정됨 - @ 기호도 _로 변환)
         window.authenticate = async function() {
             const email = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
+            
+            console.log('로그인 시도:', email);
             
             if (!email || !password) {
                 alert('이메일과 비밀번호를 입력하세요');
@@ -723,24 +959,42 @@
             
             try {
                 if (window.database) {
+                    // @ 기호와 . 모두 _ 로 변환
                     const userKey = email.replace(/[@.]/g, '_');
+                    console.log('변환된 userKey:', userKey); // 디버깅용
+                    
                     const userRef = window.firebaseRef(window.database, `users/${userKey}`);
                     const snapshot = await window.firebaseGet(userRef);
                     
                     if (snapshot.exists()) {
                         const userData = snapshot.val();
+                        // 문자열로 비교
                         if (String(userData.password) === String(password)) {
                             window.currentUser = email;
                             window.isAdmin = userData.role === 'admin';
                             showAuthStatus();
+                            
+                            // 로그 저장
+                            const logRef = window.firebasePush(window.firebaseRef(window.database, 'logs'));
+                            await window.firebaseSet(logRef, {
+                                user: email,
+                                action: 'login',
+                                buildingId: window.currentBuildingId,
+                                timestamp: Date.now()
+                            });
+                            
+                            console.log('로그인 성공:', email);
                             alert(`${email}님 환영합니다!`);
                         } else {
                             alert('비밀번호가 일치하지 않습니다');
+                            console.log('비밀번호 불일치');
                         }
                     } else {
                         alert('등록되지 않은 사용자입니다');
+                        console.log('사용자를 찾을 수 없음. 시도한 키:', userKey);
                     }
                 } else {
+                    // LocalStorage 모드
                     const users = JSON.parse(localStorage.getItem('authorized_users') || '{}');
                     if (users[email] && users[email].password === password) {
                         window.currentUser = email;
@@ -834,6 +1088,7 @@
                         );
                     }
                 } else {
+                    // LocalStorage
                     const rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
                     
                     if (window.editingRentrollId) {
@@ -854,7 +1109,7 @@
                 window.editingRentrollId = null;
                 
                 loadRentrolls();
-                window.updateRentrollBadge();
+                window.updateRentrollBadge(); // 뱃지 업데이트 추가
                 alert('저장되었습니다');
                 
             } catch (error) {
@@ -878,6 +1133,8 @@
                 rentrollList.innerHTML = '<div class="empty-state">빌딩을 선택하세요</div>';
                 return;
             }
+            
+            console.log(`렌트롤 로드: ${window.currentBuildingId}`);
             
             try {
                 let rentrolls = [];
@@ -903,6 +1160,7 @@
                 
                 rentrolls.sort((a, b) => b.timestamp - a.timestamp);
                 
+                // 3일 이내 새 글 표시
                 const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);
                 
                 rentrollList.innerHTML = rentrolls.map(rentroll => {
@@ -1015,10 +1273,178 @@
                 }
                 
                 loadRentrolls();
-                window.updateRentrollBadge();
+                window.updateRentrollBadge(); // 뱃지 업데이트 추가
             } catch (error) {
                 console.error('삭제 오류:', error);
                 alert('삭제 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 공실 현황 로드
+        window.loadVacancies = async function() {
+            const vacancyList = document.getElementById('vacancyList');
+            vacancyList.innerHTML = '<div class="empty-state">공실 정보를 불러오는 중...</div>';
+            
+            // 실제 구현시 CRE 레파지토리 데이터와 연동
+            setTimeout(() => {
+                if (window.currentBuildingData) {
+                    vacancyList.innerHTML = `
+                        <div class="vacancy-card">
+                            <div class="vacancy-company">CBRE</div>
+                            <div class="vacancy-info">
+                                <div>
+                                    <div><strong>빌딩:</strong> ${window.currentBuildingData.name}</div>
+                                    <div><strong>공실층:</strong> 15F, 16F</div>
+                                    <div><strong>전용면적:</strong> 680평</div>
+                                </div>
+                                <button class="pdf-button" onclick="alert('PDF 뷰어 연동 예정')">PDF 보기</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    vacancyList.innerHTML = '<div class="empty-state">공실 정보가 없습니다</div>';
+                }
+            }, 1000);
+        };
+        
+        // 문서 관리
+        window.selectFiles = function() {
+            document.getElementById('fileInput').click();
+        };
+        
+        window.handleFileSelect = async function(event) {
+            const files = event.target.files;
+            await uploadFiles(files);
+        };
+        
+        window.handleDrop = async function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadSection').classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            await uploadFiles(files);
+        };
+        
+        window.handleDragOver = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadSection').classList.add('dragover');
+        };
+        
+        window.handleDragLeave = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadSection').classList.remove('dragover');
+        };
+        
+        // 파일 업로드
+        window.uploadFiles = async function(files) {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            if (!window.currentBuildingId) {
+                alert('빌딩 정보가 없습니다');
+                return;
+            }
+            
+            for (const file of files) {
+                try {
+                    if (window.storage) {
+                        // 빌딩별 폴더에 저장
+                        const fileRef = window.storageRef(window.storage, `documents/${window.currentBuildingId}/${Date.now()}_${file.name}`);
+                        const snapshot = await window.uploadBytes(fileRef, file);
+                        const downloadURL = await window.getDownloadURL(snapshot.ref);
+                        
+                        await window.firebasePush(
+                            window.firebaseRef(window.database, `documents/${window.currentBuildingId}`),
+                            {
+                                name: file.name,
+                                url: downloadURL,
+                                size: file.size,
+                                type: file.type,
+                                author: window.currentUser,
+                                timestamp: Date.now(),
+                                buildingId: window.currentBuildingId,
+                                buildingName: window.currentBuildingData?.name || ''
+                            }
+                        );
+                    } else {
+                        const documents = JSON.parse(localStorage.getItem(`documents_${window.currentBuildingId}`) || '[]');
+                        documents.push({
+                            id: Date.now().toString(),
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            author: window.currentUser,
+                            timestamp: Date.now()
+                        });
+                        localStorage.setItem(`documents_${window.currentBuildingId}`, JSON.stringify(documents));
+                    }
+                } catch (error) {
+                    console.error('업로드 오류:', error);
+                    alert(`파일 업로드 실패: ${file.name}`);
+                }
+            }
+            
+            loadDocuments();
+        };
+        
+        // 문서 목록 로드
+        window.loadDocuments = async function() {
+            const documentsGrid = document.getElementById('documentsGrid');
+            
+            if (!window.currentBuildingId) {
+                documentsGrid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">빌딩을 선택하세요</div>';
+                return;
+            }
+            
+            try {
+                let documents = [];
+                
+                if (window.database) {
+                    const docsRef = window.firebaseRef(window.database, `documents/${window.currentBuildingId}`);
+                    const snapshot = await window.firebaseGet(docsRef);
+                    
+                    if (snapshot.exists()) {
+                        documents = Object.entries(snapshot.val()).map(([id, data]) => ({
+                            id,
+                            ...data
+                        }));
+                    }
+                } else {
+                    documents = JSON.parse(localStorage.getItem(`documents_${window.currentBuildingId}`) || '[]');
+                }
+                
+                if (documents.length === 0) {
+                    documentsGrid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">${window.currentBuildingData?.name || '이 빌딩'}의 문서가 없습니다</div>`;
+                    return;
+                }
+                
+                documentsGrid.innerHTML = documents.map(doc => `
+                    <div class="document-card" onclick="downloadDocument('${doc.url || doc.id}', '${doc.name}')">
+                        <div class="document-thumbnail">${getFileIcon(doc.type)}</div>
+                        <div class="document-name" title="${doc.name}">${doc.name}</div>
+                        <div class="document-meta">${doc.author}<br>${formatDate(doc.timestamp)}</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('문서 로드 오류:', error);
+            }
+        };
+        
+        // 문서 다운로드
+        window.downloadDocument = function(url, name) {
+            if (url.startsWith('http')) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name;
+                a.click();
+            } else {
+                alert('데모 모드에서는 다운로드가 지원되지 않습니다');
             }
         };
         
@@ -1035,11 +1461,51 @@
             return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
         }
         
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('ko-KR');
+        }
+        
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
+        
+        function getFileIcon(type) {
+            if (!type) return '📎';
+            if (type.includes('pdf')) return '📄';
+            if (type.includes('image')) return '🖼️';
+            if (type.includes('word')) return '📝';
+            if (type.includes('excel') || type.includes('sheet')) return '📊';
+            if (type.includes('powerpoint') || type.includes('presentation')) return '📽️';
+            return '📎';
+        }
+        
+        // DOMContentLoaded 이벤트 처리 통합
+        document.addEventListener('DOMContentLoaded', function() {
+            // 기존 showBuildingInfo 함수를 백업 및 교체
+            setTimeout(function() {
+                if (window.showBuildingInfo) {
+                    window.originalShowBuildingInfo = window.showBuildingInfo;
+                    // 새로운 함수로 교체
+                    window.showBuildingInfo = window.showBuildingInfoWithTabs;
+                } else {
+                    // 기존 함수가 없으면 새 함수를 직접 할당
+                    window.showBuildingInfo = window.showBuildingInfoWithTabs;
+                }
+            }, 100); // building.js가 로드된 후 실행되도록 약간의 지연
+            
+            // 엔터키 지원 추가
+            const passwordInput = document.getElementById('passwordInput');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        window.authenticate();
+                    }
+                });
+            }
+        });
     </script>
     
     <!-- LG용 building2 모듈들을 먼저 로드 -->
@@ -1049,54 +1515,82 @@
     <script src="js/building2-styles.js"></script>
     <script src="js/building2-main.js"></script>
     
-    <!-- 기존 JavaScript 파일들 -->
+    <!-- 기존 JavaScript 파일들 (index.html과 동일한 순서) -->
     <script src="js/main.js"></script>
+    
+    <!-- showBuildingInfo 임시 정의 (map.js보다 먼저) -->
+    <script>
+        // building.js가 로드되기 전까지 사용할 임시 함수
+        if (!window.showBuildingInfo) {
+            window.showBuildingInfo = function(building) {
+                console.log('임시 showBuildingInfo 호출됨');
+                // building.js가 로드될 때까지 기다림
+                setTimeout(function() {
+                    if (window.showBuildingInfo !== arguments.callee) {
+                        window.showBuildingInfo(building);
+                    }
+                }, 100);
+            };
+        }
+    </script>
+    
     <script src="js/map.js"></script>
     <script src="js/building.js"></script>
     <script src="js/search.js"></script>
     <script src="js/drawing.js"></script>
     <script src="js/vacancy.js"></script>
     
-    <!-- building.js 함수 보강 -->
+    <!-- building.js 로드 후 함수 보강 -->
     <script>
-        // building.js의 showBuildingInfo 함수 보강
-        document.addEventListener('DOMContentLoaded', function() {
+        // building.js의 showBuildingInfo 함수를 보강
+        window.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
+                // building.js의 원본 함수 백업
                 const originalShowBuildingInfo = window.showBuildingInfo;
                 
+                // 보강된 함수
                 window.showBuildingInfo = function(building) {
-                    // 원본 함수 실행
-                    if (originalShowBuildingInfo) {
+                    // 원본 함수 실행 (index.html과 동일한 동작)
+                    if (originalShowBuildingInfo && originalShowBuildingInfo !== arguments.callee) {
                         originalShowBuildingInfo(building);
-                    }
-                    
-                    // 탭 관련 추가 설정
-                    window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
-                    window.currentBuildingData = building;
-                    
-                    const buildingName = building['빌딩명'] || '-';
-                    
-                    if (document.getElementById('currentBuildingName')) {
-                        document.getElementById('currentBuildingName').textContent = buildingName;
-                    }
-                    if (document.getElementById('currentBuildingIdDisplay')) {
-                        document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
-                    }
-                    
-                    // 탭 초기화
-                    document.querySelectorAll('.tab-button').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    document.querySelector('.tab-button').classList.add('active');
-                    
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    document.getElementById('infoTab').classList.add('active');
-                    
-                    // 렌트롤 뱃지 업데이트
-                    if (window.updateRentrollBadge) {
-                        window.updateRentrollBadge();
+                        
+                        // 탭 관련 추가 설정
+                        window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
+                        window.currentBuildingData = building;
+                        
+                        const buildingName = building['빌딩명'] || '-';
+                        
+                        // 탭 관련 요소 업데이트
+                        if (document.getElementById('currentBuildingName')) {
+                            document.getElementById('currentBuildingName').textContent = buildingName;
+                        }
+                        if (document.getElementById('currentBuildingIdDisplay')) {
+                            document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
+                        }
+                        if (document.getElementById('docBuildingName')) {
+                            document.getElementById('docBuildingName').textContent = buildingName;
+                        }
+                        
+                        // 탭 초기화
+                        const tabButtons = document.querySelectorAll('.tab-button');
+                        const tabContents = document.querySelectorAll('.tab-content');
+                        
+                        if (tabButtons.length > 0) {
+                            tabButtons.forEach(btn => btn.classList.remove('active'));
+                            tabButtons[0].classList.add('active');
+                        }
+                        
+                        if (tabContents.length > 0) {
+                            tabContents.forEach(content => content.classList.remove('active'));
+                            if (document.getElementById('infoTab')) {
+                                document.getElementById('infoTab').classList.add('active');
+                            }
+                        }
+                        
+                        // 렌트롤 뱃지 업데이트
+                        if (window.updateRentrollBadge) {
+                            window.updateRentrollBadge();
+                        }
                     }
                 };
                 
