@@ -1523,68 +1523,28 @@
     <script src="js/drawing.js"></script>
     <script src="js/vacancy.js"></script>
     
-    <!-- building.js 로드 후 showBuildingInfo 함수 처리 -->
+    <!-- building.js 로드 후 showBuildingInfo 함수 오버라이드 -->
     <script>
-        // showBuildingInfo 함수가 없을 경우를 대비한 기본 구현
-        if (!window.showBuildingInfo) {
+        // 원본 showBuildingInfo 함수 백업
+        window.addEventListener('load', function() {
+            // 원본 함수 백업
+            const originalShowBuildingInfo = window.showBuildingInfo;
+            
+            // 새로운 함수로 오버라이드
             window.showBuildingInfo = function(building) {
-                console.log('기본 showBuildingInfo 실행:', building);
+                // 원본 함수 실행 (index.html과 똑같이 표시)
+                if (originalShowBuildingInfo) {
+                    originalShowBuildingInfo(building);
+                }
                 
-                // 빌딩 ID와 데이터 설정
+                // 추가: 탭 관련 데이터만 설정
                 window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
                 window.currentBuildingData = building;
                 
                 const buildingName = building['빌딩명'] || '-';
-                document.getElementById('modalTitle').textContent = buildingName;
                 document.getElementById('currentBuildingName').textContent = buildingName;
                 document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
                 document.getElementById('docBuildingName').textContent = buildingName;
-                
-                // 빌딩 정보 테이블 생성
-                const fields = [
-                    { label: '주소', key: '주소' },
-                    { label: '지하철역', key: '지하철역' },
-                    { label: '기준층 전용면적', key: '기준층 전용면적' },
-                    { label: '층수', key: '층수' },
-                    { label: '준공년도', key: '준공년도' },
-                    { label: '주차대수', key: '주차대수' },
-                    { label: '엘리베이터', key: '엘리베이터' },
-                    { label: '천장고', key: '천장고' },
-                    { label: '기준층 임대료', key: '기준층 임대료' },
-                    { label: '관리비', key: '관리비' },
-                    { label: '보증금', key: '보증금' },
-                    { label: '권리금', key: '권리금' },
-                    { label: '입주시기', key: '입주시기' },
-                    { label: '공조시설', key: '공조시설' },
-                    { label: 'OA Floor', key: 'OA Floor' },
-                    { label: '화장실', key: '화장실' },
-                    { label: '특이사항', key: '특이사항' },
-                    { label: '비고', key: '비고' }
-                ];
-                
-                let tableHtml = '<table class="building-info-table">';
-                fields.forEach(field => {
-                    const value = building[field.key] || '-';
-                    tableHtml += `
-                        <tr>
-                            <th>${field.label}</th>
-                            <td>${value}</td>
-                        </tr>
-                    `;
-                });
-                tableHtml += '</table>';
-                
-                // 임대안내문 처리
-                if (building['임대안내문']) {
-                    tableHtml += `
-                        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                            <h4 style="margin: 0 0 10px 0; color: #007bff; font-size: 14px;">📄 임대안내문</h4>
-                            <div style="white-space: pre-wrap; line-height: 1.6; color: #333; font-size: 13px;">${building['임대안내문']}</div>
-                        </div>
-                    `;
-                }
-                
-                document.getElementById('modalBody').innerHTML = tableHtml;
                 
                 // 탭 초기화
                 document.querySelectorAll('.tab-button').forEach(btn => {
@@ -1597,59 +1557,11 @@
                 });
                 document.getElementById('infoTab').classList.add('active');
                 
-                // 모달 표시
-                document.getElementById('buildingModal').style.display = 'flex';
-                
                 // 렌트롤 뱃지 업데이트
-                if (window.updateRentrollBadge) {
-                    window.updateRentrollBadge();
-                }
+                window.updateRentrollBadge();
             };
-        }
-        
-        // building.js가 로드된 후 원본 함수 보강
-        window.addEventListener('load', function() {
-            // 타이머로 building.js 로드 대기
-            setTimeout(function() {
-                // showBuildingInfo가 있고 우리가 만든 기본 함수가 아닌 경우
-                if (window.showBuildingInfo && !window.showBuildingInfoOverridden) {
-                    const originalShowBuildingInfo = window.showBuildingInfo;
-                    
-                    // 새로운 함수로 오버라이드
-                    window.showBuildingInfo = function(building) {
-                        // 원본 함수 실행
-                        originalShowBuildingInfo(building);
-                        
-                        // 추가: 탭 관련 데이터 설정
-                        window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
-                        window.currentBuildingData = building;
-                        
-                        const buildingName = building['빌딩명'] || '-';
-                        document.getElementById('currentBuildingName').textContent = buildingName;
-                        document.getElementById('currentBuildingIdDisplay').textContent = window.currentBuildingId;
-                        document.getElementById('docBuildingName').textContent = buildingName;
-                        
-                        // 탭 초기화
-                        document.querySelectorAll('.tab-button').forEach(btn => {
-                            btn.classList.remove('active');
-                        });
-                        document.querySelector('.tab-button').classList.add('active');
-                        
-                        document.querySelectorAll('.tab-content').forEach(content => {
-                            content.classList.remove('active');
-                        });
-                        document.getElementById('infoTab').classList.add('active');
-                        
-                        // 렌트롤 뱃지 업데이트
-                        if (window.updateRentrollBadge) {
-                            window.updateRentrollBadge();
-                        }
-                    };
-                    
-                    window.showBuildingInfoOverridden = true;
-                    console.log('showBuildingInfo 함수 오버라이드 완료');
-                }
-            }, 100);
+            
+            console.log('showBuildingInfo 함수 오버라이드 완료');
         });
     </script>
 </body>
