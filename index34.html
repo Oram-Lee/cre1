@@ -47,6 +47,8 @@
             padding: 10px;
             border-radius: 6px;
             margin-bottom: 12px;
+            position: relative;
+            z-index: 20;
         }
         
         .auth-form {
@@ -138,6 +140,13 @@
             background: #c82333;
         }
         
+        /* 컨텐츠 영역 컨테이너 */
+        .content-wrapper {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
         /* 컨텐츠 영역 분할 */
         .content-container {
             display: flex;
@@ -164,7 +173,7 @@
             align-items: center;
             background: rgba(255, 255, 255, 0.8);
             border-radius: 6px;
-            z-index: 10;
+            z-index: 15;
         }
         
         .blur-overlay.show {
@@ -509,7 +518,6 @@
             display: none;
             max-height: 500px;
             overflow-y: auto;
-            position: relative;
         }
         
         .tab-content.active {
@@ -673,59 +681,62 @@
                     </div>
                 </div>
                 
-                <!-- 렌트롤과 메모 영역 분리 -->
-                <div class="content-container" id="contentContainer">
-                    <!-- 렌트롤 영역 (좌측) -->
-                    <div class="rentroll-section">
-                        <div class="section-title">📊 렌트롤</div>
-                        
-                        <div class="rentroll-input-form disabled" id="rentrollInputForm">
-                            <div class="rentroll-input-row">
-                                <input type="number" class="floor-input" id="floorInput" placeholder="층">
-                                <input type="text" id="tenantInput" placeholder="입주사명">
-                            </div>
-                            <div class="rentroll-input-row">
-                                <div class="contract-period-group">
-                                    <input type="text" id="contractFromInput" placeholder="시작" readonly>
-                                    <span>~</span>
-                                    <input type="text" id="contractToInput" placeholder="종료" readonly>
+                <!-- 렌트롤과 메모 영역을 wrapper로 감싸기 -->
+                <div class="content-wrapper">
+                    <!-- 렌트롤과 메모 영역 분리 -->
+                    <div class="content-container" id="contentContainer">
+                        <!-- 렌트롤 영역 (좌측) -->
+                        <div class="rentroll-section">
+                            <div class="section-title">📊 렌트롤</div>
+                            
+                            <div class="rentroll-input-form disabled" id="rentrollInputForm">
+                                <div class="rentroll-input-row">
+                                    <input type="number" class="floor-input" id="floorInput" placeholder="층">
+                                    <input type="text" id="tenantInput" placeholder="입주사명">
                                 </div>
-                                <input type="text" id="rentrollNoteInput" placeholder="비고">
+                                <div class="rentroll-input-row">
+                                    <div class="contract-period-group">
+                                        <input type="text" id="contractFromInput" placeholder="시작" readonly>
+                                        <span>~</span>
+                                        <input type="text" id="contractToInput" placeholder="종료" readonly>
+                                    </div>
+                                    <input type="text" id="rentrollNoteInput" placeholder="비고">
+                                </div>
+                                <div class="rentroll-buttons">
+                                    <button class="rentroll-save-button" onclick="saveRentroll()">저장</button>
+                                    <button class="rentroll-cancel-button" onclick="cancelRentroll()">취소</button>
+                                </div>
                             </div>
-                            <div class="rentroll-buttons">
-                                <button class="rentroll-save-button" onclick="saveRentroll()">저장</button>
-                                <button class="rentroll-cancel-button" onclick="cancelRentroll()">취소</button>
+                            
+                            <div class="rentroll-list" id="rentrollList">
+                                <div class="empty-state">렌트롤 정보가 없습니다</div>
                             </div>
                         </div>
                         
-                        <div class="rentroll-list" id="rentrollList">
-                            <div class="empty-state">렌트롤 정보가 없습니다</div>
+                        <!-- 메모 영역 (우측) -->
+                        <div class="memo-section">
+                            <div class="section-title">📝 메모</div>
+                            
+                            <div class="memo-input-section disabled" id="memoInputSection">
+                                <textarea class="memo-textarea" id="memoTextarea" placeholder="메모 입력"></textarea>
+                                <div class="memo-buttons">
+                                    <button class="memo-save-button" onclick="saveMemo()">저장</button>
+                                    <button class="memo-cancel-button" onclick="cancelMemo()">취소</button>
+                                </div>
+                            </div>
+                            
+                            <div class="memo-list" id="memoList">
+                                <div class="empty-state">메모가 없습니다</div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- 메모 영역 (우측) -->
-                    <div class="memo-section">
-                        <div class="section-title">📝 메모</div>
-                        
-                        <div class="memo-input-section disabled" id="memoInputSection">
-                            <textarea class="memo-textarea" id="memoTextarea" placeholder="메모 입력"></textarea>
-                            <div class="memo-buttons">
-                                <button class="memo-save-button" onclick="saveMemo()">저장</button>
-                                <button class="memo-cancel-button" onclick="cancelMemo()">취소</button>
-                            </div>
+                    <!-- 블러 오버레이를 wrapper 안으로 이동 -->
+                    <div class="blur-overlay" id="blurOverlay">
+                        <div class="blur-message">
+                            <h3>🔒 로그인이 필요합니다</h3>
+                            <p>렌트롤과 메모를 확인하려면<br>먼저 로그인해 주세요.</p>
                         </div>
-                        
-                        <div class="memo-list" id="memoList">
-                            <div class="empty-state">메모가 없습니다</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 블러 오버레이 -->
-                <div class="blur-overlay" id="blurOverlay">
-                    <div class="blur-message">
-                        <h3>🔒 로그인이 필요합니다</h3>
-                        <p>렌트롤과 메모를 확인하려면<br>먼저 로그인해 주세요.</p>
                     </div>
                 </div>
             </div>
