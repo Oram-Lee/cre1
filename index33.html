@@ -47,6 +47,8 @@
             padding: 10px;
             border-radius: 6px;
             margin-bottom: 12px;
+            position: relative;
+            z-index: 20;
         }
         
         .auth-form {
@@ -138,11 +140,65 @@
             background: #c82333;
         }
         
+        /* 컨텐츠 영역 컨테이너 */
+        .content-wrapper {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
         /* 컨텐츠 영역 분할 */
         .content-container {
             display: flex;
             gap: 15px;
             height: 450px;
+            position: relative;
+        }
+        
+        /* 비로그인 상태 블러 처리 */
+        .content-container.blur-content {
+            filter: blur(5px);
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .blur-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 6px;
+            z-index: 15;
+        }
+        
+        .blur-overlay.show {
+            display: flex;
+        }
+        
+        .blur-message {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 2px solid #007bff;
+        }
+        
+        .blur-message h3 {
+            color: #007bff;
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+        
+        .blur-message p {
+            color: #666;
+            margin: 0;
+            font-size: 14px;
         }
         
         .rentroll-section, .memo-section {
@@ -362,9 +418,10 @@
             font-size: 12px;
         }
         
+        /* 메모 아이템 헤더 수정 - 버튼 제거 */
         .memo-item-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             margin-bottom: 5px;
         }
         
@@ -376,6 +433,15 @@
         .memo-item-content {
             white-space: pre-wrap;
             line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        
+        /* 메모 액션 버튼을 별도 행으로 이동 */
+        .memo-item-actions {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-end;
+            margin-top: 5px;
         }
         
         .edit-button, .delete-button {
@@ -615,50 +681,61 @@
                     </div>
                 </div>
                 
-                <!-- 렌트롤과 메모 영역 분리 -->
-                <div class="content-container">
-                    <!-- 렌트롤 영역 (좌측) -->
-                    <div class="rentroll-section">
-                        <div class="section-title">📊 렌트롤</div>
-                        
-                        <div class="rentroll-input-form disabled" id="rentrollInputForm">
-                            <div class="rentroll-input-row">
-                                <input type="number" class="floor-input" id="floorInput" placeholder="층">
-                                <input type="text" id="tenantInput" placeholder="입주사명">
-                            </div>
-                            <div class="rentroll-input-row">
-                                <div class="contract-period-group">
-                                    <input type="text" id="contractFromInput" placeholder="시작" readonly>
-                                    <span>~</span>
-                                    <input type="text" id="contractToInput" placeholder="종료" readonly>
+                <!-- 렌트롤과 메모 영역을 wrapper로 감싸기 -->
+                <div class="content-wrapper">
+                    <!-- 렌트롤과 메모 영역 분리 -->
+                    <div class="content-container" id="contentContainer">
+                        <!-- 렌트롤 영역 (좌측) -->
+                        <div class="rentroll-section">
+                            <div class="section-title">📊 렌트롤</div>
+                            
+                            <div class="rentroll-input-form disabled" id="rentrollInputForm">
+                                <div class="rentroll-input-row">
+                                    <input type="number" class="floor-input" id="floorInput" placeholder="층">
+                                    <input type="text" id="tenantInput" placeholder="입주사명">
                                 </div>
-                                <input type="text" id="rentrollNoteInput" placeholder="비고">
+                                <div class="rentroll-input-row">
+                                    <div class="contract-period-group">
+                                        <input type="text" id="contractFromInput" placeholder="시작" readonly>
+                                        <span>~</span>
+                                        <input type="text" id="contractToInput" placeholder="종료" readonly>
+                                    </div>
+                                    <input type="text" id="rentrollNoteInput" placeholder="비고">
+                                </div>
+                                <div class="rentroll-buttons">
+                                    <button class="rentroll-save-button" onclick="saveRentroll()">저장</button>
+                                    <button class="rentroll-cancel-button" onclick="cancelRentroll()">취소</button>
+                                </div>
                             </div>
-                            <div class="rentroll-buttons">
-                                <button class="rentroll-save-button" onclick="saveRentroll()">저장</button>
-                                <button class="rentroll-cancel-button" onclick="cancelRentroll()">취소</button>
+                            
+                            <div class="rentroll-list" id="rentrollList">
+                                <div class="empty-state">렌트롤 정보가 없습니다</div>
                             </div>
                         </div>
                         
-                        <div class="rentroll-list" id="rentrollList">
-                            <div class="empty-state">렌트롤 정보가 없습니다</div>
+                        <!-- 메모 영역 (우측) -->
+                        <div class="memo-section">
+                            <div class="section-title">📝 메모</div>
+                            
+                            <div class="memo-input-section disabled" id="memoInputSection">
+                                <textarea class="memo-textarea" id="memoTextarea" placeholder="메모 입력"></textarea>
+                                <div class="memo-buttons">
+                                    <button class="memo-save-button" onclick="saveMemo()">저장</button>
+                                    <button class="memo-cancel-button" onclick="cancelMemo()">취소</button>
+                                </div>
+                            </div>
+                            
+                            <div class="memo-list" id="memoList">
+                                <div class="empty-state">메모가 없습니다</div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- 메모 영역 (우측) -->
-                    <div class="memo-section">
-                        <div class="section-title">📝 메모</div>
-                        
-                        <div class="memo-input-section disabled" id="memoInputSection">
-                            <textarea class="memo-textarea" id="memoTextarea" placeholder="메모 입력"></textarea>
-                            <div class="memo-buttons">
-                                <button class="memo-save-button" onclick="saveMemo()">저장</button>
-                                <button class="memo-cancel-button" onclick="cancelMemo()">취소</button>
-                            </div>
-                        </div>
-                        
-                        <div class="memo-list" id="memoList">
-                            <div class="empty-state">메모가 없습니다</div>
+                    <!-- 블러 오버레이를 wrapper 안으로 이동 -->
+                    <div class="blur-overlay" id="blurOverlay">
+                        <div class="blur-message">
+                            <h3>🔒 로그인이 필요합니다</h3>
+                            <p>렌트롤과 메모를 확인하려면<br>먼저 로그인해 주세요.</p>
                         </div>
                     </div>
                 </div>
@@ -769,6 +846,9 @@
                 document.getElementById('emailInput').value = savedEmail;
                 document.getElementById('saveEmailCheckbox').checked = true;
             }
+            
+            // 초기 블러 상태 설정
+            updateBlurState();
         });
         
         // monthSelectPlugin for Flatpickr
@@ -794,6 +874,22 @@
             };
         }
         
+        // 블러 상태 업데이트 함수
+        window.updateBlurState = function() {
+            const contentContainer = document.getElementById('contentContainer');
+            const blurOverlay = document.getElementById('blurOverlay');
+            
+            if (!window.currentUser) {
+                // 비로그인 상태: 블러 효과 적용
+                if (contentContainer) contentContainer.classList.add('blur-content');
+                if (blurOverlay) blurOverlay.classList.add('show');
+            } else {
+                // 로그인 상태: 블러 효과 제거
+                if (contentContainer) contentContainer.classList.remove('blur-content');
+                if (blurOverlay) blurOverlay.classList.remove('show');
+            }
+        };
+        
         // 탭 전환 함수
         window.switchTab = function(tabName) {
             if (event.target.classList.contains('disabled')) {
@@ -811,6 +907,7 @@
             document.getElementById(`${tabName}Tab`).classList.add('active');
             
             if (tabName === 'rentroll') {
+                updateBlurState();
                 loadRentrolls();
                 loadMemos();
             }
@@ -970,6 +1067,10 @@
             
             document.getElementById('rentrollInputForm').classList.remove('disabled');
             document.getElementById('memoInputSection').classList.remove('disabled');
+            
+            // 블러 상태 업데이트
+            updateBlurState();
+            
             loadRentrolls();
             loadMemos();
         }
@@ -988,6 +1089,10 @@
             document.getElementById('adminBadge').classList.add('hidden');
             
             document.getElementById('passwordInput').value = '';
+            
+            // 블러 상태 업데이트
+            updateBlurState();
+            
             clearRentrollInputs();
             clearMemoInput();
         };
@@ -1289,14 +1394,14 @@
                                     ${isNew ? '<span style="background: #ff6b6b; color: white; padding: 1px 4px; border-radius: 10px; font-size: 9px; margin-left: 5px;">NEW</span>' : ''}
                                     <span style="margin-left: 5px;">${formatDateTime(memo.timestamp)}</span>
                                 </div>
-                                <div class="rentroll-item-actions">
-                                    ${(memo.author === window.currentUser || window.isAdmin) ? `
-                                        <button class="edit-button" onclick="editMemo('${memo.id}')">편집</button>
-                                        <button class="delete-button" onclick="deleteMemo('${memo.id}')">삭제</button>
-                                    ` : ''}
-                                </div>
                             </div>
                             <div class="memo-item-content">${escapeHtml(memo.content)}</div>
+                            <div class="memo-item-actions">
+                                ${(memo.author === window.currentUser || window.isAdmin) ? `
+                                    <button class="edit-button" onclick="editMemo('${memo.id}')">편집</button>
+                                    <button class="delete-button" onclick="deleteMemo('${memo.id}')">삭제</button>
+                                ` : ''}
+                            </div>
                         </div>
                     `;
                 }).join('');
