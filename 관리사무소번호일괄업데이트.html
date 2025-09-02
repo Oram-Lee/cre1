@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리사무소 정보 일괄 업데이트 시스템</title>
+    
+    <!-- 파비콘 오류 방지 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <!-- SheetJS 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .auth-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .auth-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: #5a67d8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-success:hover:not(:disabled) {
+            background: #38a169;
+        }
+        
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+        
+        .btn-danger:hover:not(:disabled) {
+            background: #e53e3e;
+        }
+        
+        .btn-warning {
+            background: #ed8936;
+            color: white;
+        }
+        
+        .btn-warning:hover:not(:disabled) {
+            background: #dd6b20;
+        }
+        
+        .btn-secondary {
+            background: #718096;
+            color: white;
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background: #4a5568;
+        }
+        
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+        
+        .main-content {
+            display: none;
+        }
+        
+        .main-content.show {
+            display: block;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .cleanup-section {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .cleanup-warning {
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .cleanup-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #e6f0ff;
+        }
+        
+        .upload-area.loaded {
+            border-color: #28a745;
+            background: #f8fff8;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .upload-hint {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-status {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #155724;
+        }
+        
+        .file-status.show {
+            display: block;
+        }
+        
+        .dual-upload {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .preview-section {
+            display: none;
+        }
+        
+        .preview-section.show {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-card.matched {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        .stat-card.similar {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
+        
+        .stat-card.unmatched {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .matching-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .matching-table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .matching-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+        
+        .matching-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .match-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .match-exact {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .match-similar {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .match-none {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .building-select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .similar-options {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 5px;
+        }
+        
+        .similar-option {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .similar-option:hover {
+            background: #bae7ff;
+        }
+        
+        .progress-section {
+            display: none;
+        }
+        
+        .progress-section.show {
+            display: block;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin: 10px 0;
+            color: #666;
+        }
+        
+        .log-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-item {
+            margin: 5px 0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .log-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+        
+        .log-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .log-info {
+            background: #cce7ff;
+            color: #004085;
+            border-left: 4px solid #007bff;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .sample-format {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .sample-title {
+            font-weight: 600;
+            color: #1890ff;
+            margin-bottom: 10px;
+        }
+        
+        .sample-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        
+        .sample-table th,
+        .sample-table td {
+            border: 1px solid #d9d9d9;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .sample-table th {
+            background: #fafafa;
+            font-weight: 600;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 3000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast.success {
+            background: #28a745;
+        }
+        
+        .toast.error {
+            background: #dc3545;
+        }
+        
+        .toast.warning {
+            background: #ffc107;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>
+                📞 관리사무소 정보 일괄 업데이트 v2.1
+            </h1>
+            <div class="auth-section">
+                <input type="password" class="auth-input" id="adminPassword" placeholder="관리자 비밀번호" maxlength="6">
+                <button class="btn btn-primary" onclick="adminLogin()">로그인</button>
+            </div>
+        </div>
+        
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content" id="mainContent">
+            <!-- 데이터 정리 섹션 -->
+            <div class="section cleanup-section">
+                <div class="section-header">
+                    <h2 class="section-title">🧹 기존 데이터 정리</h2>
+                    <div>
+                        <button class="btn btn-warning" onclick="checkExistingData()" id="checkDataBtn">기존 데이터 확인</button>
+                        <button class="btn btn-primary" onclick="debugBuildingIds()" id="debugBtn">🔍 BuildingID 디버깅</button>
+                    </div>
+                </div>
+                
+                <div class="cleanup-warning">
+                    ⚠️ <strong>업데이트 시작 전 기존 데이터 확인을 권장합니다.</strong><br>
+                    이전에 중단된 업데이트로 인해 일부 관리사무소 정보가 남아있을 수 있습니다.<br>
+                    새로운 업데이트를 시작하기 전에 기존 데이터를 확인하고 필요시 정리하세요.
+                </div>
+                
+                <div class="cleanup-actions">
+                    <button class="btn btn-danger" onclick="cleanupAllData()" id="cleanupBtn" disabled>🗑️ 모든 관리사무소 정보 삭제</button>
+                    <button class="btn btn-secondary" onclick="exportExistingData()" id="exportBtn" disabled>📥 기존 데이터 백업</button>
+                </div>
+                
+                <div id="existingDataInfo" style="display: none; margin-top: 15px;">
+                    <!-- 기존 데이터 정보가 여기에 표시됩니다 -->
+                </div>
+            </div>
+            
+            <!-- 파일 업로드 섹션 -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">📂 파일 업로드</h2>
+                    <button class="btn btn-secondary" onclick="downloadSample()">📥 샘플 파일 다운로드</button>
+                </div>
+                
+                <!-- 샘플 형식 안내 -->
+                <div class="sample-format">
+                    <div class="sample-title">📋 필요한 파일 2개</div>
+                    <p style="margin-bottom: 15px;"><strong>1. buildings.json</strong> - 빌딩 기준 데이터 (다음 구조 중 아무거나)</p>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin-bottom: 10px; font-size: 12px;">
+                        <strong>지원되는 JSON 구조:</strong><br>
+                        • <code>[{building1}, {building2}, ...]</code> - 배열 형태<br>
+                        • <code>{"buildings": [{building1}, {building2}, ...]}</code> - buildings 키가 있는 객체<br>
+                        • <code>{"data": [{building1}, {building2}, ...]}</code> - data 키가 있는 객체<br>
+                        • <code>{"key1": {building1}, "key2": {building2}, ...}</code> - 키-값 객체 형태<br>
+                        <em>※ 각 빌딩 객체는 반드시 "name" 필드가 있어야 합니다</em>
+                    </div>
+                    <p style="margin-bottom: 15px;"><strong>2. 관리사무소정보.xlsx</strong> - 업데이트할 관리사무소 정보 (A~D열)</p>
+                    <table class="sample-table">
+                        <thead>
+                            <tr>
+                                <th>A열: 건물명</th>
+                                <th>B열: 도로명주소</th>
+                                <th>C열: 지번주소</th>
+                                <th>D열: 관리사무소번호</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>리버타워</td>
+                                <td>서울 영등포구 63로 36</td>
+                                <td>서울시 영등포구 여의도동 61-5</td>
+                                <td>02-785-1234</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 이중 파일 업로드 영역 -->
+                <div class="dual-upload">
+                    <!-- buildings.json 업로드 -->
+                    <div>
+                        <h4 style="margin-bottom: 10px; color: #333;">🏢 buildings.json 파일</h4>
+                        <div class="upload-area" id="buildingsUploadArea" onclick="document.getElementById('buildingsInput').click()">
+                            <div class="upload-icon">🏢</div>
+                            <div class="upload-text">buildings.json 파일</div>
+                            <div class="upload-hint">빌딩 기준 데이터<br><small>배열/객체 구조 자동 감지</small></div>
+                        </div>
+                        <input type="file" id="buildingsInput" class="file-input" accept=".json" onchange="handleBuildingsFile(event)">
+                        <div class="file-status" id="buildingsStatus">
+                            <strong>✅ buildings.json 로드 완료!</strong><br>
+                            <span id="buildingsCount">0</span>개의 빌딩 데이터가 준비되었습니다.
+                        </div>
+                    </div>
+                    
+                    <!-- 엑셀 파일 업로드 -->
+                    <div>
+                        <h4 style="margin-bottom: 10px; color: #333;">📊 관리사무소 정보 엑셀</h4>
+                        <div class="upload-area" id="excelUploadArea" onclick="document.getElementById('excelInput').click()">
+                            <div class="upload-icon">📊</div>
+                            <div class="upload-text">관리사무소 정보 엑셀</div>
+                            <div class="upload-hint">지원 형식: .xlsx, .xls</div>
+                        </div>
+                        <input type="file" id="excelInput" class="file-input" accept=".xlsx,.xls" onchange="handleExcelFile(event)">
+                        <div class="file-status" id="excelStatus">
+                            <strong>✅ 엑셀 파일 로드 완료!</strong><br>
+                            <span id="excelCount">0</span>개의 관리사무소 정보가 준비되었습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 매칭 결과 미리보기 섹션 -->
+            <div class="section preview-section" id="matchingSection">
+                <div class="section-header">
+                    <h2 class="section-title">🔍 빌딩 매칭 결과</h2>
+                    <div class="action-buttons">
+                        <button class="btn btn-success" onclick="startUpdate()" id="updateBtn">🚀 업데이트 시작</button>
+                        <button class="btn btn-danger" onclick="clearData()">🗑️ 데이터 지우기</button>
+                    </div>
+                </div>
+                
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalRows">0</div>
+                        <div class="stat-label">총 데이터</div>
+                    </div>
+                    <div class="stat-card matched">
+                        <div class="stat-number" id="exactMatched">0</div>
+                        <div class="stat-label">정확 매칭</div>
+                    </div>
+                    <div class="stat-card similar">
+                        <div class="stat-number" id="similarMatched">0</div>
+                        <div class="stat-label">유사 매칭</div>
+                    </div>
+                    <div class="stat-card unmatched">
+                        <div class="stat-number" id="unmatched">0</div>
+                        <div class="stat-label">매칭 안됨</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="readyToUpdate">0</div>
+                        <div class="stat-label">업데이트 준비</div>
+                    </div>
+                </div>
+                
+                <div style="max-height: 500px; overflow-y: auto;">
+                    <table class="matching-table" id="matchingTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">순번</th>
+                                <th style="width: 200px;">엑셀 건물명</th>
+                                <th style="width: 150px;">관리사무소번호</th>
+                                <th style="width: 120px;">매칭 상태</th>
+                                <th style="width: 250px;">매칭된 빌딩</th>
+                                <th style="width: 200px;">빌딩 선택</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matchingTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 업데이트 진행상황 섹션 -->
+            <div class="section progress-section" id="progressSection">
+                <div class="section-header">
+                    <h2 class="section-title">⚡ 업데이트 진행상황</h2>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">대기 중...</div>
+                
+                <div class="log-section" id="logSection">
+                    <div class="log-item log-info">업데이트 로그가 여기에 표시됩니다.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 토스트 메시지 -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, onValue, remove, update, set, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",
+            authDomain: "rentroll-32a01.firebaseapp.com",
+            databaseURL: "https://rentroll-32a01-default-rtdb.firebaseio.com",
+            projectId: "rentroll-32a01",
+            storageBucket: "rentroll-32a01.appspot.com",
+            messagingSenderId: "2538299262",
+            appId: "1:2538299262:web:cdf4f01f5dc012e1299d2f"
+        };
+        
+        // 전역 변수
+        window.firebaseApp = null;
+        window.database = null;
+        window.isAuthenticated = false;
+        window.buildingsData = [];
+        window.excelData = [];
+        window.matchingResults = [];
+        window.existingManagementData = {};
+        
+        // Firebase 초기화
+        try {
+            window.firebaseApp = initializeApp(firebaseConfig);
+            window.database = getDatabase(window.firebaseApp);
+            console.log('Firebase 연결 성공');
+            
+            // Firebase 함수들을 전역으로 노출
+            window.firebaseRef = ref;
+            window.firebasePush = push;
+            window.firebaseGet = get;
+            window.firebaseSet = set;
+            window.firebaseUpdate = update;
+            window.firebaseRemove = remove;
+            window.firebaseOnValue = onValue;
+            
+        } catch (error) {
+            console.error('Firebase 초기화 실패:', error);
+            showToast('Firebase 연결 실패. LocalStorage 모드로 실행', 'error');
+        }
+        
+        // 관리자 로그인
+        window.adminLogin = function() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === '999999') {
+                window.isAuthenticated = true;
+                document.getElementById('mainContent').classList.add('show');
+                document.getElementById('adminPassword').value = '';
+                
+                showToast('관리자로 로그인되었습니다', 'success');
+            } else {
+                showToast('비밀번호가 올바르지 않습니다', 'error');
+            }
+        };
+        
+        // 기존 데이터 확인
+        window.checkExistingData = async function() {
+            document.getElementById('checkDataBtn').disabled = true;
+            document.getElementById('checkDataBtn').textContent = '확인 중...';
+            
+            try {
+                window.existingManagementData = {};
+                
+                if (window.database) {
+                    const managementRef = window.firebaseRef(window.database, 'management');
+                    const snapshot = await window.firebaseGet(managementRef);
+                    
+                    if (snapshot.exists()) {
+                        window.existingManagementData = snapshot.val();
+                    }
+                } else {
+                    // LocalStorage에서 관리사무소 데이터 수집
+                    const keys = Object.keys(localStorage).filter(key => key.startsWith('management_'));
+                    keys.forEach(key => {
+                        const buildingId = key.replace('management_', '');
+                        const data = JSON.parse(localStorage.getItem(key));
+                        window.existingManagementData[buildingId] = data;
+                    });
+                }
+                
+                const existingCount = Object.keys(window.existingManagementData).length;
+                const infoDiv = document.getElementById('existingDataInfo');
+                
+                if (existingCount > 0) {
+                    infoDiv.innerHTML = `
+                        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; color: #856404;">
+                            <strong>📊 기존 관리사무소 정보 발견</strong><br>
+                            총 <strong>${existingCount}개</strong>의 빌딩에 관리사무소 정보가 등록되어 있습니다.<br><br>
+                            <strong>최근 등록된 항목들:</strong><br>
+                            ${Object.entries(window.existingManagementData)
+                                .sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0))
+                                .slice(0, 5)
+                                .map(([buildingId, data]) => 
+                                    `• ${data.buildingName || buildingId}: ${data.phone || '정보없음'} (${data.author || '작성자불명'})`
+                                ).join('<br>')}
+                        </div>
+                    `;
+                    
+                    document.getElementById('cleanupBtn').disabled = false;
+                    document.getElementById('exportBtn').disabled = false;
+                } else {
+                    infoDiv.innerHTML = `
+                        <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; padding: 15px; color: #155724;">
+                            <strong>✅ 기존 데이터 없음</strong><br>
+                            기존에 등록된 관리사무소 정보가 없습니다. 새로운 업데이트를 진행하세요.
+                        </div>
+                    `;
+                    
+                    document.getElementById('cleanupBtn').disabled = true;
+                    document.getElementById('exportBtn').disabled = true;
+                }
+                
+                infoDiv.style.display = 'block';
+                
+                showToast(`기존 데이터 확인 완료: ${existingCount}개 발견`, existingCount > 0 ? 'warning' : 'success');
+                
+            } catch (error) {
+                console.error('기존 데이터 확인 오류:', error);
+                showToast('기존 데이터 확인 실패', 'error');
+            } finally {
+                document.getElementById('checkDataBtn').disabled = false;
+                document.getElementById('checkDataBtn').textContent = '기존 데이터 확인';
+            }
+        };
+        
+        // 모든 관리사무소 데이터 삭제
+        window.cleanupAllData = async function() {
+            const count = Object.keys(window.existingManagementData).length;
+            if (!confirm(`정말로 ${count}개의 모든 관리사무소 정보를 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)) {
+                return;
+            }
+            
+            document.getElementById('cleanupBtn').disabled = true;
+            document.getElementById('cleanupBtn').textContent = '삭제 중...';
+            
+            try {
+                let deletedCount = 0;
+                
+                if (window.database) {
+                    // Firebase에서 모든 관리사무소 데이터 삭제
+                    await window.firebaseRemove(window.firebaseRef(window.database, 'management'));
+                    deletedCount = count;
+                } else {
+                    // LocalStorage에서 모든 관리사무소 데이터 삭제
+                    const keys = Object.keys(localStorage).filter(key => key.startsWith('management_'));
+                    keys.forEach(key => {
+                        localStorage.removeItem(key);
+                        deletedCount++;
+                    });
+                }
+                
+                window.existingManagementData = {};
+                
+                document.getElementById('existingDataInfo').innerHTML = `
+                    <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; padding: 15px; color: #155724;">
+                        <strong>✅ 데이터 삭제 완료</strong><br>
+                        ${deletedCount}개의 관리사무소 정보가 모두 삭제되었습니다.
+                    </div>
+                `;
+                
+                document.getElementById('cleanupBtn').disabled = true;
+                document.getElementById('exportBtn').disabled = true;
+                
+                showToast(`${deletedCount}개의 관리사무소 정보가 삭제되었습니다`, 'success');
+                
+            } catch (error) {
+                console.error('데이터 삭제 오류:', error);
+                showToast('데이터 삭제 실패', 'error');
+            } finally {
+                document.getElementById('cleanupBtn').textContent = '🗑️ 모든 관리사무소 정보 삭제';
+            }
+        };
+        
+        // 기존 데이터 백업
+        window.exportExistingData = function() {
+            if (Object.keys(window.existingManagementData).length === 0) {
+                showToast('백업할 데이터가 없습니다', 'warning');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(window.existingManagementData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `management_backup_${formatDateForFile(Date.now())}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            showToast('관리사무소 정보가 백업되었습니다', 'success');
+        };
+        
+        // buildings.json 파일 처리
+        window.handleBuildingsFile = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.name.match(/\.json$/)) {
+                showToast('JSON 파일만 업로드 가능합니다', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    
+                    // 다양한 JSON 구조 처리
+                    if (Array.isArray(jsonData)) {
+                        // 이미 배열 형태: [building1, building2, ...]
+                        window.buildingsData = jsonData;
+                    } else if (jsonData && typeof jsonData === 'object') {
+                        // 객체 형태 처리
+                        if (jsonData.buildings && Array.isArray(jsonData.buildings)) {
+                            // {buildings: [building1, building2, ...]} 형태
+                            window.buildingsData = jsonData.buildings;
+                        } else if (jsonData.data && Array.isArray(jsonData.data)) {
+                            // {data: [building1, building2, ...]} 형태
+                            window.buildingsData = jsonData.data;
+                        } else {
+                            // {key1: building1, key2: building2, ...} 형태
+                            // 객체의 값들을 배열로 변환
+                            const values = Object.values(jsonData);
+                            if (values.length > 0 && values[0] && typeof values[0] === 'object' && values[0].name) {
+                                window.buildingsData = values;
+                            } else {
+                                throw new Error('빌딩 데이터를 찾을 수 없습니다');
+                            }
+                        }
+                    } else {
+                        throw new Error('올바른 JSON 형식이 아닙니다');
+                    }
+                    
+                    // 데이터 유효성 검사
+                    if (!Array.isArray(window.buildingsData) || window.buildingsData.length === 0) {
+                        throw new Error('빌딩 데이터가 비어있습니다');
+                    }
+                    
+                    // 빌딩 데이터 구조 검사 (name 필드 필수)
+                    const invalidBuildings = window.buildingsData.filter(building => 
+                        !building || typeof building !== 'object' || !building.name
+                    );
+                    
+                    if (invalidBuildings.length > 0) {
+                        console.warn(`${invalidBuildings.length}개의 유효하지 않은 빌딩 데이터가 발견되어 제외됩니다.`);
+                        window.buildingsData = window.buildingsData.filter(building => 
+                            building && typeof building === 'object' && building.name
+                        );
+                    }
+                    
+                    if (window.buildingsData.length === 0) {
+                        throw new Error('유효한 빌딩 데이터가 없습니다. name 필드가 있는지 확인해주세요.');
+                    }
+                    
+                    document.getElementById('buildingsUploadArea').classList.add('loaded');
+                    document.getElementById('buildingsStatus').classList.add('show');
+                    document.getElementById('buildingsCount').textContent = window.buildingsData.length;
+                    
+                    // 첫 번째 빌딩 데이터 구조 로그 (디버깅용)
+                    console.log('빌딩 데이터 첫 번째 항목:', window.buildingsData[0]);
+                    console.log('전체 빌딩 데이터 개수:', window.buildingsData.length);
+                    
+                    showToast(`${window.buildingsData.length}개의 빌딩 데이터를 로드했습니다`, 'success');
+                    
+                    checkBothFilesLoaded();
+                    
+                } catch (error) {
+                    console.error('buildings.json 처리 오류:', error);
+                    showToast(`buildings.json 파일 오류: ${error.message}`, 'error');
+                    
+                    // 디버깅 정보 제공
+                    try {
+                        const jsonData = JSON.parse(e.target.result);
+                        console.log('JSON 데이터 구조:', typeof jsonData, Object.keys(jsonData));
+                        if (typeof jsonData === 'object' && !Array.isArray(jsonData)) {
+                            console.log('객체의 키들:', Object.keys(jsonData));
+                            console.log('첫 번째 값의 구조:', Object.keys(Object.values(jsonData)[0] || {}));
+                        }
+                    } catch (parseError) {
+                        console.error('JSON 파싱 자체에 실패:', parseError);
+                        showToast('JSON 파일 형식이 올바르지 않습니다', 'error');
+                    }
+                }
+            };
+            
+            reader.readAsText(file);
+        };
+        
+        // 엑셀 파일 처리
+        window.handleExcelFile = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.name.match(/\.(xlsx|xls)$/)) {
+                showToast('엑셀 파일만 업로드 가능합니다', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    
+                    // 데이터를 JSON으로 변환 (헤더 제외)
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+                        header: ['buildingName', 'roadAddress', 'lotAddress', 'managementPhone'],
+                        range: 1 // 첫 번째 행(헤더) 제외
+                    });
+                    
+                    window.excelData = jsonData.filter(row => 
+                        row.buildingName && row.managementPhone
+                    );
+                    
+                    document.getElementById('excelUploadArea').classList.add('loaded');
+                    document.getElementById('excelStatus').classList.add('show');
+                    document.getElementById('excelCount').textContent = window.excelData.length;
+                    
+                    showToast(`${window.excelData.length}개의 관리사무소 정보를 로드했습니다`, 'success');
+                    
+                    checkBothFilesLoaded();
+                    
+                } catch (error) {
+                    console.error('엑셀 파일 처리 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다', 'error');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        };
+        
+        // 두 파일이 모두 로드되었는지 확인
+        function checkBothFilesLoaded() {
+            if (window.buildingsData.length > 0 && window.excelData.length > 0) {
+                performMatching();
+                showMatchingResults();
+                showToast('매칭을 완료했습니다', 'success');
+            }
+        }
+        
+        // 파일 드래그앤드롭 이벤트
+        setupDragAndDrop('buildingsUploadArea', 'buildingsInput');
+        setupDragAndDrop('excelUploadArea', 'excelInput');
+        
+        function setupDragAndDrop(areaId, inputId) {
+            const uploadArea = document.getElementById(areaId);
+            
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const input = document.getElementById(inputId);
+                    const dt = new DataTransfer();
+                    dt.items.add(files[0]);
+                    input.files = dt.files;
+                    
+                    if (inputId === 'buildingsInput') {
+                        handleBuildingsFile({ target: input });
+                    } else {
+                        handleExcelFile({ target: input });
+                    }
+                }
+            });
+        }
+        
+        // 빌딩 매칭 수행
+        function performMatching() {
+            window.matchingResults = [];
+            
+            window.excelData.forEach((excelRow, index) => {
+                const result = {
+                    index: index + 1,
+                    excelData: excelRow,
+                    matchType: 'none',
+                    matchedBuilding: null,
+                    similarBuildings: [],
+                    selectedBuildingId: null,
+                    isReady: false
+                };
+                
+                // 1차: 정확한 건물명 매칭
+                const exactMatch = window.buildingsData.find(building => 
+                    building.name.trim().toLowerCase() === excelRow.buildingName.trim().toLowerCase()
+                );
+                
+                if (exactMatch) {
+                    result.matchType = 'exact';
+                    result.matchedBuilding = exactMatch;
+                    result.selectedBuildingId = exactMatch.id;
+                    result.isReady = true;
+                } else {
+                    // 2차: 유사한 건물명 매칭
+                    const normalizedExcelName = normalizeString(excelRow.buildingName);
+                    const similarBuildings = window.buildingsData.filter(building => {
+                        const normalizedBuildingName = normalizeString(building.name);
+                        return normalizedBuildingName.includes(normalizedExcelName) || 
+                               normalizedExcelName.includes(normalizedBuildingName) ||
+                               calculateSimilarity(normalizedExcelName, normalizedBuildingName) > 0.6;
+                    });
+                    
+                    if (similarBuildings.length > 0) {
+                        result.matchType = 'similar';
+                        result.similarBuildings = similarBuildings;
+                        result.matchedBuilding = similarBuildings[0]; // 첫 번째를 기본으로
+                    }
+                    
+                    // 3차: 주소 매칭 (도로명주소)
+                    if (similarBuildings.length === 0 && excelRow.roadAddress) {
+                        const addressMatch = window.buildingsData.find(building => 
+                            building.address && building.address.includes(excelRow.roadAddress.substring(0, 10))
+                        );
+                        
+                        if (addressMatch) {
+                            result.matchType = 'similar';
+                            result.similarBuildings = [addressMatch];
+                            result.matchedBuilding = addressMatch;
+                        }
+                    }
+                    
+                    // 4차: 주소 매칭 (지번주소)
+                    if (result.similarBuildings.length === 0 && excelRow.lotAddress) {
+                        const lotAddressMatch = window.buildingsData.find(building => 
+                            building.addressJibun && building.addressJibun.includes(excelRow.lotAddress.substring(0, 10))
+                        );
+                        
+                        if (lotAddressMatch) {
+                            result.matchType = 'similar';
+                            result.similarBuildings = [lotAddressMatch];
+                            result.matchedBuilding = lotAddressMatch;
+                        }
+                    }
+                }
+                
+                window.matchingResults.push(result);
+            });
+        }
+        
+        // 문자열 정규화 (공백, 특수문자 제거)
+        function normalizeString(str) {
+            return str.replace(/[\s\-\.]/g, '').toLowerCase();
+        }
+        
+        // 문자열 유사도 계산 (간단한 Levenshtein distance 기반)
+        function calculateSimilarity(str1, str2) {
+            const longer = str1.length > str2.length ? str1 : str2;
+            const shorter = str1.length > str2.length ? str2 : str1;
+            
+            if (longer.length === 0) return 1.0;
+            
+            const editDistance = levenshteinDistance(longer, shorter);
+            return (longer.length - editDistance) / longer.length;
+        }
+        
+        // Levenshtein distance 계산
+        function levenshteinDistance(str1, str2) {
+            const matrix = Array(str2.length + 1).fill(null).map(() =>
+                Array(str1.length + 1).fill(null));
+            
+            for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
+            for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
+            
+            for (let j = 1; j <= str2.length; j++) {
+                for (let i = 1; i <= str1.length; i++) {
+                    const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                    matrix[j][i] = Math.min(
+                        matrix[j][i - 1] + 1,
+                        matrix[j - 1][i] + 1,
+                        matrix[j - 1][i - 1] + indicator
+                    );
+                }
+            }
+            
+            return matrix[str2.length][str1.length];
+        }
+        
+        // 매칭 결과 표시
+        function showMatchingResults() {
+            document.getElementById('matchingSection').classList.add('show');
+            
+            // 통계 업데이트
+            const totalRows = window.matchingResults.length;
+            const exactMatched = window.matchingResults.filter(r => r.matchType === 'exact').length;
+            const similarMatched = window.matchingResults.filter(r => r.matchType === 'similar').length;
+            const unmatched = window.matchingResults.filter(r => r.matchType === 'none').length;
+            const readyToUpdate = window.matchingResults.filter(r => r.isReady).length;
+            
+            document.getElementById('totalRows').textContent = totalRows;
+            document.getElementById('exactMatched').textContent = exactMatched;
+            document.getElementById('similarMatched').textContent = similarMatched;
+            document.getElementById('unmatched').textContent = unmatched;
+            document.getElementById('readyToUpdate').textContent = readyToUpdate;
+            
+            // 테이블 표시
+            const tableBody = document.getElementById('matchingTableBody');
+            tableBody.innerHTML = window.matchingResults.map((result, index) => {
+                return `
+                    <tr style="background-color: ${getMatchColor(result.matchType)};">
+                        <td>${result.index}</td>
+                        <td>
+                            <strong>${result.excelData.buildingName}</strong>
+                            ${result.excelData.roadAddress ? `<br><small style="color: #666;">${result.excelData.roadAddress}</small>` : ''}
+                        </td>
+                        <td>${result.excelData.managementPhone}</td>
+                        <td>
+                            <span class="match-status match-${result.matchType}">
+                                ${getMatchStatusText(result.matchType)}
+                            </span>
+                        </td>
+                        <td>
+                            ${result.matchedBuilding ? `
+                                <strong>${result.matchedBuilding.name}</strong><br>
+                                <small style="color: #666;">${result.matchedBuilding.address}</small>
+                            ` : '매칭된 빌딩 없음'}
+                            ${result.similarBuildings.length > 1 ? `
+                                <div class="similar-options">
+                                    ${result.similarBuildings.slice(1, 3).map(building => `
+                                        <div class="similar-option" onclick="selectSimilarBuilding(${index}, ${building.id})">
+                                            ${building.name}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </td>
+                        <td>
+                            <select class="building-select" onchange="selectBuilding(${index}, this.value)" ${result.matchType === 'none' ? '' : ''}>
+                                <option value="">빌딩 선택...</option>
+                                ${window.buildingsData.map(building => `
+                                    <option value="${building.id}" ${result.selectedBuildingId === building.id ? 'selected' : ''}>
+                                        ${building.name}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // 업데이트 버튼 활성화/비활성화
+            const updateBtn = document.getElementById('updateBtn');
+            updateBtn.disabled = readyToUpdate === 0;
+        }
+        
+        // 유사 빌딩 선택
+        window.selectSimilarBuilding = function(resultIndex, buildingId) {
+            const building = window.buildingsData.find(b => b.id === buildingId);
+            if (building) {
+                window.matchingResults[resultIndex].matchedBuilding = building;
+                window.matchingResults[resultIndex].selectedBuildingId = buildingId;
+                window.matchingResults[resultIndex].isReady = true;
+                showMatchingResults();
+            }
+        };
+        
+        // 빌딩 선택
+        window.selectBuilding = function(resultIndex, buildingId) {
+            if (buildingId) {
+                const building = window.buildingsData.find(b => b.id == buildingId);
+                if (building) {
+                    window.matchingResults[resultIndex].matchedBuilding = building;
+                    window.matchingResults[resultIndex].selectedBuildingId = parseInt(buildingId);
+                    window.matchingResults[resultIndex].isReady = true;
+                    
+                    // 통계 업데이트
+                    const readyToUpdate = window.matchingResults.filter(r => r.isReady).length;
+                    document.getElementById('readyToUpdate').textContent = readyToUpdate;
+                    
+                    // 업데이트 버튼 상태 업데이트
+                    const updateBtn = document.getElementById('updateBtn');
+                    updateBtn.disabled = readyToUpdate === 0;
+                }
+            } else {
+                window.matchingResults[resultIndex].isReady = false;
+                const readyToUpdate = window.matchingResults.filter(r => r.isReady).length;
+                document.getElementById('readyToUpdate').textContent = readyToUpdate;
+                document.getElementById('updateBtn').disabled = readyToUpdate === 0;
+            }
+        };
+        
+        // 매칭 타입별 색상
+        function getMatchColor(matchType) {
+            switch(matchType) {
+                case 'exact': return '#f8fff8';
+                case 'similar': return '#fff8e1';
+                case 'none': return '#fff5f5';
+                default: return 'white';
+            }
+        }
+        
+        // 매칭 상태 텍스트
+        function getMatchStatusText(matchType) {
+            switch(matchType) {
+                case 'exact': return '✅ 정확 매칭';
+                case 'similar': return '🔍 유사 매칭';
+                case 'none': return '❌ 매칭 없음';
+                default: return '❓ 미확인';
+            }
+        }
+        
+        // 업데이트 시작
+        window.startUpdate = async function() {
+            if (!window.isAuthenticated) {
+                showToast('인증이 필요합니다', 'error');
+                return;
+            }
+            
+            const readyData = window.matchingResults.filter(result => result.isReady);
+            if (readyData.length === 0) {
+                showToast('업데이트할 데이터가 없습니다', 'warning');
+                return;
+            }
+            
+            if (!confirm(`${readyData.length}개의 관리사무소 정보를 업데이트하시겠습니까?`)) {
+                return;
+            }
+            
+            // 진행상황 섹션 표시
+            document.getElementById('progressSection').classList.add('show');
+            document.getElementById('updateBtn').disabled = true;
+            
+            // 로그 초기화
+            const logSection = document.getElementById('logSection');
+            logSection.innerHTML = '';
+            
+            addLog('업데이트를 시작합니다...', 'info');
+            
+            let successCount = 0;
+            let errorCount = 0;
+            
+            for (let i = 0; i < readyData.length; i++) {
+                const result = readyData[i];
+                const building = result.matchedBuilding;
+                
+                try {
+                    // buildingId는 Firebase 경로 규칙에 맞게 생성 (기존 시스템과 호환)
+                    // Firebase에서 허용하지 않는 문자들: . # $ [ ] ( ) 를 안전한 문자로 변환
+                    const buildingId = building.name
+                        .replace(/\s+/g, '-')           // 공백을 하이픈으로
+                        .replace(/[.#$\[\]()]/g, '_')   // Firebase 금지 문자를 언더스코어로
+                        .replace(/[^a-zA-Z0-9가-힣_-]/g, '_')  // 기타 특수문자도 언더스코어로
+                        .replace(/_{2,}/g, '_')         // 연속된 언더스코어를 하나로
+                        .replace(/^_|_$/g, '')          // 시작/끝 언더스코어 제거
+                        .toLowerCase();
+                    
+                    const managementData = {
+                        phone: result.excelData.managementPhone,
+                        note: result.excelData.roadAddress ? 
+                            `도로명: ${result.excelData.roadAddress}${result.excelData.lotAddress ? ', 지번: ' + result.excelData.lotAddress : ''}` : '',
+                        author: 'system_bulk_update',
+                        timestamp: Date.now(),
+                        buildingId: buildingId,
+                        buildingName: building.name,
+                        originalBuildingId: building.id // buildings.json의 원본 ID도 저장
+                    };
+                    
+                    if (window.database) {
+                        await window.firebaseSet(
+                            window.firebaseRef(window.database, `management/${buildingId}`),
+                            managementData
+                        );
+                    } else {
+                        localStorage.setItem(`management_${buildingId}`, JSON.stringify(managementData));
+                    }
+                    
+                    successCount++;
+                    addLog(`✅ ${building.name} (${result.excelData.buildingName}) → ${buildingId} - 업데이트 완료`, 'success');
+                    
+                } catch (error) {
+                    errorCount++;
+                    addLog(`❌ ${building.name} (${result.excelData.buildingName}) - 업데이트 실패: ${error.message}`, 'error');
+                    console.error('업데이트 오류:', error);
+                }
+                
+                // 진행상황 업데이트
+                const progress = ((i + 1) / readyData.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent = 
+                    `진행중... ${i + 1}/${readyData.length} (성공: ${successCount}, 실패: ${errorCount})`;
+                
+                // 잠시 대기 (과부하 방지)
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+            
+            // 완료 메시지
+            addLog(`🎉 업데이트 완료! 성공: ${successCount}개, 실패: ${errorCount}개`, successCount > 0 ? 'success' : 'error');
+            document.getElementById('progressText').textContent = 
+                `완료! 성공: ${successCount}개, 실패: ${errorCount}개`;
+            
+            document.getElementById('updateBtn').disabled = false;
+            
+            if (successCount > 0) {
+                showToast(`${successCount}개의 관리사무소 정보가 업데이트되었습니다`, 'success');
+            }
+            if (errorCount > 0) {
+                showToast(`${errorCount}개의 데이터 업데이트에 실패했습니다`, 'error');
+            }
+        };
+        
+        // 로그 추가
+        function addLog(message, type) {
+            const logSection = document.getElementById('logSection');
+            const logItem = document.createElement('div');
+            logItem.className = `log-item log-${type}`;
+            logItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logSection.appendChild(logItem);
+            
+            // 스크롤을 맨 아래로
+            logSection.scrollTop = logSection.scrollHeight;
+        }
+        
+        // 데이터 지우기
+        window.clearData = function() {
+            if (confirm('모든 업로드된 데이터를 지우시겠습니까?')) {
+                window.buildingsData = [];
+                window.excelData = [];
+                window.matchingResults = [];
+                
+                document.getElementById('matchingSection').classList.remove('show');
+                document.getElementById('progressSection').classList.remove('show');
+                document.getElementById('buildingsInput').value = '';
+                document.getElementById('excelInput').value = '';
+                document.getElementById('buildingsUploadArea').classList.remove('loaded');
+                document.getElementById('excelUploadArea').classList.remove('loaded');
+                document.getElementById('buildingsStatus').classList.remove('show');
+                document.getElementById('excelStatus').classList.remove('show');
+                
+                showToast('업로드된 데이터가 지워졌습니다', 'success');
+            }
+        };
+        
+        // 샘플 파일 다운로드
+        window.downloadSample = function() {
+            const sampleData = [
+                ['건물명', '도로명주소', '지번주소', '관리사무소번호'],
+                ['리버타워', '서울 영등포구 63로 36', '서울시 영등포구 여의도동 61-5', '02-785-1234'],
+                ['63빌딩', '서울 영등포구 여의도동 60', '서울 영등포구 여의도동 60', '02-789-5663'],
+                ['삼성동 코엑스', '서울 강남구 영동대로 513', '서울 강남구 삼성동 159', '02-6000-0114'],
+                ['롯데월드타워', '서울 송파구 올림픽로 300', '서울 송파구 신천동 29', '1661-2000']
+            ];
+            
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, '관리사무소정보');
+            
+            XLSX.writeFile(wb, '관리사무소정보_샘플.xlsx');
+            showToast('샘플 파일이 다운로드되었습니다', 'success');
+        };
+        
+        // 파일명용 날짜 포맷
+        function formatDateForFile(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            
+            return `${year}${month}${day}_${hours}${minutes}`;
+        }
+        
+        // 토스트 메시지 표시
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+        
+        // 엔터키로 로그인
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                adminLogin();
+            }
+        });
+    </script>
+</body>
+</html>
