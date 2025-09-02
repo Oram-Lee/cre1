@@ -1219,7 +1219,7 @@
                     author: window.currentUser,
                     timestamp: Date.now(),
                     buildingId: window.currentBuildingId,
-                    buildingName: window.currentBuildingData?.['빌딩명'] || window.currentBuildingData?.name || ''
+                    buildingName: window.currentBuildingData?.['빌딩명'] || ''
                 };
 
                 if (window.database) {
@@ -1483,7 +1483,7 @@
                     author: window.currentUser,
                     timestamp: Date.now(),
                     buildingId: window.currentBuildingId,
-                    buildingName: window.currentBuildingData?.['빌딩명'] || window.currentBuildingData?.name || ''
+                    buildingName: window.currentBuildingData?.['빌딩명'] || ''
                 };
                 
                 if (window.database) {
@@ -1570,7 +1570,7 @@
                     author: window.currentUser,
                     timestamp: Date.now(),
                     buildingId: window.currentBuildingId,
-                    buildingName: window.currentBuildingData?.['빌딩명'] || window.currentBuildingData?.name || '',
+                    buildingName: window.currentBuildingData?.['빌딩명'] || '',
                     deleted: false
                 };
                 
@@ -2036,16 +2036,8 @@
                         originalShowBuildingInfo(building);
                     }
                     
-                    // buildingId 생성 방식을 management_bulk_update.html과 통일
-                    window.currentBuildingId = (building.name || building['빌딩명'] || building.id)?.replace(/\s+/g, '-').toLowerCase();
+                    window.currentBuildingId = building.id || building['빌딩명']?.replace(/\s+/g, '-').toLowerCase();
                     window.currentBuildingData = building;
-                    
-                    // 디버깅을 위한 로그
-                    console.log('Building ID generated:', window.currentBuildingId);
-                    console.log('Building data:', window.currentBuildingData);
-                    console.log('Building name field:', building.name);
-                    console.log('Building 빌딩명 field:', building['빌딩명']);
-                    console.log('Building id field:', building.id);
                     
                     document.querySelectorAll('.tab-button').forEach(btn => {
                         btn.classList.remove('active');
@@ -2062,7 +2054,7 @@
                     }
                 };
                 
-                console.log('showBuildingInfo 함수 보강 완료 - buildingId 생성 방식 통일');
+                console.log('showBuildingInfo 함수 보강 완료');
             }, 500);
         });
     </script>
