@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - 사용자 및 렌트롤 관리</title>
+    
+    <!-- 파비콘 오류 방지 -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+        }
+        
+        .auth-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .auth-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #38a169;
+        }
+        
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+        
+        .btn-warning {
+            background: #ed8936;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #dd6b20;
+        }
+        
+        .btn-secondary {
+            background: #718096;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4a5568;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .user-form {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            display: grid;
+            gap: 5px;
+        }
+        
+        .form-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .user-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .user-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-email {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 3px;
+        }
+        
+        .user-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        .badge-admin {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        
+        .badge-user {
+            background: #d6f5d6;
+            color: #22543d;
+        }
+        
+        .rentroll-filters {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .rentroll-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .rentroll-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .rentroll-item:hover {
+            background: #e9ecef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .rentroll-item.memo-item {
+            background: #e8f4fd;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .rentroll-item.memo-item.pinned {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .rentroll-item.memo-item.deleted {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            opacity: 0.7;
+        }
+        
+        .rentroll-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .rentroll-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .rentroll-building {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .rentroll-content {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+        }
+        
+        .rentroll-table {
+            width: 100%;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .rentroll-table th,
+        .rentroll-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .rentroll-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            font-size: 12px;
+        }
+        
+        .rentroll-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .content-type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .content-type-badge.rentroll {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .content-type-badge.memo {
+            background: #cce7ff;
+            color: #004085;
+        }
+        
+        .pin-indicator {
+            position: absolute;
+            top: 35px;
+            right: 10px;
+            background: #ffc107;
+            color: #212529;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+        
+        .deleted-indicator {
+            position: absolute;
+            top: 35px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            justify-content: space-between;
+        }
+        
+        .search-box {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .json-preview {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow: auto;
+            white-space: pre;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        
+        .tab:hover {
+            color: #333;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .rentroll-filters {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+        }
+        
+        .loader.active {
+            display: block;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 3000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>🔧 관리자 대시보드</h1>
+            <div class="auth-section">
+                <input type="password" class="auth-input" id="adminPassword" placeholder="관리자 비밀번호" maxlength="6">
+                <button class="btn btn-primary" onclick="adminLogin()">로그인</button>
+            </div>
+        </div>
+        
+        <!-- 통계 -->
+        <div class="stats-grid" id="statsGrid" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">전체 사용자</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalAdmins">0</div>
+                <div class="stat-label">관리자</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalRentrolls">0</div>
+                <div class="stat-label">전체 렌트롤</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalMemos">0</div>
+                <div class="stat-label">전체 메모</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalBuildings">0</div>
+                <div class="stat-label">등록 빌딩</div>
+            </div>
+        </div>
+        
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content" id="mainContent" style="display: none;">
+            <!-- 사용자 관리 패널 -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">👥 사용자 관리</h2>
+                    <div>
+                        <button class="btn btn-success" onclick="exportUsersJSON()">📥 JSON 내보내기</button>
+                        <button class="btn btn-warning" onclick="importUsersJSON()">📤 JSON 가져오기</button>
+                    </div>
+                </div>
+                
+                <!-- 사용자 추가/수정 폼 -->
+                <div class="user-form">
+                    <div class="form-group">
+                        <label class="form-label">이메일</label>
+                        <input type="email" class="form-input" id="userEmail" placeholder="user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">비밀번호 (6자리 숫자)</label>
+                        <input type="password" class="form-input" id="userPassword" placeholder="123456" maxlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">권한</label>
+                        <select class="form-select" id="userRole">
+                            <option value="user">일반 사용자</option>
+                            <option value="admin">관리자</option>
+                        </select>
+                    </div>
+                    <div class="form-buttons">
+                        <button class="btn btn-primary" onclick="saveUser()">💾 저장</button>
+                        <button class="btn btn-secondary" onclick="resetUserForm()">🔄 초기화</button>
+                    </div>
+                </div>
+                
+                <!-- 사용자 검색 -->
+                <div class="action-bar">
+                    <div class="search-box">
+                        <input type="text" class="search-input" id="userSearch" placeholder="이메일로 검색..." onkeyup="searchUsers()">
+                    </div>
+                </div>
+                
+                <!-- 사용자 목록 -->
+                <div class="user-list" id="userList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <div>사용자가 없습니다</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 렌트롤&메모 조회 패널 -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">📊 렌트롤&메모 조회</h2>
+                    <button class="btn btn-success" onclick="exportRentrollsJSON()">📥 JSON 내보내기</button>
+                </div>
+                
+                <!-- 탭 -->
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('byTime')">⏰ 시간순</button>
+                    <button class="tab" onclick="switchTab('byBuilding')">🏢 빌딩별</button>
+                    <button class="tab" onclick="switchTab('byUser')">👤 사용자별</button>
+                </div>
+                
+                <!-- 필터 -->
+                <div class="rentroll-filters">
+                    <select class="form-select" id="buildingFilter" onchange="filterContent()">
+                        <option value="">모든 빌딩</option>
+                    </select>
+                    <select class="form-select" id="userFilter" onchange="filterContent()">
+                        <option value="">모든 사용자</option>
+                    </select>
+                    <select class="form-select" id="typeFilter" onchange="filterContent()">
+                        <option value="">렌트롤&메모</option>
+                        <option value="rentroll">렌트롤만</option>
+                        <option value="memo">메모만</option>
+                    </select>
+                    <select class="form-select" id="dateFilter" onchange="filterContent()">
+                        <option value="">전체 기간</option>
+                        <option value="today">오늘</option>
+                        <option value="week">이번 주</option>
+                        <option value="month">이번 달</option>
+                    </select>
+                </div>
+                
+                <!-- 콘텐츠 목록 -->
+                <div class="tab-content active" id="byTime">
+                    <div class="rentroll-list" id="contentListByTime">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <div>렌트롤&메모가 없습니다</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="byBuilding">
+                    <div class="rentroll-list" id="contentListByBuilding">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🏢</div>
+                            <div>빌딩별 렌트롤&메모가 없습니다</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="byUser">
+                    <div class="rentroll-list" id="contentListByUser">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">👤</div>
+                            <div>사용자별 렌트롤&메모가 없습니다</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JSON 미리보기 모달 -->
+    <div class="modal" id="jsonModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">JSON 데이터</h3>
+            </div>
+            <div class="json-preview" id="jsonPreview"></div>
+            <div class="form-buttons" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="downloadJSON()">💾 다운로드</button>
+                <button class="btn btn-secondary" onclick="closeModal()">닫기</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 파일 입력 (숨김) -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)">
+    
+    <!-- 로더 -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+    
+    <!-- 토스트 메시지 -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, onValue, remove, update, set, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",
+            authDomain: "rentroll-32a01.firebaseapp.com",
+            databaseURL: "https://rentroll-32a01-default-rtdb.firebaseio.com",
+            projectId: "rentroll-32a01",
+            storageBucket: "rentroll-32a01.appspot.com",
+            messagingSenderId: "2538299262",
+            appId: "1:2538299262:web:cdf4f01f5dc012e1299d2f"
+        };
+        
+        // 전역 변수
+        window.firebaseApp = null;
+        window.database = null;
+        window.isAuthenticated = false;
+        window.editingUserId = null;
+        window.currentJsonData = null;
+        window.currentJsonType = null;
+        
+        // 데이터 저장소
+        window.allUsers = {};
+        window.allRentrolls = [];
+        window.allMemos = [];
+        window.allContent = []; // 렌트롤과 메모를 합친 배열
+        window.filteredContent = [];
+        
+        // Firebase 초기화
+        try {
+            window.firebaseApp = initializeApp(firebaseConfig);
+            window.database = getDatabase(window.firebaseApp);
+            console.log('Firebase 연결 성공');
+            
+            // Firebase 함수들을 전역으로 노출
+            window.firebaseRef = ref;
+            window.firebasePush = push;
+            window.firebaseGet = get;
+            window.firebaseSet = set;
+            window.firebaseUpdate = update;
+            window.firebaseRemove = remove;
+            window.firebaseOnValue = onValue;
+            
+        } catch (error) {
+            console.error('Firebase 초기화 실패:', error);
+            showToast('Firebase 연결 실패. LocalStorage 모드로 실행', 'error');
+        }
+        
+        // 관리자 로그인
+        window.adminLogin = function() {
+            const password = document.getElementById('adminPassword').value;
+            
+            // 간단한 관리자 비밀번호 체크 (실제로는 서버에서 검증해야 함)
+            if (password === '999999') {
+                window.isAuthenticated = true;
+                document.getElementById('statsGrid').style.display = 'grid';
+                document.getElementById('mainContent').style.display = 'grid';
+                document.getElementById('adminPassword').value = '';
+                
+                loadUsers();
+                loadRentrolls();
+                loadMemos();
+                updateStats();
+                
+                showToast('관리자로 로그인되었습니다', 'success');
+            } else {
+                showToast('비밀번호가 올바르지 않습니다', 'error');
+            }
+        };
+        
+        // 사용자 목록 로드
+        window.loadUsers = async function() {
+            showLoader();
+            
+            try {
+                if (window.database) {
+                    const usersRef = window.firebaseRef(window.database, 'users');
+                    const snapshot = await window.firebaseGet(usersRef);
+                    
+                    if (snapshot.exists()) {
+                        window.allUsers = snapshot.val();
+                        displayUsers();
+                    }
+                } else {
+                    // LocalStorage 모드
+                    const storedUsers = localStorage.getItem('authorized_users');
+                    if (storedUsers) {
+                        window.allUsers = JSON.parse(storedUsers);
+                        // 키 변환 (이메일의 @, .을 _로 변환)
+                        const convertedUsers = {};
+                        Object.entries(window.allUsers).forEach(([email, userData]) => {
+                            const key = email.replace(/[@.]/g, '_');
+                            convertedUsers[key] = {
+                                ...userData,
+                                email: email
+                            };
+                        });
+                        window.allUsers = convertedUsers;
+                    }
+                    displayUsers();
+                }
+            } catch (error) {
+                console.error('사용자 로드 오류:', error);
+                showToast('사용자 데이터 로드 실패', 'error');
+            } finally {
+                hideLoader();
+            }
+        };
+        
+        // 사용자 표시
+        window.displayUsers = function() {
+            const userList = document.getElementById('userList');
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            
+            const users = Object.entries(window.allUsers).filter(([key, user]) => {
+                return user.email.toLowerCase().includes(searchTerm);
+            });
+            
+            if (users.length === 0) {
+                userList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <div>사용자가 없습니다</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            userList.innerHTML = users.map(([key, user]) => `
+                <div class="user-item">
+                    <div class="user-info">
+                        <div class="user-email">${user.email}</div>
+                        <div class="user-meta">
+                            비밀번호: ${user.password} | 
+                            <span class="badge ${user.role === 'admin' ? 'badge-admin' : 'badge-user'}">
+                                ${user.role === 'admin' ? '관리자' : '사용자'}
+                            </span> | 
+                            생성: ${formatDate(user.created)} | 
+                            첫 로그인: ${user.firstLogin !== false ? '예' : '아니오'}
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-warning" onclick="editUser('${key}')">수정</button>
+                        <button class="btn btn-danger" onclick="deleteUser('${key}')">삭제</button>
+                        <button class="btn btn-secondary" onclick="resetUserPassword('${key}')">PW 초기화</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            // 사용자 필터 업데이트
+            updateUserFilter();
+        };
+        
+        // 사용자 비밀번호 초기화 (firstLogin: true로 설정)
+        window.resetUserPassword = async function(userKey) {
+            if (!confirm('이 사용자의 비밀번호를 초기화하시겠습니까?\n다음 로그인 시 비밀번호 변경을 요구합니다.')) return;
+            
+            try {
+                const user = window.allUsers[userKey];
+                const updatedUser = {
+                    ...user,
+                    firstLogin: true,
+                    lastPasswordReset: Date.now()
+                };
+                
+                if (window.database) {
+                    await window.firebaseSet(
+                        window.firebaseRef(window.database, `users/${userKey}`),
+                        updatedUser
+                    );
+                } else {
+                    window.allUsers[userKey] = updatedUser;
+                    localStorage.setItem('authorized_users', JSON.stringify(
+                        Object.fromEntries(
+                            Object.entries(window.allUsers).map(([key, userData]) => [userData.email, userData])
+                        )
+                    ));
+                }
+                
+                showToast('사용자 비밀번호가 초기화되었습니다', 'success');
+                loadUsers();
+                
+            } catch (error) {
+                console.error('비밀번호 초기화 오류:', error);
+                showToast('비밀번호 초기화 실패', 'error');
+            }
+        };
+        
+        // 사용자 저장
+        window.saveUser = async function() {
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value.trim();
+            const role = document.getElementById('userRole').value;
+            
+            if (!email || !password) {
+                showToast('이메일과 비밀번호를 입력하세요', 'error');
+                return;
+            }
+            
+            if (!/^\d{6}$/.test(password)) {
+                showToast('비밀번호는 6자리 숫자여야 합니다', 'error');
+                return;
+            }
+            
+            const userKey = email.replace(/[@.]/g, '_');
+            
+            const userData = {
+                email: email,
+                password: password,
+                role: role,
+                firstLogin: true, // 새 사용자는 항상 첫 로그인으로 설정
+                created: window.editingUserId ? window.allUsers[window.editingUserId].created : Date.now()
+            };
+            
+            try {
+                if (window.database) {
+                    await window.firebaseSet(
+                        window.firebaseRef(window.database, `users/${userKey}`),
+                        userData
+                    );
+                } else {
+                    window.allUsers[userKey] = userData;
+                    const usersByEmail = Object.fromEntries(
+                        Object.entries(window.allUsers).map(([key, userData]) => [userData.email, userData])
+                    );
+                    localStorage.setItem('authorized_users', JSON.stringify(usersByEmail));
+                }
+                
+                showToast(window.editingUserId ? '사용자 정보가 수정되었습니다' : '새 사용자가 추가되었습니다', 'success');
+                resetUserForm();
+                loadUsers();
+                updateStats();
+                
+            } catch (error) {
+                console.error('사용자 저장 오류:', error);
+                showToast('사용자 저장 실패', 'error');
+            }
+        };
+        
+        // 사용자 수정
+        window.editUser = function(userKey) {
+            const user = window.allUsers[userKey];
+            document.getElementById('userEmail').value = user.email;
+            document.getElementById('userPassword').value = user.password;
+            document.getElementById('userRole').value = user.role;
+            window.editingUserId = userKey;
+        };
+        
+        // 사용자 삭제
+        window.deleteUser = async function(userKey) {
+            if (!confirm('정말 이 사용자를 삭제하시겠습니까?')) return;
+            
+            try {
+                if (window.database) {
+                    await window.firebaseRemove(
+                        window.firebaseRef(window.database, `users/${userKey}`)
+                    );
+                } else {
+                    delete window.allUsers[userKey];
+                    const usersByEmail = Object.fromEntries(
+                        Object.entries(window.allUsers).map(([key, userData]) => [userData.email, userData])
+                    );
+                    localStorage.setItem('authorized_users', JSON.stringify(usersByEmail));
+                }
+                
+                showToast('사용자가 삭제되었습니다', 'success');
+                loadUsers();
+                updateStats();
+                
+            } catch (error) {
+                console.error('사용자 삭제 오류:', error);
+                showToast('사용자 삭제 실패', 'error');
+            }
+        };
+        
+        // 사용자 폼 초기화
+        window.resetUserForm = function() {
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userRole').value = 'user';
+            window.editingUserId = null;
+        };
+        
+        // 사용자 검색
+        window.searchUsers = function() {
+            displayUsers();
+        };
+        
+        // 렌트롤 로드
+        window.loadRentrolls = async function() {
+            try {
+                window.allRentrolls = [];
+                
+                if (window.database) {
+                    const rentrollsRef = window.firebaseRef(window.database, 'rentrolls');
+                    const snapshot = await window.firebaseGet(rentrollsRef);
+                    
+                    if (snapshot.exists()) {
+                        const buildingsData = snapshot.val();
+                        
+                        // 모든 빌딩의 렌트롤을 하나의 배열로 합치기
+                        Object.entries(buildingsData).forEach(([buildingId, rentrolls]) => {
+                            Object.entries(rentrolls).forEach(([rentrollId, rentroll]) => {
+                                window.allRentrolls.push({
+                                    id: rentrollId,
+                                    buildingId: buildingId,
+                                    type: 'rentroll',
+                                    ...rentroll
+                                });
+                            });
+                        });
+                    }
+                } else {
+                    // LocalStorage 모드
+                    const keys = Object.keys(localStorage).filter(key => key.startsWith('rentrolls_'));
+                    keys.forEach(key => {
+                        const buildingId = key.replace('rentrolls_', '');
+                        const rentrolls = JSON.parse(localStorage.getItem(key) || '[]');
+                        rentrolls.forEach(rentroll => {
+                            window.allRentrolls.push({
+                                ...rentroll,
+                                buildingId: buildingId,
+                                type: 'rentroll'
+                            });
+                        });
+                    });
+                }
+                
+                combineContent();
+                
+            } catch (error) {
+                console.error('렌트롤 로드 오류:', error);
+                showToast('렌트롤 데이터 로드 실패', 'error');
+            }
+        };
+        
+        // 메모 로드
+        window.loadMemos = async function() {
+            try {
+                window.allMemos = [];
+                
+                if (window.database) {
+                    const memosRef = window.firebaseRef(window.database, 'memos');
+                    const snapshot = await window.firebaseGet(memosRef);
+                    
+                    if (snapshot.exists()) {
+                        const buildingsData = snapshot.val();
+                        
+                        // 모든 빌딩의 메모를 하나의 배열로 합치기
+                        Object.entries(buildingsData).forEach(([buildingId, memos]) => {
+                            Object.entries(memos).forEach(([memoId, memo]) => {
+                                window.allMemos.push({
+                                    id: memoId,
+                                    buildingId: buildingId,
+                                    type: 'memo',
+                                    ...memo
+                                });
+                            });
+                        });
+                    }
+                } else {
+                    // LocalStorage 모드
+                    const keys = Object.keys(localStorage).filter(key => key.startsWith('memos_'));
+                    keys.forEach(key => {
+                        const buildingId = key.replace('memos_', '');
+                        const memos = JSON.parse(localStorage.getItem(key) || '[]');
+                        memos.forEach(memo => {
+                            window.allMemos.push({
+                                ...memo,
+                                buildingId: buildingId,
+                                type: 'memo'
+                            });
+                        });
+                    });
+                }
+                
+                combineContent();
+                
+            } catch (error) {
+                console.error('메모 로드 오류:', error);
+                showToast('메모 데이터 로드 실패', 'error');
+            }
+        };
+        
+        // 렌트롤과 메모를 합친 배열 생성
+        window.combineContent = function() {
+            window.allContent = [...window.allRentrolls, ...window.allMemos];
+            window.filteredContent = [...window.allContent];
+            displayContent();
+            updateFilters();
+        };
+        
+        // 콘텐츠 표시
+        window.displayContent = function() {
+            displayContentByTime();
+            displayContentByBuilding();
+            displayContentByUser();
+        };
+        
+        // 시간순 콘텐츠 표시
+        window.displayContentByTime = function() {
+            const container = document.getElementById('contentListByTime');
+            const content = [...window.filteredContent].sort((a, b) => b.timestamp - a.timestamp);
+            
+            if (content.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📊</div>
+                        <div>렌트롤&메모가 없습니다</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = content.map(item => createContentItemHTML(item)).join('');
+        };
+        
+        // 빌딩별 콘텐츠 표시
+        window.displayContentByBuilding = function() {
+            const container = document.getElementById('contentListByBuilding');
+            const grouped = {};
+            
+            window.filteredContent.forEach(item => {
+                const building = item.buildingName || item.buildingId;
+                if (!grouped[building]) grouped[building] = [];
+                grouped[building].push(item);
+            });
+            
+            if (Object.keys(grouped).length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏢</div>
+                        <div>빌딩별 렌트롤&메모가 없습니다</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = Object.entries(grouped).map(([building, items]) => `
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">🏢 ${building} (${items.length}개)</h3>
+                    ${items.sort((a, b) => b.timestamp - a.timestamp).map(item => createContentItemHTML(item)).join('')}
+                </div>
+            `).join('');
+        };
+        
+        // 사용자별 콘텐츠 표시
+        window.displayContentByUser = function() {
+            const container = document.getElementById('contentListByUser');
+            const grouped = {};
+            
+            window.filteredContent.forEach(item => {
+                if (!grouped[item.author]) grouped[item.author] = [];
+                grouped[item.author].push(item);
+            });
+            
+            if (Object.keys(grouped).length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👤</div>
+                        <div>사용자별 렌트롤&메모가 없습니다</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = Object.entries(grouped).map(([author, items]) => `
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">👤 ${author} (${items.length}개)</h3>
+                    ${items.sort((a, b) => b.timestamp - a.timestamp).map(item => createContentItemHTML(item)).join('')}
+                </div>
+            `).join('');
+        };
+        
+        // 콘텐츠 아이템 HTML 생성
+        function createContentItemHTML(item) {
+            const isRentroll = item.type === 'rentroll';
+            const isMemo = item.type === 'memo';
+            const isDeleted = item.deleted;
+            const isPinned = item.pinned;
+            
+            let contentHTML = '';
+            let additionalClass = '';
+            
+            if (isRentroll) {
+                // 렌트롤 내용 표시
+                contentHTML = `
+                    <table class="rentroll-table">
+                        <tr><th>층</th><td>${item.floor || '-'}</td></tr>
+                        <tr><th>입주사명</th><td>${item.tenant || '-'}</td></tr>
+                        <tr><th>계약기간</th><td>${item.contractPeriod || '-'}</td></tr>
+                        <tr><th>비고</th><td>${item.note || '-'}</td></tr>
+                    </table>
+                `;
+            } else if (isMemo) {
+                // 메모 내용 표시
+                contentHTML = `<div class="rentroll-content">${escapeHtml(item.content)}</div>`;
+                additionalClass = 'memo-item';
+                if (isPinned) additionalClass += ' pinned';
+                if (isDeleted) additionalClass += ' deleted';
+            }
+            
+            return `
+                <div class="rentroll-item ${additionalClass}">
+                    <div class="content-type-badge ${item.type}">${isRentroll ? '렌트롤' : '메모'}</div>
+                    ${isPinned ? '<div class="pin-indicator">📌 공지</div>' : ''}
+                    ${isDeleted ? '<div class="deleted-indicator">삭제됨</div>' : ''}
+                    <div class="rentroll-header">
+                        <div>
+                            <div class="rentroll-building">${item.buildingName || item.buildingId}</div>
+                            <div class="rentroll-meta">
+                                작성자: ${item.author} | ${formatDateTime(item.timestamp)}
+                                ${isDeleted ? ` | 삭제: ${item.deletedBy} (${formatDateTime(item.deletedAt)})` : ''}
+                            </div>
+                        </div>
+                        <button class="btn btn-danger" onclick="delete${isRentroll ? 'Rentroll' : 'Memo'}('${item.buildingId}', '${item.id}')">삭제</button>
+                    </div>
+                    ${contentHTML}
+                </div>
+            `;
+        }
+        
+        // 렌트롤 삭제
+        window.deleteRentroll = async function(buildingId, rentrollId) {
+            if (!confirm('정말 이 렌트롤을 삭제하시겠습니까?')) return;
+            
+            try {
+                if (window.database) {
+                    await window.firebaseRemove(
+                        window.firebaseRef(window.database, `rentrolls/${buildingId}/${rentrollId}`)
+                    );
+                } else {
+                    let rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${buildingId}`) || '[]');
+                    rentrolls = rentrolls.filter(r => r.id !== rentrollId);
+                    localStorage.setItem(`rentrolls_${buildingId}`, JSON.stringify(rentrolls));
+                }
+                
+                showToast('렌트롤이 삭제되었습니다', 'success');
+                loadRentrolls();
+                updateStats();
+                
+            } catch (error) {
+                console.error('렌트롤 삭제 오류:', error);
+                showToast('렌트롤 삭제 실패', 'error');
+            }
+        };
+        
+        // 메모 삭제
+        window.deleteMemo = async function(buildingId, memoId) {
+            if (!confirm('정말 이 메모를 삭제하시겠습니까?')) return;
+            
+            try {
+                if (window.database) {
+                    await window.firebaseRemove(
+                        window.firebaseRef(window.database, `memos/${buildingId}/${memoId}`)
+                    );
+                } else {
+                    let memos = JSON.parse(localStorage.getItem(`memos_${buildingId}`) || '[]');
+                    memos = memos.filter(m => m.id !== memoId);
+                    localStorage.setItem(`memos_${buildingId}`, JSON.stringify(memos));
+                }
+                
+                showToast('메모가 삭제되었습니다', 'success');
+                loadMemos();
+                updateStats();
+                
+            } catch (error) {
+                console.error('메모 삭제 오류:', error);
+                showToast('메모 삭제 실패', 'error');
+            }
+        };
+        
+        // 탭 전환
+        window.switchTab = function(tabName) {
+            // 탭 버튼 활성화
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 탭 컨텐츠 표시
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+        };
+        
+        // 필터 업데이트
+        window.updateFilters = function() {
+            // 빌딩 필터
+            const buildingFilter = document.getElementById('buildingFilter');
+            const buildings = [...new Set(window.allContent.map(r => r.buildingName || r.buildingId))];
+            buildingFilter.innerHTML = '<option value="">모든 빌딩</option>' + 
+                buildings.map(b => `<option value="${b}">${b}</option>`).join('');
+        };
+        
+        // 사용자 필터 업데이트
+        window.updateUserFilter = function() {
+            const userFilter = document.getElementById('userFilter');
+            const users = Object.values(window.allUsers).map(u => u.email);
+            userFilter.innerHTML = '<option value="">모든 사용자</option>' + 
+                users.map(u => `<option value="${u}">${u}</option>`).join('');
+        };
+        
+        // 콘텐츠 필터링
+        window.filterContent = function() {
+            const building = document.getElementById('buildingFilter').value;
+            const user = document.getElementById('userFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            
+            window.filteredContent = window.allContent.filter(item => {
+                if (building && (item.buildingName || item.buildingId) !== building) return false;
+                if (user && item.author !== user) return false;
+                if (type && item.type !== type) return false;
+                
+                if (dateFilter) {
+                    const now = Date.now();
+                    const timestamp = item.timestamp;
+                    
+                    switch(dateFilter) {
+                        case 'today':
+                            const today = new Date().setHours(0,0,0,0);
+                            if (timestamp < today) return false;
+                            break;
+                        case 'week':
+                            const weekAgo = now - (7 * 24 * 60 * 60 * 1000);
+                            if (timestamp < weekAgo) return false;
+                            break;
+                        case 'month':
+                            const monthAgo = now - (30 * 24 * 60 * 60 * 1000);
+                            if (timestamp < monthAgo) return false;
+                            break;
+                    }
+                }
+                
+                return true;
+            });
+            
+            displayContent();
+        };
+        
+        // 통계 업데이트
+        window.updateStats = function() {
+            const totalUsers = Object.keys(window.allUsers).length;
+            const totalAdmins = Object.values(window.allUsers).filter(u => u.role === 'admin').length;
+            const totalRentrolls = window.allRentrolls.length;
+            const totalMemos = window.allMemos.filter(m => !m.deleted).length; // 삭제되지 않은 메모만 카운트
+            const totalBuildings = [...new Set([...window.allRentrolls, ...window.allMemos].map(r => r.buildingId))].length;
+            
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('totalAdmins').textContent = totalAdmins;
+            document.getElementById('totalRentrolls').textContent = totalRentrolls;
+            document.getElementById('totalMemos').textContent = totalMemos;
+            document.getElementById('totalBuildings').textContent = totalBuildings;
+        };
+        
+        // JSON 내보내기 - 사용자
+        window.exportUsersJSON = function() {
+            window.currentJsonData = window.allUsers;
+            window.currentJsonType = 'users';
+            
+            document.getElementById('jsonPreview').textContent = JSON.stringify(window.allUsers, null, 2);
+            document.getElementById('jsonModal').classList.add('active');
+        };
+        
+        // JSON 내보내기 - 렌트롤&메모
+        window.exportRentrollsJSON = function() {
+            // 렌트롤과 메모를 빌딩별로 그룹화
+            const groupedData = {
+                rentrolls: {},
+                memos: {}
+            };
+            
+            // 렌트롤 그룹화
+            window.allRentrolls.forEach(rentroll => {
+                if (!groupedData.rentrolls[rentroll.buildingId]) {
+                    groupedData.rentrolls[rentroll.buildingId] = {};
+                }
+                const { id, buildingId, type, ...data } = rentroll;
+                groupedData.rentrolls[rentroll.buildingId][id] = data;
+            });
+            
+            // 메모 그룹화
+            window.allMemos.forEach(memo => {
+                if (!groupedData.memos[memo.buildingId]) {
+                    groupedData.memos[memo.buildingId] = {};
+                }
+                const { id, buildingId, type, ...data } = memo;
+                groupedData.memos[memo.buildingId][id] = data;
+            });
+            
+            window.currentJsonData = groupedData;
+            window.currentJsonType = 'rentrolls_memos';
+            
+            document.getElementById('jsonPreview').textContent = JSON.stringify(groupedData, null, 2);
+            document.getElementById('jsonModal').classList.add('active');
+        };
+        
+        // JSON 다운로드
+        window.downloadJSON = function() {
+            const dataStr = JSON.stringify(window.currentJsonData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${window.currentJsonType}_${formatDateForFile(Date.now())}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            showToast('JSON 파일이 다운로드되었습니다', 'success');
+        };
+        
+        // JSON 가져오기 - 사용자
+        window.importUsersJSON = function() {
+            window.currentJsonType = 'users';
+            document.getElementById('fileInput').click();
+        };
+        
+        // 파일 처리
+        window.handleFileImport = async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                if (window.currentJsonType === 'users') {
+                    // Firebase에 사용자 데이터 저장
+                    if (window.database) {
+                        await window.firebaseSet(
+                            window.firebaseRef(window.database, 'users'),
+                            data
+                        );
+                    } else {
+                        const usersByEmail = Object.fromEntries(
+                            Object.entries(data).map(([key, userData]) => [userData.email, userData])
+                        );
+                        localStorage.setItem('authorized_users', JSON.stringify(usersByEmail));
+                    }
+                    
+                    showToast('사용자 데이터를 가져왔습니다', 'success');
+                    loadUsers();
+                    updateStats();
+                }
+                
+            } catch (error) {
+                console.error('JSON 가져오기 오류:', error);
+                showToast('올바른 JSON 파일이 아닙니다', 'error');
+            }
+            
+            event.target.value = '';
+        };
+        
+        // 모달 닫기
+        window.closeModal = function() {
+            document.getElementById('jsonModal').classList.remove('active');
+        };
+        
+        // 유틸리티 함수들
+        function formatDate(timestamp) {
+            return new Date(timestamp).toLocaleDateString('ko-KR');
+        }
+        
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('ko-KR');
+        }
+        
+        function formatDateForFile(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            
+            return `${year}${month}${day}_${hours}${minutes}`;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function showLoader() {
+            document.getElementById('loader').classList.add('active');
+        }
+        
+        function hideLoader() {
+            document.getElementById('loader').classList.remove('active');
+        }
+        
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = type === 'error' ? '#f56565' : type === 'success' ? '#48bb78' : '#333';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // 엔터키로 로그인
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                adminLogin();
+            }
+        });
+    </script>
+</body>
+</html>
