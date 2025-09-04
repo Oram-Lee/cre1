@@ -98,123 +98,6 @@
             background: #0056b3;
         }
         
-        /* 비밀번호 변경 섹션 */
-        .password-change-section {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            display: none;
-        }
-        
-        .password-change-section.show {
-            display: block;
-        }
-        
-        .password-change-title {
-            color: #856404;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .password-change-subtitle {
-            color: #856404;
-            font-size: 12px;
-            text-align: center;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
-        .password-change-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .password-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .password-input-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #495057;
-        }
-        
-        .password-input-group input {
-            padding: 8px;
-            border: 2px solid #ffc107;
-            border-radius: 4px;
-            font-size: 14px;
-            text-align: center;
-            font-family: monospace;
-        }
-        
-        .password-input-group input:focus {
-            outline: none;
-            border-color: #ff8c00;
-            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
-        }
-        
-        .password-match-indicator {
-            font-size: 11px;
-            margin-top: 5px;
-            text-align: center;
-        }
-        
-        .password-match-indicator.match {
-            color: #28a745;
-        }
-        
-        .password-match-indicator.no-match {
-            color: #dc3545;
-        }
-        
-        .password-change-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        
-        .password-confirm-button, .password-cancel-button {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .password-confirm-button {
-            background: #ffc107;
-            color: #212529;
-        }
-        
-        .password-confirm-button:hover {
-            background: #e0a800;
-        }
-        
-        .password-confirm-button:disabled {
-            background: #6c757d;
-            color: white;
-            cursor: not-allowed;
-        }
-        
-        .password-cancel-button {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .password-cancel-button:hover {
-            background: #5a6268;
-        }
-        
         /* 로그인 상태 표시 - 80% 축소 */
         .auth-status {
             display: flex;
@@ -960,12 +843,12 @@
                 <div class="auth-section">
                     <div class="auth-form" id="authForm">
                         <input type="email" class="auth-input" id="emailInput" placeholder="이메일" onkeypress="handleAuthKeyPress(event)">
-                        <input type="password" class="auth-input" id="passwordInput" placeholder="임시 비밀번호(6자리)" maxlength="6" onkeypress="handleAuthKeyPress(event)">
+                        <input type="password" class="auth-input" id="passwordInput" placeholder="비밀번호(6자리)" maxlength="6" onkeypress="handleAuthKeyPress(event)">
                         <label class="save-email-checkbox">
                             <input type="checkbox" id="saveEmailCheckbox">
                             <span>저장</span>
                         </label>
-                        <button class="auth-button" onclick="authenticate()">로그인</button>
+                        <button class="auth-button" onclick="authenticate()">인증(로그인)</button>
                     </div>
                     <div class="auth-status hidden" id="authStatus">
                         <div class="user-info">
@@ -973,44 +856,6 @@
                             <span class="admin-badge hidden" id="adminBadge">관리자</span>
                         </div>
                         <button class="logout-button" onclick="logout()">로그아웃</button>
-                    </div>
-                </div>
-                
-                <!-- 비밀번호 변경 섹션 -->
-                <div class="password-change-section" id="passwordChangeSection">
-                    <div class="password-change-title">🔐 비밀번호 변경</div>
-                    <div class="password-change-subtitle">
-                        보안을 위해 새로운 비밀번호를 설정해주세요.<br>
-                        숫자 6자리로 입력해주시기 바랍니다.
-                    </div>
-                    <div class="password-change-form">
-                        <div class="password-input-group">
-                            <label for="newPasswordInput">새 비밀번호 (숫자 6자리)</label>
-                            <input 
-                                type="password" 
-                                id="newPasswordInput" 
-                                maxlength="6" 
-                                placeholder="••••••"
-                                onkeypress="handlePasswordChangeKeyPress(event)"
-                                oninput="checkPasswordMatch()"
-                            >
-                        </div>
-                        <div class="password-input-group">
-                            <label for="confirmPasswordInput">비밀번호 확인</label>
-                            <input 
-                                type="password" 
-                                id="confirmPasswordInput" 
-                                maxlength="6" 
-                                placeholder="••••••"
-                                onkeypress="handlePasswordChangeKeyPress(event)"
-                                oninput="checkPasswordMatch()"
-                            >
-                            <div class="password-match-indicator" id="passwordMatchIndicator"></div>
-                        </div>
-                        <div class="password-change-buttons">
-                            <button class="password-confirm-button" id="passwordConfirmButton" onclick="changePassword()" disabled>변경하기</button>
-                            <button class="password-cancel-button" onclick="cancelPasswordChange()">취소</button>
-                        </div>
                     </div>
                 </div>
                 
@@ -1150,7 +995,6 @@
         window.editingManagementId = null;
         window.contractFromPicker = null;
         window.contractToPicker = null;
-        window.isFirstLogin = false; // 최초 로그인 플래그
         
         // Firebase 초기화
         try {
@@ -1482,156 +1326,7 @@
             }
         };
         
-        // 비밀번호 변경 키 입력 처리
-        window.handlePasswordChangeKeyPress = function(event) {
-            // 숫자만 입력 허용
-            if (!/[0-9]/.test(event.key) && !['Backspace', 'Delete', 'Tab', 'Escape', 'Enter'].includes(event.key)) {
-                event.preventDefault();
-            }
-            
-            if (event.key === 'Enter' || event.keyCode === 13) {
-                const newPassword = document.getElementById('newPasswordInput').value;
-                const confirmPassword = document.getElementById('confirmPasswordInput').value;
-                if (newPassword && confirmPassword && newPassword === confirmPassword) {
-                    changePassword();
-                }
-            }
-        };
-        
-        // 비밀번호 일치 확인
-        window.checkPasswordMatch = function() {
-            const newPassword = document.getElementById('newPasswordInput').value.trim();
-            const confirmPassword = document.getElementById('confirmPasswordInput').value.trim();
-            const indicator = document.getElementById('passwordMatchIndicator');
-            const confirmButton = document.getElementById('passwordConfirmButton');
-            
-            // 숫자만 허용하는 검증
-            const numericRegex = /^\d{6}$/;
-            
-            if (!newPassword || !confirmPassword) {
-                indicator.textContent = '';
-                indicator.className = 'password-match-indicator';
-                confirmButton.disabled = true;
-                return;
-            }
-            
-            if (!numericRegex.test(newPassword)) {
-                indicator.textContent = '숫자 6자리를 입력해주세요';
-                indicator.className = 'password-match-indicator no-match';
-                confirmButton.disabled = true;
-                return;
-            }
-            
-            if (newPassword === confirmPassword) {
-                if (numericRegex.test(confirmPassword)) {
-                    indicator.textContent = '✓ 비밀번호가 일치합니다';
-                    indicator.className = 'password-match-indicator match';
-                    confirmButton.disabled = false;
-                } else {
-                    indicator.textContent = '숫자 6자리를 입력해주세요';
-                    indicator.className = 'password-match-indicator no-match';
-                    confirmButton.disabled = true;
-                }
-            } else {
-                indicator.textContent = '비밀번호가 일치하지 않습니다';
-                indicator.className = 'password-match-indicator no-match';
-                confirmButton.disabled = true;
-            }
-        };
-        
-        // 비밀번호 변경 함수
-        window.changePassword = async function() {
-            const newPassword = document.getElementById('newPasswordInput').value.trim();
-            const confirmPassword = document.getElementById('confirmPasswordInput').value.trim();
-            
-            if (!newPassword || !confirmPassword) {
-                alert('새 비밀번호와 확인 비밀번호를 모두 입력하세요');
-                return;
-            }
-            
-            if (!/^\d{6}$/.test(newPassword)) {
-                alert('비밀번호는 숫자 6자리여야 합니다');
-                return;
-            }
-            
-            if (newPassword !== confirmPassword) {
-                alert('비밀번호가 일치하지 않습니다');
-                return;
-            }
-            
-            try {
-                if (window.database) {
-                    const userKey = window.currentUser.replace(/[@.]/g, '_');
-                    await window.firebaseUpdate(
-                        window.firebaseRef(window.database, `users/${userKey}`),
-                        {
-                            password: newPassword,
-                            firstLogin: false,
-                            lastPasswordChange: Date.now()
-                        }
-                    );
-                } else {
-                    const users = JSON.parse(localStorage.getItem('authorized_users') || '{}');
-                    if (users[window.currentUser]) {
-                        users[window.currentUser].password = newPassword;
-                        users[window.currentUser].firstLogin = false;
-                        users[window.currentUser].lastPasswordChange = Date.now();
-                        localStorage.setItem('authorized_users', JSON.stringify(users));
-                    }
-                }
-                
-                // 비밀번호 변경 완료 처리
-                window.isFirstLogin = false;
-                hidePasswordChangeSection();
-                
-                alert('비밀번호가 성공적으로 변경되었습니다!\n이후 변경된 비밀번호로 로그인해주세요.');
-                
-                // 입력 필드 초기화 및 UI 활성화
-                clearPasswordChangeInputs();
-                enableMainFeatures();
-                
-            } catch (error) {
-                console.error('비밀번호 변경 오류:', error);
-                alert('비밀번호 변경 중 오류가 발생했습니다');
-            }
-        };
-        
-        // 비밀번호 변경 취소
-        window.cancelPasswordChange = function() {
-            if (confirm('비밀번호 변경을 취소하시겠습니까?\n로그아웃됩니다.')) {
-                logout();
-                hidePasswordChangeSection();
-                clearPasswordChangeInputs();
-            }
-        };
-        
-        // 비밀번호 변경 섹션 표시/숨김
-        function showPasswordChangeSection() {
-            document.getElementById('passwordChangeSection').classList.add('show');
-        }
-        
-        function hidePasswordChangeSection() {
-            document.getElementById('passwordChangeSection').classList.remove('show');
-        }
-        
-        function clearPasswordChangeInputs() {
-            document.getElementById('newPasswordInput').value = '';
-            document.getElementById('confirmPasswordInput').value = '';
-            document.getElementById('passwordMatchIndicator').textContent = '';
-            document.getElementById('passwordConfirmButton').disabled = true;
-        }
-        
-        // 메인 기능 활성화
-        function enableMainFeatures() {
-            document.getElementById('rentrollInputForm').classList.remove('disabled');
-            document.getElementById('memoInputSection').classList.remove('disabled');
-            updateBlurState();
-            loadManagementInfo();
-            loadRentrolls();
-            loadMemos();
-        }
-        
-        // 인증 함수 (개선된 버전 - 최초 로그인 감지)
+        // 인증 함수
         window.authenticate = async function() {
             const email = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
@@ -1665,37 +1360,23 @@
                         if (String(userData.password) === String(password)) {
                             window.currentUser = email;
                             window.isAdmin = userData.role === 'admin';
-                            
-                            // 최초 로그인 체크 (firstLogin이 없거나 true인 경우)
-                            if (userData.firstLogin !== false) {
-                                window.isFirstLogin = true;
-                                showAuthStatus();
-                                showPasswordChangeSection();
-                                // 메인 기능은 비밀번호 변경 후에 활성화
-                            } else {
-                                window.isFirstLogin = false;
-                                showAuthStatus();
-                                enableMainFeatures();
-                            }
+                            showAuthStatus();
                         } else {
                             alert('비밀번호가 일치하지 않습니다');
                         }
                     } else {
-                        // 새 사용자 자동 등록 (firstLogin: true로 설정)
+                        // 새 사용자 자동 등록
                         const newUser = {
                             email: email,
                             password: password,
                             role: 'user',
-                            firstLogin: true,
                             created: Date.now()
                         };
                         await window.firebaseSet(userRef, newUser);
                         window.currentUser = email;
                         window.isAdmin = false;
-                        window.isFirstLogin = true;
                         showAuthStatus();
-                        showPasswordChangeSection();
-                        alert('새 사용자로 등록되었습니다. 보안을 위해 비밀번호를 변경해주세요.');
+                        alert('새 사용자로 등록되었습니다');
                     }
                 } else {
                     // LocalStorage 모드
@@ -1704,26 +1385,15 @@
                         users[email] = {
                             password: password,
                             role: 'user',
-                            firstLogin: true,
                             created: Date.now()
                         };
                         localStorage.setItem('authorized_users', JSON.stringify(users));
-                        window.isFirstLogin = true;
-                        alert('새 사용자로 등록되었습니다. 보안을 위해 비밀번호를 변경해주세요.');
-                    } else {
-                        window.isFirstLogin = users[email].firstLogin !== false;
                     }
                     
                     if (users[email].password === password) {
                         window.currentUser = email;
                         window.isAdmin = users[email].role === 'admin';
                         showAuthStatus();
-                        
-                        if (window.isFirstLogin) {
-                            showPasswordChangeSection();
-                        } else {
-                            enableMainFeatures();
-                        }
                     } else {
                         alert('비밀번호가 일치하지 않습니다');
                     }
@@ -1744,17 +1414,21 @@
                 document.getElementById('adminBadge').classList.remove('hidden');
             }
             
-            // 최초 로그인이 아닌 경우에만 메인 기능 바로 활성화
-            if (!window.isFirstLogin) {
-                enableMainFeatures();
-            }
+            document.getElementById('rentrollInputForm').classList.remove('disabled');
+            document.getElementById('memoInputSection').classList.remove('disabled');
+            
+            // 블러 상태 업데이트
+            updateBlurState();
+            
+            loadManagementInfo();
+            loadRentrolls();
+            loadMemos();
         }
         
         // 로그아웃
         window.logout = function() {
             window.currentUser = null;
             window.isAdmin = false;
-            window.isFirstLogin = false;
             window.editingRentrollId = null;
             window.editingMemoId = null;
             window.editingManagementId = null;
@@ -1766,10 +1440,6 @@
             document.getElementById('adminBadge').classList.add('hidden');
             
             document.getElementById('passwordInput').value = '';
-            
-            // 비밀번호 변경 섹션 숨김
-            hidePasswordChangeSection();
-            clearPasswordChangeInputs();
             
             // 블러 상태 업데이트
             updateBlurState();
