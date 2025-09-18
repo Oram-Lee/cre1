@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통합 빌딩 데이터 생성 도구 (오프라인 버전)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+        
+        .main-content {
+            padding: 35px;
+        }
+        
+        /* GitHub 배포 가이드 */
+        .guide-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .guide-step {
+            background: white;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        .guide-step h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Monaco', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+        }
+        
+        /* 스텝 인디케이터 */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #6c757d;
+            margin: 0 60px;
+            transition: all 0.3s ease;
+        }
+        
+        .step-circle.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step-circle.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .step-line {
+            position: absolute;
+            height: 2px;
+            width: 120px;
+            background: #e9ecef;
+            top: 50%;
+            left: 40px;
+            transform: translateY(-50%);
+        }
+        
+        .step-line.active {
+            background: linear-gradient(90deg, #28a745 0%, #667eea 100%);
+        }
+        
+        /* 파일 업로드 섹션 */
+        .file-upload-section {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-section.dragover {
+            background: #e7f3ff;
+            border-color: #667eea;
+        }
+        
+        .file-upload-section.loaded {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .upload-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .file-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .file-info.show {
+            display: block;
+        }
+        
+        /* 검색 섹션 */
+        .search-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .search-section.show {
+            display: block;
+        }
+        
+        .search-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: flex-end;
+        }
+        
+        .search-group {
+            flex: 1;
+        }
+        
+        .search-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+        
+        .search-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .search-button {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* 좌표 입력 섹션 */
+        .coord-section {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .coord-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .coord-input {
+            flex: 1;
+        }
+        
+        /* 중복 체크 알림 */
+        .duplicate-alert {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .duplicate-alert.show {
+            display: block;
+        }
+        
+        .duplicate-alert.error {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .duplicate-alert.success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        /* 폼 섹션 */
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.show {
+            display: block;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .form-panel h3 {
+            font-size: 1.1rem;
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .form-group label.required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .form-group input.auto-filled {
+            background: #e7f3ff;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        
+        /* 액션 버튼 */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #dee2e6;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        /* 결과 섹션 */
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        .json-output {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .json-output pre {
+            margin: 0;
+        }
+        
+        /* 빌딩 리스트 */
+        .building-list {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            margin-top: 15px;
+        }
+        
+        .building-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .building-item:hover {
+            background: #e7f3ff;
+        }
+        
+        .building-item.added {
+            background: #d4edda;
+        }
+        
+        .building-count {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        /* 토스트 메시지 */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .help-text {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 3px;
+        }
+        
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 10px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            background: white;
+            border-bottom-color: white;
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 0 0 8px 8px;
+            margin-top: -2px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 통합 빌딩 데이터 생성 도구</h1>
+            <p>오프라인 버전 - 수동 좌표 입력 지원</p>
+        </div>
+        
+        <div class="main-content">
+            <!-- 탭 선택 -->
+            <div class="tab-container">
+                <button class="tab-button active" onclick="switchTab('tool')">🔧 빌딩 추가 도구</button>
+                <button class="tab-button" onclick="switchTab('guide')">📚 GitHub 배포 가이드</button>
+            </div>
+            
+            <!-- 빌딩 추가 도구 탭 -->
+            <div class="tab-content active" id="toolTab">
+                <!-- 스텝 인디케이터 -->
+                <div class="step-indicator">
+                    <div class="step">
+                        <div class="step-circle active" id="step1">1</div>
+                        <div class="step-line"></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle" id="step2">2</div>
+                        <div class="step-line"></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle" id="step3">3</div>
+                    </div>
+                </div>
+                
+                <!-- Step 1: 파일 업로드 -->
+                <div class="file-upload-section" id="fileUploadSection">
+                    <div class="upload-icon">📁</div>
+                    <h3>기존 buildings.json 파일 업로드 (선택)</h3>
+                    <p class="help-text">중복 체크를 위해 기존 데이터를 업로드하세요</p>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+                        파일 선택
+                    </button>
+                    <div class="file-info" id="fileInfo">
+                        <strong>파일명:</strong> <span id="fileName"></span><br>
+                        <strong>빌딩 수:</strong> <span id="buildingCount"></span>개<br>
+                        <strong>상태:</strong> <span style="color: #28a745;">✓ 로드 완료</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="skipFileUpload()" style="margin-top: 15px;">
+                        파일 없이 진행 →
+                    </button>
+                </div>
+                
+                <!-- Step 2: 주소 검색 -->
+                <div class="search-section" id="searchSection">
+                    <h3>🔍 빌딩 정보 입력</h3>
+                    
+                    <div class="alert alert-warning">
+                        ⚠️ 오프라인 모드: 좌표를 수동으로 입력하거나 
+                        <a href="https://map.kakao.com" target="_blank">카카오맵</a>에서 찾아서 입력하세요
+                    </div>
+                    
+                    <div class="search-row">
+                        <div class="search-group">
+                            <label>주소 <span style="color: red;">*</span></label>
+                            <input type="text" id="addressInput" placeholder="예: 서울시 강남구 테헤란로 301">
+                        </div>
+                    </div>
+                    
+                    <div class="coord-section">
+                        <h4 style="margin-bottom: 10px;">📍 좌표 입력 (선택)</h4>
+                        <div class="coord-row">
+                            <div class="search-group coord-input">
+                                <label>위도 (Latitude)</label>
+                                <input type="number" id="latInput" step="0.000001" placeholder="37.5031256">
+                            </div>
+                            <div class="search-group coord-input">
+                                <label>경도 (Longitude)</label>
+                                <input type="number" id="lngInput" step="0.000001" placeholder="127.043068">
+                            </div>
+                        </div>
+                        <div class="help-text">
+                            💡 팁: <a href="https://map.kakao.com" target="_blank">카카오맵</a>에서 
+                            마우스 우클릭 → "여기 정보 보기" → 좌표 복사
+                        </div>
+                    </div>
+                    
+                    <button class="search-button" onclick="processOffline()">
+                        다음 단계 →
+                    </button>
+                    
+                    <div class="duplicate-alert" id="duplicateAlert"></div>
+                    
+                    <!-- 추가된 빌딩 리스트 -->
+                    <div id="addedBuildingsSection" style="display: none;">
+                        <h4>📋 작업중인 빌딩 목록</h4>
+                        <div class="building-list" id="buildingList"></div>
+                    </div>
+                </div>
+                
+                <!-- Step 3: 데이터 입력 폼 -->
+                <div class="form-section" id="formSection">
+                    <h3 style="margin-bottom: 20px;">📝 빌딩 정보 입력</h3>
+                    
+                    <div class="form-grid">
+                        <!-- 기본 정보 -->
+                        <div class="form-panel">
+                            <h3>📍 기본 정보</h3>
+                            <div class="form-group">
+                                <label class="required">빌딩명</label>
+                                <input type="text" id="name" placeholder="예: 삼정개발빌딩">
+                            </div>
+                            <div class="form-group">
+                                <label class="required">도로명주소</label>
+                                <input type="text" id="address" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>지번주소</label>
+                                <input type="text" id="addressJibun" placeholder="직접입력">
+                            </div>
+                            <div class="form-group">
+                                <label>지하철역</label>
+                                <input type="text" id="station" placeholder="예: 2호선 선릉역 6분">
+                            </div>
+                        </div>
+                        
+                        <!-- 건물 정보 -->
+                        <div class="form-panel">
+                            <h3>🏗️ 건물 정보</h3>
+                            <div class="form-group">
+                                <label class="required">층수</label>
+                                <input type="text" id="floors" placeholder="예: 지하6층, 지상20층">
+                            </div>
+                            <div class="form-group">
+                                <label>건물유형</label>
+                                <select id="buildingType">
+                                    <option value="">선택하세요</option>
+                                    <option value="소형">소형</option>
+                                    <option value="중형">중형</option>
+                                    <option value="중대형">중대형</option>
+                                    <option value="대형">대형</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>건물용도</label>
+                                <input type="text" id="buildingUse" placeholder="예: 업무시설">
+                            </div>
+                            <div class="form-group">
+                                <label>구조</label>
+                                <input type="text" id="structure" placeholder="예: 철골철근콘크리트조">
+                            </div>
+                            <div class="form-group">
+                                <label>준공년도</label>
+                                <input type="text" id="completionYear" placeholder="예: 1995">
+                            </div>
+                        </div>
+                        
+                        <!-- 면적 정보 -->
+                        <div class="form-panel">
+                            <h3>📐 면적 정보</h3>
+                            <div class="form-group">
+                                <label>연면적 (㎡)</label>
+                                <input type="number" id="grossFloorArea" step="0.01" placeholder="26501.55">
+                            </div>
+                            <div class="form-group">
+                                <label>기준층면적 (㎡)</label>
+                                <input type="number" id="baseFloorArea" step="0.01" placeholder="1414.45">
+                            </div>
+                            <div class="form-group">
+                                <label>기준층전용면적 (㎡)</label>
+                                <input type="number" id="baseFloorAreaDedicated" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label>전용률 (%)</label>
+                                <input type="number" id="dedicatedRate" step="0.01" placeholder="49.25">
+                            </div>
+                            <div class="form-group">
+                                <label>대지면적 (㎡)</label>
+                                <input type="number" id="landArea" step="0.01" placeholder="1746.2">
+                            </div>
+                        </div>
+                        
+                        <!-- 임대 정보 -->
+                        <div class="form-panel">
+                            <h3>💰 임대 정보</h3>
+                            <div class="form-group">
+                                <label>보증금</label>
+                                <input type="text" id="deposit" placeholder="예: 32,090만원">
+                            </div>
+                            <div class="form-group">
+                                <label>임대료</label>
+                                <input type="text" id="rentPrice" placeholder="예: 3,209만원">
+                            </div>
+                            <div class="form-group">
+                                <label>평당임대료</label>
+                                <input type="text" id="rentPricePy" placeholder="예: 7.50만원">
+                            </div>
+                            <div class="form-group">
+                                <label>관리비</label>
+                                <input type="text" id="managementFee" placeholder="예: 1583만원">
+                            </div>
+                            <div class="form-group">
+                                <label>평당관리비</label>
+                                <input type="text" id="managementFeePy" placeholder="예: 3.70만원">
+                            </div>
+                        </div>
+                        
+                        <!-- 시설 정보 -->
+                        <div class="form-panel">
+                            <h3>🚗 시설 정보</h3>
+                            <div class="form-group">
+                                <label>주차대수</label>
+                                <input type="text" id="parkingSpace" placeholder="예: 총 213대(자주식 213대)">
+                            </div>
+                            <div class="form-group">
+                                <label>주차비</label>
+                                <input type="text" id="parkingFee" placeholder="예: 15만(vat별도)">
+                            </div>
+                            <div class="form-group">
+                                <label>승강기</label>
+                                <input type="text" id="elevator" placeholder="예: 총 5대(승용 4대 비상화물용 1대)">
+                            </div>
+                            <div class="form-group">
+                                <label>냉난방</label>
+                                <input type="text" id="hvac" placeholder="예: 중앙 냉난방">
+                            </div>
+                        </div>
+                        
+                        <!-- 기타 정보 -->
+                        <div class="form-panel">
+                            <h3>📝 기타 정보</h3>
+                            <div class="form-group">
+                                <label>공실률</label>
+                                <input type="text" id="vacancy" placeholder="예: N/A 또는 10%">
+                            </div>
+                            <div class="form-group">
+                                <label>관련 URL</label>
+                                <input type="url" id="url" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label>설명</label>
+                                <textarea id="description" placeholder="빌딩에 대한 설명"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-success" onclick="saveBuilding()">
+                            ✅ 현재 빌딩 저장
+                        </button>
+                        <button class="btn btn-primary" onclick="addAnotherBuilding()">
+                            ➕ 다른 빌딩 추가
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetForm()">
+                            🔄 초기화
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 결과 섹션 -->
+                <div class="result-section" id="resultSection">
+                    <h3>📄 생성된 JSON 데이터</h3>
+                    <div class="json-output" id="jsonOutput">
+                        <pre></pre>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="copyJSON()">
+                            📋 JSON 복사
+                        </button>
+                        <button class="btn btn-success" onclick="downloadJSON()">
+                            💾 JSON 다운로드
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadMergedJSON()">
+                            📦 전체 데이터 다운로드
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GitHub 배포 가이드 탭 -->
+            <div class="tab-content" id="guideTab">
+                <div class="guide-section">
+                    <h2>🚀 GitHub Pages 배포 가이드</h2>
+                    
+                    <div class="guide-step">
+                        <h3>1️⃣ GitHub 레포지토리 생성</h3>
+                        <ol>
+                            <li>GitHub.com 접속 후 로그인</li>
+                            <li>"New repository" 클릭</li>
+                            <li>Repository name: <code>building-tool</code> (원하는 이름)</li>
+                            <li>"Public" 선택</li>
+                            <li>"Create repository" 클릭</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>2️⃣ 파일 업로드</h3>
+                        <ol>
+                            <li>레포지토리 페이지에서 "uploading an existing file" 클릭</li>
+                            <li>이 HTML 파일을 <code>index.html</code>로 저장</li>
+                            <li>파일을 드래그 앤 드롭</li>
+                            <li>"Commit changes" 클릭</li>
+                        </ol>
+                        
+                        <div class="code-block">
+📁 building-tool/
+  └── index.html
+  └── buildings.json (선택)
+                        </div>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>3️⃣ GitHub Pages 활성화</h3>
+                        <ol>
+                            <li>Settings 탭 클릭</li>
+                            <li>왼쪽 메뉴에서 "Pages" 클릭</li>
+                            <li>Source: "Deploy from a branch" 선택</li>
+                            <li>Branch: "main" / "root" 선택</li>
+                            <li>"Save" 클릭</li>
+                        </ol>
+                        
+                        <div class="alert alert-info">
+                            💡 1-2분 후 아래 주소로 접속 가능:
+                            <div class="code-block">
+                                https://[github-username].github.io/building-tool/
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>4️⃣ 카카오맵 API 키 설정 (선택)</h3>
+                        <ol>
+                            <li><a href="https://developers.kakao.com" target="_blank">Kakao Developers</a> 접속</li>
+                            <li>앱 만들기 → JavaScript 키 복사</li>
+                            <li>앱 설정 → 플랫폼 → Web → 사이트 도메인 추가</li>
+                            <li><code>https://[username].github.io</code> 입력</li>
+                        </ol>
+                        
+                        <div class="alert alert-warning">
+                            ⚠️ 카카오맵 API 없이도 수동 좌표 입력으로 사용 가능합니다!
+                        </div>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>5️⃣ 로컬에서 테스트하기</h3>
+                        
+                        <h4>VS Code 사용시:</h4>
+                        <ol>
+                            <li>VS Code에서 폴더 열기</li>
+                            <li>Live Server 확장 설치</li>
+                            <li>index.html 우클릭 → "Open with Live Server"</li>
+                        </ol>
+                        
+                        <h4>Python 사용시:</h4>
+                        <div class="code-block">
+# Python 3
+python -m http.server 8000
+
+# Python 2
+python -m SimpleHTTPServer 8000
+
+# 브라우저에서 http://localhost:8000 접속
+                        </div>
+                        
+                        <h4>Node.js 사용시:</h4>
+                        <div class="code-block">
+# http-server 설치
+npm install -g http-server
+
+# 실행
+http-server
+
+# 브라우저에서 http://localhost:8080 접속
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 토스트 메시지 -->
+    <div class="toast" id="toast"></div>
+    
+    <script>
+        // 전역 변수
+        let existingBuildings = [];
+        let newBuildings = [];
+        let currentBuildingData = {};
+        let nextId = 2000;
+        
+        // 탭 전환
+        function switchTab(tabName) {
+            // 탭 버튼 활성화
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 탭 콘텐츠 표시
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+        }
+        
+        // 파일 업로드 처리
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    existingBuildings = data.buildings || [];
+                    
+                    // 다음 ID 계산
+                    const maxId = Math.max(...existingBuildings.map(b => b.id || 0));
+                    nextId = Math.max(nextId, maxId + 1);
+                    
+                    // UI 업데이트
+                    document.getElementById('fileName').textContent = file.name;
+                    document.getElementById('buildingCount').textContent = existingBuildings.length;
+                    document.getElementById('fileInfo').classList.add('show');
+                    document.getElementById('fileUploadSection').classList.add('loaded');
+                    
+                    // 다음 단계로
+                    moveToStep(2);
+                    
+                    showToast(`✅ ${existingBuildings.length}개 빌딩 데이터 로드 완료`);
+                } catch (error) {
+                    alert('JSON 파일 읽기 실패: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+        
+        // 파일 없이 진행
+        function skipFileUpload() {
+            moveToStep(2);
+        }
+        
+        // 스텝 이동
+        function moveToStep(step) {
+            // 스텝 인디케이터 업데이트
+            document.querySelectorAll('.step-circle').forEach((circle, index) => {
+                if (index < step - 1) {
+                    circle.classList.add('completed');
+                    circle.classList.remove('active');
+                } else if (index === step - 1) {
+                    circle.classList.add('active');
+                } else {
+                    circle.classList.remove('active', 'completed');
+                }
+            });
+            
+            // 섹션 표시/숨김
+            if (step === 2) {
+                document.getElementById('searchSection').classList.add('show');
+            } else if (step === 3) {
+                document.getElementById('formSection').classList.add('show');
+            }
+        }
+        
+        // 오프라인 처리
+        function processOffline() {
+            const address = document.getElementById('addressInput').value.trim();
+            const lat = parseFloat(document.getElementById('latInput').value);
+            const lng = parseFloat(document.getElementById('lngInput').value);
+            
+            if (!address) {
+                alert('주소를 입력해주세요');
+                return;
+            }
+            
+            // 중복 체크
+            const isDuplicate = checkDuplicate(address);
+            if (isDuplicate) {
+                showDuplicateAlert('error', `⚠️ 중복: "${isDuplicate.name}" 빌딩이 이미 존재합니다`);
+                if (!confirm('중복된 빌딩입니다. 계속 진행하시겠습니까?')) {
+                    return;
+                }
+            } else {
+                showDuplicateAlert('success', '✅ 중복되지 않은 새 빌딩입니다');
+            }
+            
+            // 데이터 준비
+            currentBuildingData = {
+                id: nextId++,
+                address: address,
+                lat: lat || null,
+                lng: lng || null,
+                needsGeocode: !lat || !lng
+            };
+            
+            // 폼에 데이터 입력
+            document.getElementById('address').value = address;
+            
+            // Step 3로 이동
+            moveToStep(3);
+            
+            showToast('📍 주소 정보 입력 완료');
+        }
+        
+        // 중복 체크
+        function checkDuplicate(address) {
+            const normalizedAddress = address.toLowerCase().replace(/\s+/g, '');
+            
+            return existingBuildings.find(building => {
+                const buildingAddress = (building.address || '').toLowerCase().replace(/\s+/g, '');
+                const buildingJibun = (building.addressJibun || '').toLowerCase().replace(/\s+/g, '');
+                return buildingAddress.includes(normalizedAddress) || 
+                       buildingJibun.includes(normalizedAddress) ||
+                       normalizedAddress.includes(buildingAddress) ||
+                       normalizedAddress.includes(buildingJibun);
+            });
+        }
+        
+        // 중복 알림 표시
+        function showDuplicateAlert(type, message) {
+            const alert = document.getElementById('duplicateAlert');
+            alert.className = `duplicate-alert show ${type}`;
+            alert.textContent = message;
+            
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 5000);
+        }
+        
+        // 빌딩 저장
+        function saveBuilding() {
+            // 폼 데이터 수집
+            const formData = {
+                id: currentBuildingData.id,
+                name: document.getElementById('name').value || '',
+                address: document.getElementById('address').value || '',
+                addressJibun: document.getElementById('addressJibun').value || '',
+                lat: currentBuildingData.lat || null,
+                lng: currentBuildingData.lng || null,
+                needsGeocode: currentBuildingData.needsGeocode || false,
+                station: document.getElementById('station').value || '',
+                floors: document.getElementById('floors').value || '',
+                buildingType: document.getElementById('buildingType').value || '',
+                buildingUse: document.getElementById('buildingUse').value || '',
+                grossFloorArea: parseFloat(document.getElementById('grossFloorArea').value) || 0,
+                grossFloorAreaPy: 0,
+                baseFloorArea: parseFloat(document.getElementById('baseFloorArea').value) || 0,
+                baseFloorAreaPy: 0,
+                deposit: document.getElementById('deposit').value || '',
+                depositAmount: extractAmount(document.getElementById('deposit').value),
+                rentPrice: document.getElementById('rentPrice').value || '',
+                rentPriceAmount: extractAmount(document.getElementById('rentPrice').value),
+                rentPricePy: document.getElementById('rentPricePy').value || '',
+                managementFee: document.getElementById('managementFee').value || '',
+                managementFeeAmount: extractAmount(document.getElementById('managementFee').value),
+                managementFeePy: document.getElementById('managementFeePy').value || '',
+                parkingSpace: document.getElementById('parkingSpace').value || '',
+                parkingFee: document.getElementById('parkingFee').value || '',
+                parkingOperation: '운영',
+                structure: document.getElementById('structure').value || '',
+                completionYear: document.getElementById('completionYear').value || '',
+                elevator: document.getElementById('elevator').value || '',
+                hvac: document.getElementById('hvac').value || '',
+                vacancy: document.getElementById('vacancy').value || 'N/A',
+                url: document.getElementById('url').value || '',
+                description: document.getElementById('description').value || '',
+                lastUpdated: new Date().getFullYear() + '년기준',
+                geocodeDate: new Date().toISOString(),
+                baseFloorAreaDedicated: parseFloat(document.getElementById('baseFloorAreaDedicated').value) || 0,
+                baseFloorAreaDedicatedPy: 0,
+                dedicatedRate: parseFloat(document.getElementById('dedicatedRate').value) || 0,
+                landArea: parseFloat(document.getElementById('landArea').value) || 0,
+                landAreaPy: 0,
+                searchStrategy: 'EXACT_MATCH'
+            };
+            
+            // 평수 계산
+            if (formData.grossFloorArea) {
+                formData.grossFloorAreaPy = parseFloat((formData.grossFloorArea / 3.3058).toFixed(2));
+            }
+            if (formData.baseFloorArea) {
+                formData.baseFloorAreaPy = parseFloat((formData.baseFloorArea / 3.3058).toFixed(2));
+            }
+            if (formData.baseFloorAreaDedicated) {
+                formData.baseFloorAreaDedicatedPy = parseFloat((formData.baseFloorAreaDedicated / 3.3058).toFixed(2));
+            }
+            if (formData.landArea) {
+                formData.landAreaPy = parseFloat((formData.landArea / 3.3058).toFixed(2));
+            }
+            
+            // 필수 필드 검증
+            if (!formData.name || !formData.address) {
+                alert('빌딩명과 주소는 필수입니다');
+                return;
+            }
+            
+            // 저장
+            newBuildings.push(formData);
+            
+            // UI 업데이트
+            updateBuildingList();
+            updateJSONDisplay();
+            document.getElementById('resultSection').classList.add('show');
+            
+            showToast(`✅ "${formData.name}" 빌딩 저장 완료`);
+        }
+        
+        // 다른 빌딩 추가
+        function addAnotherBuilding() {
+            // 현재 빌딩 저장
+            saveBuilding();
+            
+            // 폼 초기화
+            document.querySelectorAll('input, textarea, select').forEach(el => {
+                el.value = '';
+            });
+            
+            // Step 2로 돌아가기
+            document.getElementById('formSection').classList.remove('show');
+            document.getElementById('addressInput').value = '';
+            document.getElementById('latInput').value = '';
+            document.getElementById('lngInput').value = '';
+            document.getElementById('addressInput').focus();
+            
+            moveToStep(2);
+        }
+        
+        // 빌딩 리스트 업데이트
+        function updateBuildingList() {
+            const listContainer = document.getElementById('buildingList');
+            const section = document.getElementById('addedBuildingsSection');
+            
+            if (newBuildings.length > 0) {
+                section.style.display = 'block';
+                listContainer.innerHTML = newBuildings.map((building, index) => `
+                    <div class="building-item added">
+                        <span>${index + 1}. ${building.name} - ${building.address}</span>
+                        <span class="building-count">${building.id}</span>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // JSON 표시 업데이트
+        function updateJSONDisplay() {
+            const output = document.getElementById('jsonOutput').querySelector('pre');
+            output.textContent = JSON.stringify(newBuildings, null, 2);
+        }
+        
+        // 금액 추출
+        function extractAmount(str) {
+            if (!str) return 0;
+            const match = str.match(/[\d,]+/);
+            if (match) {
+                const num = parseFloat(match[0].replace(/,/g, ''));
+                if (str.includes('만원')) {
+                    return num * 10000;
+                }
+                return num;
+            }
+            return 0;
+        }
+        
+        // JSON 복사
+        function copyJSON() {
+            const jsonText = JSON.stringify(newBuildings, null, 2);
+            navigator.clipboard.writeText(jsonText).then(() => {
+                showToast('📋 JSON이 클립보드에 복사되었습니다');
+            });
+        }
+        
+        // JSON 다운로드 (새 빌딩만)
+        function downloadJSON() {
+            const jsonText = JSON.stringify(newBuildings, null, 2);
+            const blob = new Blob([jsonText], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `new_buildings_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 병합된 JSON 다운로드
+        function downloadMergedJSON() {
+            const mergedData = {
+                metadata: {
+                    totalCount: existingBuildings.length + newBuildings.length,
+                    lastUpdated: new Date().toISOString(),
+                    newBuildingsAdded: newBuildings.length
+                },
+                buildings: [...existingBuildings, ...newBuildings]
+            };
+            
+            const jsonText = JSON.stringify(mergedData, null, 2);
+            const blob = new Blob([jsonText], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `merged_buildings_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast(`📦 전체 ${mergedData.buildings.length}개 빌딩 데이터 다운로드`);
+        }
+        
+        // 폼 초기화
+        function resetForm() {
+            if (confirm('모든 입력을 초기화하시겠습니까?')) {
+                document.querySelectorAll('input, textarea, select').forEach(el => {
+                    el.value = '';
+                });
+                currentBuildingData = {};
+            }
+        }
+        
+        // 토스트 메시지
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Enter 키 이벤트
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                if (e.target.id === 'addressInput' || e.target.id === 'lngInput') {
+                    processOffline();
+                }
+            }
+        });
+        
+        // 드래그 앤 드롭
+        const uploadSection = document.getElementById('fileUploadSection');
+        
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        });
+        
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.classList.remove('dragover');
+        });
+        
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/json') {
+                document.getElementById('fileInput').files = e.dataTransfer.files;
+                document.getElementById('fileInput').dispatchEvent(new Event('change'));
+            }
+        });
+        
+        // 평수 자동 계산
+        document.getElementById('grossFloorArea')?.addEventListener('input', function() {
+            const sqm = parseFloat(this.value);
+            if (!isNaN(sqm)) {
+                const py = (sqm / 3.3058).toFixed(2);
+                console.log(`연면적: ${sqm}㎡ = ${py}평`);
+            }
+        });
+        
+        document.getElementById('baseFloorArea')?.addEventListener('input', function() {
+            const sqm = parseFloat(this.value);
+            if (!isNaN(sqm)) {
+                const py = (sqm / 3.3058).toFixed(2);
+                console.log(`기준층면적: ${sqm}㎡ = ${py}평`);
+                
+                // 전용면적 자동 계산 (49.25% 기준)
+                const dedicated = (sqm * 0.4925).toFixed(2);
+                document.getElementById('baseFloorAreaDedicated').value = dedicated;
+            }
+        });
+    </script>
+</body>
+</html>
