@@ -1,8 +1,75 @@
 {
   "metadata": {
-    "totalCount": 1315,
-    "lastUpdated": "2025-09-18T07:04:24.784Z",
-    "newBuildingsAdded": 12
+    "totalCount": 1475,
+    "lastUpdated": "2025-06-23T07:12:51.231823",
+    "version": "2.0",
+    "geocodeInfo": {
+      "successCount": 1450,
+      "errorCount": 25,
+      "hasCoords": 1450,
+      "manuallyAdded": 0
+    },
+    "lastEnhanced": "2025-06-23T06:03:33.284Z",
+    "enhancedFields": 1490,
+    "enhancedCount": 1475,
+    "enhancedBuildings": 675,
+    "updatedFields": 0,
+    "enhancementDetails": {
+      "totalMissingValues": 1301,
+      "totalMismatchedValues": 2719,
+      "filledMissingValues": 1490,
+      "updatedMismatchedValues": 0,
+      "targetBuildings": 471,
+      "processedBuildings": 675,
+      "updateMode": "missing-only"
+    },
+    "lastValidated": "2025-06-23T07:12:51.231839",
+    "validationSummary": {
+      "originalCount": 1308,
+      "finalCount": 1308,
+      "deletedCount": 0,
+      "modifications": {
+        "addressConverted": 0,
+        "coordsAdded": 0,
+        "duplicatesDeleted": 0,
+        "missingDeleted": 0
+      }
+    },
+    "validationErrors": {
+      "addressMismatch": 1,
+      "missingCoords": 23,
+      "duplicates": 0,
+      "missingData": 0
+    },
+    "lastGeocodeUpdate": "2025-06-23T07:28:54.794118",
+    "geocodeSummary": {
+      "totalBuildings": 1308,
+      "buildingsWithCoords": 1307,
+      "geocodedInThisRun": 1,
+      "failedGeocodes": 1
+    },
+    "lastSyncDate": "2025-06-23T07:47:32.076149",
+    "syncSummary": {
+      "matchedBuildings": 1472,
+      "excelUpdates": 1472,
+      "fieldsAdded": 4956
+    },
+    "lastCleaned": "2025-06-23T09:09:32.550061",
+    "cleaningSummary": {
+      "originalCount": 1308,
+      "cleanedCount": 1303,
+      "removedCount": 5,
+      "duplicateGroups": 5
+    },
+    "recoveryDate": "2025-06-23T09:36:09.344327",
+    "recoverySummary": {
+      "originalCount": 1308,
+      "currentCount": 1303,
+      "finalCount": 1303,
+      "restored": 2,
+      "removed": 2,
+      "merged": 0
+    }
   },
   "buildings": [
     {
@@ -145,7 +212,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4426,
+      "landArea": 4426.0,
       "landAreaPy": 1338.87,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -241,7 +308,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 983,
+      "landArea": 983.0,
       "landAreaPy": 297.36,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -574,7 +641,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 530,
+      "landArea": 530.0,
       "landAreaPy": 160.32,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -622,7 +689,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1405,
+      "landArea": 1405.0,
       "landAreaPy": 425.01,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -766,7 +833,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3310,
+      "landArea": 3310.0,
       "landAreaPy": 1001.27,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -958,7 +1025,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 12604,
+      "landArea": 12604.0,
       "landAreaPy": 3812.71,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -1192,7 +1259,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2558,
+      "landArea": 2558.0,
       "landAreaPy": 773.79,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -1336,7 +1403,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 7841,
+      "landArea": 7841.0,
       "landAreaPy": 2371.9,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -1672,7 +1739,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1388,
+      "landArea": 1388.0,
       "landAreaPy": 419.87,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -2146,7 +2213,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 7570,
+      "landArea": 7570.0,
       "landAreaPy": 2289.92,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -2194,7 +2261,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5653,
+      "landArea": 5653.0,
       "landAreaPy": 1710.03,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -2338,7 +2405,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 27790,
+      "landArea": 27790.0,
       "landAreaPy": 8406.48,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -2578,7 +2645,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 12987,
+      "landArea": 12987.0,
       "landAreaPy": 3928.57,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -2818,7 +2885,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 7886,
+      "landArea": 7886.0,
       "landAreaPy": 2385.51,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -2962,7 +3029,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2140,
+      "landArea": 2140.0,
       "landAreaPy": 647.35,
       "searchStrategy": "MGMT_KEY"
     },
@@ -3106,7 +3173,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 10246,
+      "landArea": 10246.0,
       "landAreaPy": 3099.41,
       "searchStrategy": "MGMT_KEY"
     },
@@ -3203,7 +3270,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 2975.2,
-      "landAreaPy": 900,
+      "landAreaPy": 900.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -3298,7 +3365,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 7212,
+      "landArea": 7212.0,
       "landAreaPy": 2181.63,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -3490,7 +3557,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2850,
+      "landArea": 2850.0,
       "landAreaPy": 862.12,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -4063,7 +4130,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2711,
+      "landArea": 2711.0,
       "landAreaPy": 820.08,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -4111,7 +4178,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2831,
+      "landArea": 2831.0,
       "landAreaPy": 856.38,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -4444,7 +4511,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3597,
+      "landArea": 3597.0,
       "landAreaPy": 1088.09,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -4492,7 +4559,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 23637,
+      "landArea": 23637.0,
       "landAreaPy": 7150.19,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -4540,7 +4607,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 33058,
+      "landArea": 33058.0,
       "landAreaPy": 10000.05,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -4684,7 +4751,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 33058,
+      "landArea": 33058.0,
       "landAreaPy": 10000.05,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -4780,7 +4847,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 19090,
+      "landArea": 19090.0,
       "landAreaPy": 5774.72,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -4828,7 +4895,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5311,
+      "landArea": 5311.0,
       "landAreaPy": 1606.58,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -4970,7 +5037,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 2092.57,
-      "landAreaPy": 633,
+      "landAreaPy": 633.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -5158,7 +5225,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 10225,
+      "landArea": 10225.0,
       "landAreaPy": 3093.06,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -5254,7 +5321,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 381,
+      "landArea": 381.0,
       "landAreaPy": 115.25,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -5303,7 +5370,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 1570.25,
-      "landAreaPy": 475,
+      "landAreaPy": 475.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -5782,7 +5849,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 7472,
+      "landArea": 7472.0,
       "landAreaPy": 2260.28,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -6592,7 +6659,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 588,
+      "landArea": 588.0,
       "landAreaPy": 177.87,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -7021,7 +7088,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 649,
+      "landArea": 649.0,
       "landAreaPy": 196.32,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -7069,7 +7136,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5413,
+      "landArea": 5413.0,
       "landAreaPy": 1637.43,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -7261,7 +7328,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1332,
+      "landArea": 1332.0,
       "landAreaPy": 402.93,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -8026,7 +8093,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1916,
+      "landArea": 1916.0,
       "landAreaPy": 579.59,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -8122,7 +8189,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5124,
+      "landArea": 5124.0,
       "landAreaPy": 1550.01,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -8218,7 +8285,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2334,
+      "landArea": 2334.0,
       "landAreaPy": 706.03,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -8935,7 +9002,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 14848,
+      "landArea": 14848.0,
       "landAreaPy": 4491.52,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -8983,7 +9050,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 14848,
+      "landArea": 14848.0,
       "landAreaPy": 4491.52,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -9553,7 +9620,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 892,
+      "landArea": 892.0,
       "landAreaPy": 269.83,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -9793,7 +9860,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 14848,
+      "landArea": 14848.0,
       "landAreaPy": 4491.52,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -9889,7 +9956,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 14848,
+      "landArea": 14848.0,
       "landAreaPy": 4491.52,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -9937,7 +10004,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2601,
+      "landArea": 2601.0,
       "landAreaPy": 786.8,
       "searchStrategy": "FUZZY_SEARCH"
     },
@@ -10033,7 +10100,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 11489,
+      "landArea": 11489.0,
       "landAreaPy": 3475.42,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -10081,7 +10148,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1813,
+      "landArea": 1813.0,
       "landAreaPy": 548.43,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -10129,7 +10196,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 784,
+      "landArea": 784.0,
       "landAreaPy": 237.16,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -10225,7 +10292,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4959,
+      "landArea": 4959.0,
       "landAreaPy": 1500.1,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -10273,7 +10340,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3934,
+      "landArea": 3934.0,
       "landAreaPy": 1190.03,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -10369,7 +10436,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3707,
+      "landArea": 3707.0,
       "landAreaPy": 1121.37,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -10417,7 +10484,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1488,
+      "landArea": 1488.0,
       "landAreaPy": 450.12,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -10792,7 +10859,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4019,
+      "landArea": 4019.0,
       "landAreaPy": 1215.75,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -11170,7 +11237,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "depositPy": "",
-      "landArea": 3712,
+      "landArea": 3712.0,
       "landAreaPy": 1122.88,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -11410,7 +11477,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4088,
+      "landArea": 4088.0,
       "landAreaPy": 1236.62,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -11698,7 +11765,7 @@
       "dataEnhancedDate": "2025-06-23T06:03:33.289Z",
       "geocodeDate": "",
       "geocodeMethod": "",
-      "landArea": 200,
+      "landArea": 200.0,
       "landAreaPy": 60.5,
       "searchStrategy": "MGMT_KEY"
     },
@@ -12179,7 +12246,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 1236.36,
-      "landAreaPy": 374,
+      "landAreaPy": 374.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -12607,7 +12674,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3337,
+      "landArea": 3337.0,
       "landAreaPy": 1009.44,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -12799,7 +12866,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 439,
+      "landArea": 439.0,
       "landAreaPy": 132.8,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -12940,7 +13007,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4455,
+      "landArea": 4455.0,
       "landAreaPy": 1347.64,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -13318,7 +13385,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3176,
+      "landArea": 3176.0,
       "landAreaPy": 960.74,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -13558,7 +13625,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3204,
+      "landArea": 3204.0,
       "landAreaPy": 969.21,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -13795,7 +13862,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1220,
+      "landArea": 1220.0,
       "landAreaPy": 369.05,
       "searchStrategy": "MGMT_KEY"
     },
@@ -14275,7 +14342,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3841,
+      "landArea": 3841.0,
       "landAreaPy": 1161.9,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -14371,7 +14438,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3176,
+      "landArea": 3176.0,
       "landAreaPy": 960.74,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -14941,7 +15008,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 557,
+      "landArea": 557.0,
       "landAreaPy": 168.49,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -14989,7 +15056,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1075,
+      "landArea": 1075.0,
       "landAreaPy": 325.19,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -15133,7 +15200,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 538,
+      "landArea": 538.0,
       "landAreaPy": 162.75,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -15226,7 +15293,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 31752,
+      "landArea": 31752.0,
       "landAreaPy": 9604.98,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -15511,7 +15578,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 867,
+      "landArea": 867.0,
       "landAreaPy": 262.27,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -15607,7 +15674,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5537,
+      "landArea": 5537.0,
       "landAreaPy": 1674.94,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -15655,7 +15722,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 148784,
+      "landArea": 148784.0,
       "landAreaPy": 45007.16,
       "searchStrategy": "FUZZY_SEARCH"
     },
@@ -15943,7 +16010,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "baseFloorAreaDedicatedPy": 0,
-      "landArea": 793,
+      "landArea": 793.0,
       "landAreaPy": 239.88,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -15991,7 +16058,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1689,
+      "landArea": 1689.0,
       "landAreaPy": 510.92,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -16375,7 +16442,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 496,
+      "landArea": 496.0,
       "landAreaPy": 150.04,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -16807,7 +16874,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 663,
+      "landArea": 663.0,
       "landAreaPy": 200.56,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -16903,7 +16970,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1973,
+      "landArea": 1973.0,
       "landAreaPy": 596.83,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -16999,7 +17066,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4889,
+      "landArea": 4889.0,
       "landAreaPy": 1478.92,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -17092,7 +17159,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3350,
+      "landArea": 3350.0,
       "landAreaPy": 1013.38,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -17428,7 +17495,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3562,
+      "landArea": 3562.0,
       "landAreaPy": 1077.5,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -17476,7 +17543,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4911,
+      "landArea": 4911.0,
       "landAreaPy": 1485.58,
       "searchStrategy": "FUZZY_SEARCH"
     },
@@ -17908,7 +17975,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 764,
+      "landArea": 764.0,
       "landAreaPy": 231.11,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -18292,7 +18359,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1672,
+      "landArea": 1672.0,
       "landAreaPy": 505.78,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -19057,7 +19124,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 668,
+      "landArea": 668.0,
       "landAreaPy": 202.07,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -19394,7 +19461,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 1656.2,
-      "landAreaPy": 501,
+      "landAreaPy": 501.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -19441,7 +19508,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1743,
+      "landArea": 1743.0,
       "landAreaPy": 527.26,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -19822,7 +19889,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3707,
+      "landArea": 3707.0,
       "landAreaPy": 1121.37,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -19918,7 +19985,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 14457,
+      "landArea": 14457.0,
       "landAreaPy": 4373.24,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -20062,7 +20129,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 139,
+      "landArea": 139.0,
       "landAreaPy": 42.05,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -20533,7 +20600,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 12339,
+      "landArea": 12339.0,
       "landAreaPy": 3732.55,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -20581,7 +20648,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2705,
+      "landArea": 2705.0,
       "landAreaPy": 818.26,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -20912,7 +20979,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 3090.9,
-      "landAreaPy": 935,
+      "landAreaPy": 935.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -20959,7 +21026,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2078,
+      "landArea": 2078.0,
       "landAreaPy": 628.6,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -21007,7 +21074,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3176,
+      "landArea": 3176.0,
       "landAreaPy": 960.74,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -21247,7 +21314,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4930,
+      "landArea": 4930.0,
       "landAreaPy": 1491.33,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -21295,7 +21362,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1086,
+      "landArea": 1086.0,
       "landAreaPy": 328.51,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -21343,7 +21410,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 591,
+      "landArea": 591.0,
       "landAreaPy": 178.78,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -21964,7 +22031,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1573,
+      "landArea": 1573.0,
       "landAreaPy": 475.83,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -22060,7 +22127,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1527,
+      "landArea": 1527.0,
       "landAreaPy": 461.92,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -22393,7 +22460,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3192,
+      "landArea": 3192.0,
       "landAreaPy": 965.58,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -22441,7 +22508,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2522,
+      "landArea": 2522.0,
       "landAreaPy": 762.9,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -22777,7 +22844,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1239,
+      "landArea": 1239.0,
       "landAreaPy": 374.8,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -22969,7 +23036,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2399,
+      "landArea": 2399.0,
       "landAreaPy": 725.7,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -23206,8 +23273,8 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 562,
-      "landAreaPy": 170,
+      "landArea": 562.0,
+      "landAreaPy": 170.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -23494,7 +23561,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 359,
+      "landArea": 359.0,
       "landAreaPy": 108.6,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -23542,7 +23609,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1383,
+      "landArea": 1383.0,
       "landAreaPy": 418.36,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -23686,7 +23753,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 671,
+      "landArea": 671.0,
       "landAreaPy": 202.98,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -24070,7 +24137,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 33808,
+      "landArea": 33808.0,
       "landAreaPy": 10226.92,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -24118,7 +24185,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 867,
+      "landArea": 867.0,
       "landAreaPy": 262.27,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -24166,7 +24233,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 9373,
+      "landArea": 9373.0,
       "landAreaPy": 2835.33,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -24214,7 +24281,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 662,
+      "landArea": 662.0,
       "landAreaPy": 200.25,
       "searchStrategy": "MGMT_KEY"
     },
@@ -24310,7 +24377,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 809,
+      "landArea": 809.0,
       "landAreaPy": 244.72,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -24406,7 +24473,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 10142,
+      "landArea": 10142.0,
       "landAreaPy": 3067.95,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -24550,7 +24617,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 27790,
+      "landArea": 27790.0,
       "landAreaPy": 8406.48,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -24646,7 +24713,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 798,
+      "landArea": 798.0,
       "landAreaPy": 241.39,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -25162,7 +25229,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3662,
+      "landArea": 3662.0,
       "landAreaPy": 1107.75,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -25210,7 +25277,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1220,
+      "landArea": 1220.0,
       "landAreaPy": 369.05,
       "searchStrategy": "MGMT_KEY"
     },
@@ -25258,7 +25325,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 997,
+      "landArea": 997.0,
       "landAreaPy": 301.59,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -25402,7 +25469,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1220,
+      "landArea": 1220.0,
       "landAreaPy": 369.05,
       "searchStrategy": "MGMT_KEY"
     },
@@ -25450,7 +25517,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 634,
+      "landArea": 634.0,
       "landAreaPy": 191.78,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -25591,7 +25658,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3878,
+      "landArea": 3878.0,
       "landAreaPy": 1173.1,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -25924,7 +25991,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2532,
+      "landArea": 2532.0,
       "landAreaPy": 765.93,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -26065,7 +26132,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1021,
+      "landArea": 1021.0,
       "landAreaPy": 308.85,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -26114,7 +26181,7 @@
       "geocodeMethod": "",
       "baseFloorAreaDedicatedPy": 0,
       "landArea": 3305.8,
-      "landAreaPy": 1000,
+      "landAreaPy": 1000.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -26305,7 +26372,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "depositPy": "",
-      "landArea": 26718,
+      "landArea": 26718.0,
       "landAreaPy": 8082.19,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -26446,8 +26513,8 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2000,
-      "landAreaPy": 605,
+      "landArea": 2000.0,
+      "landAreaPy": 605.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -26542,7 +26609,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 893,
+      "landArea": 893.0,
       "landAreaPy": 270.13,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -26731,7 +26798,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 666,
+      "landArea": 666.0,
       "landAreaPy": 201.47,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -27107,7 +27174,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 3596.7,
-      "landAreaPy": 1088,
+      "landAreaPy": 1088.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -27298,7 +27365,7 @@
       "geocodeMethod": "",
       "baseFloorAreaDedicated": 0,
       "depositPy": "",
-      "landArea": 10367,
+      "landArea": 10367.0,
       "landAreaPy": 3136.02,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -27580,7 +27647,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "baseFloorAreaDedicated": 0,
-      "landArea": 33808,
+      "landArea": 33808.0,
       "landAreaPy": 10226.92,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -27772,7 +27839,7 @@
       "geocodeMethod": "",
       "baseFloorAreaDedicated": 0,
       "depositPy": "",
-      "landArea": 6545,
+      "landArea": 6545.0,
       "landAreaPy": 1979.86,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -27868,7 +27935,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2853,
+      "landArea": 2853.0,
       "landAreaPy": 863.03,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -28012,7 +28079,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3176,
+      "landArea": 3176.0,
       "landAreaPy": 960.74,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -28060,7 +28127,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3176,
+      "landArea": 3176.0,
       "landAreaPy": 960.74,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -28108,7 +28175,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 7210,
+      "landArea": 7210.0,
       "landAreaPy": 2181.03,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -28204,7 +28271,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1145,
+      "landArea": 1145.0,
       "landAreaPy": 346.36,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -28252,7 +28319,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 905,
+      "landArea": 905.0,
       "landAreaPy": 273.76,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -28630,7 +28697,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1743,
+      "landArea": 1743.0,
       "landAreaPy": 527.26,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -29059,7 +29126,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 33808,
+      "landArea": 33808.0,
       "landAreaPy": 10226.92,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -29395,7 +29462,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4607,
+      "landArea": 4607.0,
       "landAreaPy": 1393.62,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -29635,7 +29702,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 877,
+      "landArea": 877.0,
       "landAreaPy": 265.29,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -30541,7 +30608,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1385,
+      "landArea": 1385.0,
       "landAreaPy": 418.96,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -30589,7 +30656,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 733,
+      "landArea": 733.0,
       "landAreaPy": 221.73,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -30733,7 +30800,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 647,
+      "landArea": 647.0,
       "landAreaPy": 195.72,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -31498,7 +31565,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2335,
+      "landArea": 2335.0,
       "landAreaPy": 706.34,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32071,7 +32138,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1032,
+      "landArea": 1032.0,
       "landAreaPy": 312.18,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32215,7 +32282,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2310,
+      "landArea": 2310.0,
       "landAreaPy": 698.77,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32359,7 +32426,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1091,
+      "landArea": 1091.0,
       "landAreaPy": 330.03,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32551,7 +32618,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 860,
+      "landArea": 860.0,
       "landAreaPy": 260.15,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32599,7 +32666,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 859,
+      "landArea": 859.0,
       "landAreaPy": 259.85,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32647,7 +32714,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "baseFloorAreaDedicatedPy": 0,
-      "landArea": 909,
+      "landArea": 909.0,
       "landAreaPy": 274.97,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32743,7 +32810,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2965,
+      "landArea": 2965.0,
       "landAreaPy": 896.91,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32791,7 +32858,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 983,
+      "landArea": 983.0,
       "landAreaPy": 297.36,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32839,7 +32906,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3771,
+      "landArea": 3771.0,
       "landAreaPy": 1140.73,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -32983,7 +33050,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 505,
+      "landArea": 505.0,
       "landAreaPy": 152.76,
       "searchStrategy": "FUZZY_SEARCH"
     },
@@ -33748,7 +33815,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1325,
+      "landArea": 1325.0,
       "landAreaPy": 400.81,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -33892,7 +33959,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2232,
+      "landArea": 2232.0,
       "landAreaPy": 675.18,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -34129,7 +34196,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 992,
+      "landArea": 992.0,
       "landAreaPy": 300.08,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -34177,7 +34244,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1474,
+      "landArea": 1474.0,
       "landAreaPy": 445.88,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -34225,7 +34292,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1488,
+      "landArea": 1488.0,
       "landAreaPy": 450.12,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -34750,7 +34817,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3815,
+      "landArea": 3815.0,
       "landAreaPy": 1154.04,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -35086,7 +35153,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "baseFloorAreaDedicatedPy": 0,
-      "landArea": 1506,
+      "landArea": 1506.0,
       "landAreaPy": 455.56,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -35182,7 +35249,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2999,
+      "landArea": 2999.0,
       "landAreaPy": 907.2,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -35230,7 +35297,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3805,
+      "landArea": 3805.0,
       "landAreaPy": 1151.01,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -35416,7 +35483,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4765,
+      "landArea": 4765.0,
       "landAreaPy": 1441.41,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -35464,7 +35531,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 8926,
+      "landArea": 8926.0,
       "landAreaPy": 2700.11,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -35560,7 +35627,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 992,
+      "landArea": 992.0,
       "landAreaPy": 300.08,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -35609,7 +35676,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 1765.3,
-      "landAreaPy": 534,
+      "landAreaPy": 534.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -35800,7 +35867,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 661,
+      "landArea": 661.0,
       "landAreaPy": 199.95,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36277,7 +36344,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1345,
+      "landArea": 1345.0,
       "landAreaPy": 406.86,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36418,7 +36485,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2271,
+      "landArea": 2271.0,
       "landAreaPy": 686.98,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36466,7 +36533,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1640,
+      "landArea": 1640.0,
       "landAreaPy": 496.1,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36514,7 +36581,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 704,
+      "landArea": 704.0,
       "landAreaPy": 212.96,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -36562,8 +36629,8 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2000,
-      "landAreaPy": 605,
+      "landArea": 2000.0,
+      "landAreaPy": 605.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -36610,7 +36677,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1375,
+      "landArea": 1375.0,
       "landAreaPy": 415.94,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36658,7 +36725,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4644,
+      "landArea": 4644.0,
       "landAreaPy": 1404.81,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36706,7 +36773,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4437,
+      "landArea": 4437.0,
       "landAreaPy": 1342.19,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36754,7 +36821,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2557,
+      "landArea": 2557.0,
       "landAreaPy": 773.49,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36802,7 +36869,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3602,
+      "landArea": 3602.0,
       "landAreaPy": 1089.61,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36898,7 +36965,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2601,
+      "landArea": 2601.0,
       "landAreaPy": 786.8,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36946,7 +37013,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1709,
+      "landArea": 1709.0,
       "landAreaPy": 516.97,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -36994,7 +37061,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4727,
+      "landArea": 4727.0,
       "landAreaPy": 1429.92,
       "searchStrategy": "FUZZY_SEARCH"
     },
@@ -37090,7 +37157,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 955,
+      "landArea": 955.0,
       "landAreaPy": 288.89,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -37138,7 +37205,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1144,
+      "landArea": 1144.0,
       "landAreaPy": 346.06,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -37186,8 +37253,8 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1200,
-      "landAreaPy": 363,
+      "landArea": 1200.0,
+      "landAreaPy": 363.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -37234,7 +37301,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 704,
+      "landArea": 704.0,
       "landAreaPy": 212.96,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -37330,7 +37397,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1636,
+      "landArea": 1636.0,
       "landAreaPy": 494.89,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -37427,7 +37494,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 628.1,
-      "landAreaPy": 190,
+      "landAreaPy": 190.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -37855,7 +37922,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1382,
+      "landArea": 1382.0,
       "landAreaPy": 418.06,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -38047,7 +38114,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 959,
+      "landArea": 959.0,
       "landAreaPy": 290.1,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -38383,7 +38450,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 704,
+      "landArea": 704.0,
       "landAreaPy": 212.96,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -38479,7 +38546,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2401,
+      "landArea": 2401.0,
       "landAreaPy": 726.3,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -38575,8 +38642,8 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1200,
-      "landAreaPy": 363,
+      "landArea": 1200.0,
+      "landAreaPy": 363.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -38623,7 +38690,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2066,
+      "landArea": 2066.0,
       "landAreaPy": 624.97,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -39103,7 +39170,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 15274,
+      "landArea": 15274.0,
       "landAreaPy": 4620.39,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -39199,7 +39266,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1052,
+      "landArea": 1052.0,
       "landAreaPy": 318.23,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -39295,7 +39362,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1988,
+      "landArea": 1988.0,
       "landAreaPy": 601.37,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -39820,7 +39887,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4514,
+      "landArea": 4514.0,
       "landAreaPy": 1365.48,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -39868,7 +39935,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1429,
+      "landArea": 1429.0,
       "landAreaPy": 432.27,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -40438,7 +40505,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 540,
+      "landArea": 540.0,
       "landAreaPy": 163.35,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -41155,7 +41222,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3945,
+      "landArea": 3945.0,
       "landAreaPy": 1193.36,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -41248,7 +41315,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1604,
+      "landArea": 1604.0,
       "landAreaPy": 485.21,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -41440,7 +41507,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 988,
+      "landArea": 988.0,
       "landAreaPy": 298.87,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -41680,7 +41747,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1818,
+      "landArea": 1818.0,
       "landAreaPy": 549.94,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -41869,7 +41936,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 943,
+      "landArea": 943.0,
       "landAreaPy": 285.26,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -42394,7 +42461,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 704,
+      "landArea": 704.0,
       "landAreaPy": 212.96,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -42826,7 +42893,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1767,
+      "landArea": 1767.0,
       "landAreaPy": 534.52,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -43930,7 +43997,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 809,
+      "landArea": 809.0,
       "landAreaPy": 244.72,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -44119,7 +44186,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3435,
+      "landArea": 3435.0,
       "landAreaPy": 1039.09,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -44359,7 +44426,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1567,
+      "landArea": 1567.0,
       "landAreaPy": 474.02,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -44503,7 +44570,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 203,
+      "landArea": 203.0,
       "landAreaPy": 61.41,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -44551,7 +44618,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 995,
+      "landArea": 995.0,
       "landAreaPy": 300.99,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -44743,7 +44810,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1227,
+      "landArea": 1227.0,
       "landAreaPy": 371.17,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -44932,7 +44999,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1586,
+      "landArea": 1586.0,
       "landAreaPy": 479.76,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -45124,7 +45191,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 14946,
+      "landArea": 14946.0,
       "landAreaPy": 4521.16,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -45701,7 +45768,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 1649.6,
-      "landAreaPy": 499,
+      "landAreaPy": 499.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -45892,7 +45959,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 597,
+      "landArea": 597.0,
       "landAreaPy": 180.59,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -45941,7 +46008,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 3305.79,
-      "landAreaPy": 1000,
+      "landAreaPy": 1000.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -46564,7 +46631,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2876,
+      "landArea": 2876.0,
       "landAreaPy": 869.99,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -46849,7 +46916,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 6320,
+      "landArea": 6320.0,
       "landAreaPy": 1911.8,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -47041,7 +47108,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 6595,
+      "landArea": 6595.0,
       "landAreaPy": 1994.99,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -48283,7 +48350,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1644,
+      "landArea": 1644.0,
       "landAreaPy": 497.31,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -48907,7 +48974,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 935,
+      "landArea": 935.0,
       "landAreaPy": 282.84,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -49192,7 +49259,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 498,
+      "landArea": 498.0,
       "landAreaPy": 150.64,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -49240,7 +49307,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 21390,
+      "landArea": 21390.0,
       "landAreaPy": 6470.47,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -49528,7 +49595,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2754,
+      "landArea": 2754.0,
       "landAreaPy": 833.08,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -49576,7 +49643,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3503,
+      "landArea": 3503.0,
       "landAreaPy": 1059.66,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -50488,7 +50555,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1852,
+      "landArea": 1852.0,
       "landAreaPy": 560.23,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -50728,7 +50795,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 716,
+      "landArea": 716.0,
       "landAreaPy": 216.59,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -51016,7 +51083,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3780,
+      "landArea": 3780.0,
       "landAreaPy": 1143.45,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -51541,7 +51608,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1978,
+      "landArea": 1978.0,
       "landAreaPy": 598.35,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -51589,7 +51656,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1125,
+      "landArea": 1125.0,
       "landAreaPy": 340.31,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -51925,7 +51992,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 372,
+      "landArea": 372.0,
       "landAreaPy": 112.53,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -52498,7 +52565,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 969,
+      "landArea": 969.0,
       "landAreaPy": 293.12,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -52639,7 +52706,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1452,
+      "landArea": 1452.0,
       "landAreaPy": 439.23,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -52927,7 +52994,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2263,
+      "landArea": 2263.0,
       "landAreaPy": 684.56,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -53167,7 +53234,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1105,
+      "landArea": 1105.0,
       "landAreaPy": 334.26,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -53215,7 +53282,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1312,
+      "landArea": 1312.0,
       "landAreaPy": 396.88,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -54367,7 +54434,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3528,
+      "landArea": 3528.0,
       "landAreaPy": 1067.22,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -54703,7 +54770,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 147112,
+      "landArea": 147112.0,
       "landAreaPy": 44501.38,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -54800,7 +54867,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 515.7,
-      "landAreaPy": 156,
+      "landAreaPy": 156.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -54895,7 +54962,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 917,
+      "landArea": 917.0,
       "landAreaPy": 277.39,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -55279,7 +55346,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2646,
+      "landArea": 2646.0,
       "landAreaPy": 800.41,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -55375,7 +55442,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 4877,
+      "landArea": 4877.0,
       "landAreaPy": 1475.29,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -55615,7 +55682,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1224,
+      "landArea": 1224.0,
       "landAreaPy": 370.26,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -55807,7 +55874,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1161,
+      "landArea": 1161.0,
       "landAreaPy": 351.2,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -55999,7 +56066,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2661,
+      "landArea": 2661.0,
       "landAreaPy": 804.95,
       "searchStrategy": "MGMT_KEY"
     },
@@ -56377,7 +56444,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1281,
+      "landArea": 1281.0,
       "landAreaPy": 387.5,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -56425,7 +56492,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 575,
+      "landArea": 575.0,
       "landAreaPy": 173.94,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -56521,7 +56588,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 8850,
+      "landArea": 8850.0,
       "landAreaPy": 2677.12,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -56665,7 +56732,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3354,
+      "landArea": 3354.0,
       "landAreaPy": 1014.58,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -56714,7 +56781,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "landArea": 3722.3,
-      "landAreaPy": 1126,
+      "landAreaPy": 1126.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -57478,7 +57545,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 713,
+      "landArea": 713.0,
       "landAreaPy": 215.68,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -57526,7 +57593,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 6450,
+      "landArea": 6450.0,
       "landAreaPy": 1951.12,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -57718,7 +57785,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 526,
+      "landArea": 526.0,
       "landAreaPy": 159.12,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -58294,8 +58361,8 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 1881,
-      "landAreaPy": 569,
+      "landArea": 1881.0,
+      "landAreaPy": 569.0,
       "searchStrategy": "EXACT_MATCH"
     },
     {
@@ -58390,7 +58457,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 3337,
+      "landArea": 3337.0,
       "landAreaPy": 1009.44,
       "searchStrategy": "BROAD_SEARCH"
     },
@@ -58438,7 +58505,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5599,
+      "landArea": 5599.0,
       "landAreaPy": 1693.7,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -58582,7 +58649,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2163,
+      "landArea": 2163.0,
       "landAreaPy": 654.31,
       "searchStrategy": "MGMT_KEY"
     },
@@ -58819,7 +58886,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5140,
+      "landArea": 5140.0,
       "landAreaPy": 1554.85,
       "searchStrategy": "MGMT_KEY"
     },
@@ -59008,7 +59075,7 @@
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
       "depositPy": "",
-      "landArea": 5476,
+      "landArea": 5476.0,
       "landAreaPy": 1656.49,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -59152,7 +59219,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2799,
+      "landArea": 2799.0,
       "landAreaPy": 846.7,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -59293,7 +59360,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 148784,
+      "landArea": 148784.0,
       "landAreaPy": 45007.16,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -59482,7 +59549,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2264,
+      "landArea": 2264.0,
       "landAreaPy": 684.86,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -59530,7 +59597,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 5044,
+      "landArea": 5044.0,
       "landAreaPy": 1525.81,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -60292,7 +60359,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 12146,
+      "landArea": 12146.0,
       "landAreaPy": 3674.16,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -60580,7 +60647,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 19138,
+      "landArea": 19138.0,
       "landAreaPy": 5789.24,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -60868,7 +60935,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 46465,
+      "landArea": 46465.0,
       "landAreaPy": 14055.66,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -60916,7 +60983,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 46465,
+      "landArea": 46465.0,
       "landAreaPy": 14055.66,
       "searchStrategy": "RECAP_TITLE"
     },
@@ -61108,7 +61175,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 16529,
+      "landArea": 16529.0,
       "landAreaPy": 5000.02,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -61156,7 +61223,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 276,
+      "landArea": 276.0,
       "landAreaPy": 83.49,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -61252,7 +61319,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 2874,
+      "landArea": 2874.0,
       "landAreaPy": 869.38,
       "searchStrategy": "EXACT_MATCH"
     },
@@ -62095,7 +62162,7 @@
       "geocodeError": "",
       "geocodeErrorMsg": "",
       "geocodeMethod": "",
-      "landArea": 148784,
+      "landArea": 148784.0,
       "landAreaPy": 45007.16,
       "searchStrategy": "FUZZY_SEARCH"
     },
@@ -62242,522 +62309,18 @@
       "landArea": 1834.4,
       "landAreaPy": 554.91,
       "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2001,
-      "name": "삼정개발빌딩",
-      "address": "부산 부산진구 중앙대로775번길 5",
-      "addressJibun": "부산 부산진구 부전동 341-5",
-      "lat": 35.161621653336,
-      "lng": 129.061377643199,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "소형",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T05:50:11.554Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2001,
-      "name": "삼정개발빌딩",
-      "address": "부산 부산진구 중앙대로775번길 5",
-      "addressJibun": "부산 부산진구 부전동 341-5",
-      "lat": 35.161621653336,
-      "lng": 129.061377643199,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "소형",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:03:34.258Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2002,
-      "name": "동아빌딩",
-      "address": "부산 부산진구 중앙대로 766",
-      "addressJibun": "부산 부산진구 부전동 91-5",
-      "lat": 35.1604799159589,
-      "lng": 129.061809707644,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:06:46.354Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2002,
-      "name": "동아빌딩",
-      "address": "부산 부산진구 중앙대로 766",
-      "addressJibun": "부산 부산진구 부전동 91-5",
-      "lat": 35.1604799159589,
-      "lng": 129.061809707644,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:07:04.448Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2003,
-      "name": "고촌빌딩",
-      "address": "부산 부산진구 중앙대로 770",
-      "addressJibun": "부산 부산진구 부전동 83",
-      "lat": 35.1608940075502,
-      "lng": 129.06202624266,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:16:42.485Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2004,
-      "name": "혜도빌딩",
-      "address": "부산 부산진구 중앙대로 749",
-      "addressJibun": "부산 부산진구 부전동 266-2",
-      "lat": 35.1596243284757,
-      "lng": 129.060169661423,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:17:30.630Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2005,
-      "name": "NH투자증권빌딩",
-      "address": "부산 부산진구 중앙대로 736",
-      "addressJibun": "부산 부산진구 부전동 135-2",
-      "lat": 35.1582500976226,
-      "lng": 129.059960636456,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:38:35.659Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2006,
-      "name": "부산ABL",
-      "address": "부산 부산진구 중앙대로 640",
-      "addressJibun": "부산 부산진구 범천동 862-1",
-      "lat": 35.1497327738588,
-      "lng": 129.059753113622,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:43:50.218Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2007,
-      "name": "BBS춘천불교방송빌딩",
-      "address": "강원특별자치도 춘천시 중앙로 5",
-      "addressJibun": "강원특별자치도 춘천시 중앙로1가 10",
-      "lat": 37.8840032801225,
-      "lng": 127.729528935728,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:51:19.933Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2008,
-      "name": "성림빌딩",
-      "address": "강원특별자치도 춘천시 시청길10번길 4-2",
-      "addressJibun": "강원특별자치도 춘천시 조양동 26-1",
-      "lat": 37.880245049291,
-      "lng": 127.728525699178,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:54:41.099Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2009,
-      "name": " 대성빌딩",
-      "address": "강원특별자치도 춘천시 시청길 24",
-      "addressJibun": "강원특별자치도 춘천시 조양동 6-164",
-      "lat": 37.8806372155581,
-      "lng": 127.730388128812,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T06:58:50.533Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
-    },
-    {
-      "id": 2010,
-      "name": "벨라레지던스 춘천",
-      "address": "강원특별자치도 춘천시 시청길 20",
-      "addressJibun": "강원특별자치도 춘천시 조양동 74-1",
-      "lat": 37.880362660702,
-      "lng": 127.72997360392,
-      "needsGeocode": false,
-      "station": "",
-      "floors": "지하6층, 지상20층",
-      "buildingType": "",
-      "buildingUse": "업무시설",
-      "grossFloorArea": 26501.55,
-      "grossFloorAreaPy": 8016.68,
-      "baseFloorArea": 0,
-      "baseFloorAreaPy": 0,
-      "deposit": "",
-      "depositAmount": 0,
-      "rentPrice": "",
-      "rentPriceAmount": 0,
-      "rentPricePy": "",
-      "managementFee": "",
-      "managementFeeAmount": 0,
-      "managementFeePy": "",
-      "parkingSpace": "총 213대",
-      "parkingFee": "",
-      "parkingOperation": "운영",
-      "structure": "철골철근콘크리트조",
-      "completionYear": "1995",
-      "elevator": "",
-      "hvac": "",
-      "vacancy": "N/A",
-      "url": "",
-      "description": "",
-      "lastUpdated": "2025년기준",
-      "geocodeDate": "2025-09-18T07:03:37.996Z",
-      "baseFloorAreaDedicated": 0,
-      "baseFloorAreaDedicatedPy": 0,
-      "dedicatedRate": 0,
-      "landArea": 1746.2,
-      "landAreaPy": 528.22,
-      "searchStrategy": "EXACT_MATCH"
     }
-  ]
+  ],
+  "merge_info": {
+    "merge_date": "2025-06-24 09:41:46",
+    "original_file": "buildings (9).json",
+    "updated_file": "updated_buildings (8) (1).json",
+    "statistics": {
+      "total": 1303,
+      "updated": 1201,
+      "not_found": 0,
+      "no_land_area": 102,
+      "already_exists": 0
+    }
+  }
 }
