@@ -11,8 +11,55 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     
-    <!-- 카카오맵 API -->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1ac6eee9b1e4c2e0cc6f1d1ca1a6a559&libraries=services,clusterer,drawing"></script>
+    <!-- 카카오맵 API - 동적 로딩으로 변경 -->
+    <script>
+        // 카카오맵 API를 동적으로 로드하는 함수
+        function loadKakaoMapScript() {
+            return new Promise((resolve, reject) => {
+                // 이미 로드되었는지 확인
+                if (window.kakao && window.kakao.maps) {
+                    console.log('카카오맵 API 이미 로드됨');
+                    resolve();
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=1ac6eee9b1e4c2e0cc6f1d1ca1a6a559&libraries=services,clusterer,drawing&autoload=false';
+                
+                script.onload = () => {
+                    // 카카오맵 API 로드 완료 후 초기화
+                    kakao.maps.load(() => {
+                        console.log('카카오맵 API 로드 완료');
+                        
+                        // 커스텀 이벤트 발생
+                        window.dispatchEvent(new Event('kakaoMapLoaded'));
+                        resolve();
+                    });
+                };
+                
+                script.onerror = () => {
+                    console.error('카카오맵 API 로드 실패');
+                    reject(new Error('카카오맵 API 로드 실패'));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+        
+        // DOM이 로드된 후 카카오맵 API 로드
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                loadKakaoMapScript().catch(err => {
+                    console.error('카카오맵 로드 에러:', err);
+                });
+            });
+        } else {
+            loadKakaoMapScript().catch(err => {
+                console.error('카카오맵 로드 에러:', err);
+            });
+        }
+    </script>
     
     <!-- ExcelJS 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
@@ -976,18 +1023,99 @@
             height: 28px;
         }
 
-        /* 공실현황&추이 탭 전용 스타일 */
-        .vacancy-input-form, .incentive-input-form {
+        /* 공실현황&추이 탭 전용 스타일 - 비율 조정 */
+        .vacancy-input-form {
             background: white;
             border: 1px solid #ddd;
             border-radius: 6px;
             padding: 10px;
             margin-bottom: 10px;
+            min-height: 120px;
+        }
+        
+        .incentive-input-form {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 120px;
         }
 
         .vacancy-input-form.disabled, .incentive-input-form.disabled {
             opacity: 0.5;
             pointer-events: none;
+        }
+
+        /* 공실정보 입력 그룹 스타일 개선 */
+        .vacancy-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .vacancy-input-group.date-company {
+            background: #e3f2fd;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .vacancy-input-group input,
+        .vacancy-input-group select {
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .vacancy-input-group .floor-input {
+            width: 60px;
+        }
+        
+        .vacancy-input-group .area-input {
+            flex: 1;
+        }
+        
+        .vacancy-input-group .movein-input {
+            flex: 1;
+        }
+
+        /* 인센티브 입력 그룹 스타일 개선 */
+        .incentive-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .incentive-date-group {
+            display: flex;
+            gap: 8px;
+            background: #fff3cd;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+        
+        .incentive-date-group select {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .incentive-values-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .incentive-values-group input {
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
         }
 
         .vacancy-list, .incentive-list {
@@ -1412,19 +1540,19 @@
                 <div class="content-wrapper">
                     <!-- 공실과 인센티브 영역 분리 -->
                     <div class="content-container" id="vacancyContentContainer">
-                        <!-- 공실정보 영역 (좌측) -->
-                        <div class="vacancy-section">
+                        <!-- 공실정보 영역 (좌측) - 비율 조정 -->
+                        <div class="vacancy-section" style="flex: 1.5;">
                             <div class="section-title">🏢 공실정보</div>
                             
-                            <!-- 공실정보 입력 폼 -->
+                            <!-- 공실정보 입력 폼 - 레이아웃 개선 -->
                             <div class="vacancy-input-form disabled" id="vacancyInputForm">
                                 <!-- 시계열 및 회사 선택 -->
-                                <div class="rentroll-input-row" style="background: #e3f2fd; padding: 8px; border-radius: 4px; margin-bottom: 8px;">
+                                <div class="vacancy-input-group date-company">
                                     <select id="vacancyYearInput" style="flex: 1;">
-                                        <option value="">기준년도 선택</option>
+                                        <option value="">기준년도</option>
                                     </select>
                                     <select id="vacancyMonthInput" style="flex: 1;">
-                                        <option value="">기준월 선택</option>
+                                        <option value="">기준월</option>
                                         <option value="01">1월</option>
                                         <option value="02">2월</option>
                                         <option value="03">3월</option>
@@ -1438,15 +1566,15 @@
                                         <option value="11">11월</option>
                                         <option value="12">12월</option>
                                     </select>
-                                    <input type="text" id="vacancyCompanyInput" placeholder="임대 회사명" style="flex: 1;">
+                                    <input type="text" id="vacancyCompanyInput" placeholder="임대 회사명" style="flex: 1.5;">
                                 </div>
                                 
                                 <!-- 공실 정보 입력 필드 -->
-                                <div class="rentroll-input-row">
-                                    <input type="number" id="vacancyFloorInput" placeholder="층" style="flex: 0.5;">
-                                    <input type="number" id="vacancyRentAreaInput" placeholder="임대면적(평)" style="flex: 1;">
-                                    <input type="number" id="vacancyExclusiveAreaInput" placeholder="전용면적(평)" style="flex: 1;">
-                                    <input type="text" id="vacancyMoveInInput" placeholder="입주시기" style="flex: 1;">
+                                <div class="vacancy-input-group">
+                                    <input type="number" id="vacancyFloorInput" placeholder="층" class="floor-input">
+                                    <input type="number" id="vacancyRentAreaInput" placeholder="임대면적(평)" class="area-input">
+                                    <input type="number" id="vacancyExclusiveAreaInput" placeholder="전용면적(평)" class="area-input">
+                                    <input type="text" id="vacancyMoveInInput" placeholder="입주시기" class="movein-input">
                                 </div>
                                 
                                 <div class="rentroll-buttons">
@@ -1485,44 +1613,45 @@
                             </div>
                         </div>
                         
-                        <!-- 인센티브 정보 영역 (우측) -->
-                        <div class="incentive-section">
+                        <!-- 인센티브 정보 영역 (우측) - 비율 조정 -->
+                        <div class="incentive-section" style="flex: 1;">
                             <div class="section-title">💰 인센티브 정보</div>
                             
                             <div class="incentive-input-form disabled" id="incentiveInputForm">
-                                <!-- 시계열 선택 -->
-                                <div class="rentroll-input-row" style="background: #fff3cd; padding: 8px; border-radius: 4px; margin-bottom: 8px;">
-                                    <select id="incentiveYearInput" style="flex: 1;">
-                                        <option value="">기준년도 선택</option>
-                                    </select>
-                                    <select id="incentiveMonthInput" style="flex: 1;">
-                                        <option value="">기준월 선택</option>
-                                        <option value="01">1월</option>
-                                        <option value="02">2월</option>
-                                        <option value="03">3월</option>
-                                        <option value="04">4월</option>
-                                        <option value="05">5월</option>
-                                        <option value="06">6월</option>
-                                        <option value="07">7월</option>
-                                        <option value="08">8월</option>
-                                        <option value="09">9월</option>
-                                        <option value="10">10월</option>
-                                        <option value="11">11월</option>
-                                        <option value="12">12월</option>
-                                    </select>
+                                <!-- 인센티브 입력 그룹 -->
+                                <div class="incentive-input-group">
+                                    <!-- 시계열 선택 -->
+                                    <div class="incentive-date-group">
+                                        <select id="incentiveYearInput">
+                                            <option value="">기준년도</option>
+                                        </select>
+                                        <select id="incentiveMonthInput">
+                                            <option value="">기준월</option>
+                                            <option value="01">1월</option>
+                                            <option value="02">2월</option>
+                                            <option value="03">3월</option>
+                                            <option value="04">4월</option>
+                                            <option value="05">5월</option>
+                                            <option value="06">6월</option>
+                                            <option value="07">7월</option>
+                                            <option value="08">8월</option>
+                                            <option value="09">9월</option>
+                                            <option value="10">10월</option>
+                                            <option value="11">11월</option>
+                                            <option value="12">12월</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- 인센티브 값 입력 -->
+                                    <div class="incentive-values-group">
+                                        <input type="text" id="incentiveRFInput" placeholder="R/F (Rent Free)">
+                                        <input type="text" id="incentiveFOInput" placeholder="F/O (Fit Out)">
+                                        <input type="text" id="incentiveTIInput" placeholder="T/I">
+                                        <input type="text" id="incentiveNoteInput" placeholder="비고">
+                                    </div>
                                 </div>
                                 
-                                <!-- 인센티브 정보 입력 필드 -->
-                                <div class="rentroll-input-row">
-                                    <input type="text" id="incentiveRFInput" placeholder="R/F (Rent Free)" style="flex: 1;">
-                                    <input type="text" id="incentiveFOInput" placeholder="F/O (Fit Out)" style="flex: 1;">
-                                    <input type="text" id="incentiveTIInput" placeholder="T/I (Tenant Improvement)" style="flex: 1;">
-                                </div>
-                                <div class="rentroll-input-row">
-                                    <input type="text" id="incentiveNoteInput" placeholder="비고">
-                                </div>
-                                
-                                <div class="rentroll-buttons">
+                                <div class="rentroll-buttons" style="margin-top: 8px;">
                                     <button class="incentive-save-button" onclick="saveIncentive()">저장</button>
                                     <button class="incentive-cancel-button" onclick="cancelIncentive()">취소</button>
                                 </div>
@@ -2208,11 +2337,11 @@
                             <table class="vacancy-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 15%;">층</th>
-                                        <th style="width: 25%;">임대면적(평)</th>
-                                        <th style="width: 25%;">전용면적(평)</th>
+                                        <th style="width: 10%;">층</th>
+                                        <th style="width: 20%;">임대면적</th>
+                                        <th style="width: 20%;">전용면적</th>
                                         <th style="width: 25%;">입주시기</th>
-                                        <th style="width: 10%;">관리</th>
+                                        <th style="width: 25%;">관리</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -2229,8 +2358,8 @@
                         html += `
                             <tr>
                                 <td>${vacancy.floor || '-'}</td>
-                                <td>${vacancy.rentArea || '-'}</td>
-                                <td>${vacancy.exclusiveArea || '-'}</td>
+                                <td>${vacancy.rentArea || '-'}평</td>
+                                <td>${vacancy.exclusiveArea || '-'}평</td>
                                 <td>${vacancy.moveIn || '-'}</td>
                                 <td>
                                     ${(vacancy.author === window.currentUser || window.isAdmin) ? `
@@ -2334,12 +2463,12 @@
                         <table class="incentive-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 15%;">기준시점</th>
-                                    <th style="width: 20%;">R/F</th>
-                                    <th style="width: 20%;">F/O</th>
-                                    <th style="width: 20%;">T/I</th>
-                                    <th style="width: 15%;">비고</th>
-                                    <th style="width: 10%;">관리</th>
+                                    <th style="width: 20%;">기준시점</th>
+                                    <th style="width: 15%;">R/F</th>
+                                    <th style="width: 15%;">F/O</th>
+                                    <th style="width: 15%;">T/I</th>
+                                    <th style="width: 20%;">비고</th>
+                                    <th style="width: 15%;">관리</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -2352,7 +2481,7 @@
                             <td>${incentive.rf || '-'}</td>
                             <td>${incentive.fo || '-'}</td>
                             <td>${incentive.ti || '-'}</td>
-                            <td>${incentive.note || '-'}</td>
+                            <td style="font-size: 10px;">${incentive.note || '-'}</td>
                             <td>
                                 ${(incentive.author === window.currentUser || window.isAdmin) ? `
                                     <button class="rentroll-action-btn" onclick="editIncentive('${incentive.id}')" title="편집">✏️</button>
@@ -2889,3 +3018,1072 @@
                 return;
             }
             
+            if (!numericRegex.test(newPassword)) {
+                indicator.textContent = '숫자 6자리를 입력해주세요';
+                indicator.className = 'password-match-indicator no-match';
+                confirmButton.disabled = true;
+                return;
+            }
+            
+            if (newPassword === confirmPassword) {
+                if (numericRegex.test(confirmPassword)) {
+                    indicator.textContent = '✓ 비밀번호가 일치합니다';
+                    indicator.className = 'password-match-indicator match';
+                    confirmButton.disabled = false;
+                } else {
+                    indicator.textContent = '숫자 6자리를 입력해주세요';
+                    indicator.className = 'password-match-indicator no-match';
+                    confirmButton.disabled = true;
+                }
+            } else {
+                indicator.textContent = '비밀번호가 일치하지 않습니다';
+                indicator.className = 'password-match-indicator no-match';
+                confirmButton.disabled = true;
+            }
+        };
+        
+        // 비밀번호 변경 함수
+        window.changePassword = async function() {
+            const newPassword = document.getElementById('newPasswordInput').value.trim();
+            const confirmPassword = document.getElementById('confirmPasswordInput').value.trim();
+            
+            if (!newPassword || !confirmPassword) {
+                alert('새 비밀번호와 확인 비밀번호를 모두 입력하세요');
+                return;
+            }
+            
+            if (!/^\d{6}$/.test(newPassword)) {
+                alert('비밀번호는 숫자 6자리여야 합니다');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('비밀번호가 일치하지 않습니다');
+                return;
+            }
+            
+            try {
+                if (window.database) {
+                    const userKey = window.currentUser.replace(/[@.]/g, '_');
+                    await window.firebaseUpdate(
+                        window.firebaseRef(window.database, `users/${userKey}`),
+                        {
+                            password: newPassword,
+                            firstLogin: false,
+                            lastPasswordChange: Date.now()
+                        }
+                    );
+                } else {
+                    const users = JSON.parse(localStorage.getItem('authorized_users') || '{}');
+                    if (users[window.currentUser]) {
+                        users[window.currentUser].password = newPassword;
+                        users[window.currentUser].firstLogin = false;
+                        users[window.currentUser].lastPasswordChange = Date.now();
+                        localStorage.setItem('authorized_users', JSON.stringify(users));
+                    }
+                }
+                
+                // 비밀번호 변경 완료 처리
+                window.isFirstLogin = false;
+                hidePasswordChangeSection();
+                
+                alert('비밀번호가 성공적으로 변경되었습니다!\n이후 변경된 비밀번호로 로그인해주세요.');
+                
+                // 입력 필드 초기화 및 UI 활성화
+                clearPasswordChangeInputs();
+                enableMainFeatures();
+                
+            } catch (error) {
+                console.error('비밀번호 변경 오류:', error);
+                alert('비밀번호 변경 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 비밀번호 변경 취소
+        window.cancelPasswordChange = function() {
+            if (confirm('비밀번호 변경을 취소하시겠습니까?\n로그아웃됩니다.')) {
+                logout();
+                hidePasswordChangeSection();
+                clearPasswordChangeInputs();
+            }
+        };
+        
+        // 비밀번호 변경 섹션 표시/숨김
+        function showPasswordChangeSection() {
+            document.getElementById('passwordChangeSection').classList.add('show');
+        }
+        
+        function hidePasswordChangeSection() {
+            document.getElementById('passwordChangeSection').classList.remove('show');
+        }
+        
+        function clearPasswordChangeInputs() {
+            document.getElementById('newPasswordInput').value = '';
+            document.getElementById('confirmPasswordInput').value = '';
+            document.getElementById('passwordMatchIndicator').textContent = '';
+            document.getElementById('passwordConfirmButton').disabled = true;
+        }
+        
+        // 메인 기능 활성화
+        function enableMainFeatures() {
+            document.getElementById('rentrollInputForm').classList.remove('disabled');
+            document.getElementById('memoInputSection').classList.remove('disabled');
+            document.getElementById('vacancyInputForm').classList.remove('disabled');
+            document.getElementById('incentiveInputForm').classList.remove('disabled');
+            updateBlurState();
+            updateVacancyBlurState();
+            loadManagementInfo();
+            loadRentrolls();
+            loadMemos();
+        }
+        
+        // 인증 함수 (개선된 버전 - 최초 로그인 감지)
+        window.authenticate = async function() {
+            const email = document.getElementById('emailInput').value.trim();
+            const password = document.getElementById('passwordInput').value.trim();
+            const saveEmail = document.getElementById('saveEmailCheckbox').checked;
+            
+            if (!email || !password) {
+                alert('이메일과 비밀번호를 입력하세요');
+                return;
+            }
+            
+            if (!/^\d{6}$/.test(String(password))) {
+                alert('비밀번호는 6자리 숫자여야 합니다');
+                return;
+            }
+            
+            // 이메일 저장
+            if (saveEmail) {
+                localStorage.setItem('saved_email', email);
+            } else {
+                localStorage.removeItem('saved_email');
+            }
+            
+            try {
+                if (window.database) {
+                    const userKey = email.replace(/[@.]/g, '_');
+                    const userRef = window.firebaseRef(window.database, `users/${userKey}`);
+                    const snapshot = await window.firebaseGet(userRef);
+                    
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        if (String(userData.password) === String(password)) {
+                            window.currentUser = email;
+                            window.isAdmin = userData.role === 'admin';
+                            
+                            // 최초 로그인 체크 (firstLogin이 없거나 true인 경우)
+                            if (userData.firstLogin !== false) {
+                                window.isFirstLogin = true;
+                                showAuthStatus();
+                                showPasswordChangeSection();
+                                // 메인 기능은 비밀번호 변경 후에 활성화
+                            } else {
+                                window.isFirstLogin = false;
+                                showAuthStatus();
+                                enableMainFeatures();
+                                // 공실 탭 인증 상태도 동기화
+                                updateVacancyTabAuth();
+                            }
+                        } else {
+                            alert('비밀번호가 일치하지 않습니다');
+                        }
+                    } else {
+                        // 새 사용자 자동 등록 (firstLogin: true로 설정)
+                        const newUser = {
+                            email: email,
+                            password: password,
+                            role: 'user',
+                            firstLogin: true,
+                            created: Date.now()
+                        };
+                        await window.firebaseSet(userRef, newUser);
+                        window.currentUser = email;
+                        window.isAdmin = false;
+                        window.isFirstLogin = true;
+                        showAuthStatus();
+                        showPasswordChangeSection();
+                        alert('새 사용자로 등록되었습니다. 보안을 위해 비밀번호를 변경해주세요.');
+                    }
+                } else {
+                    // LocalStorage 모드
+                    const users = JSON.parse(localStorage.getItem('authorized_users') || '{}');
+                    if (!users[email]) {
+                        users[email] = {
+                            password: password,
+                            role: 'user',
+                            firstLogin: true,
+                            created: Date.now()
+                        };
+                        localStorage.setItem('authorized_users', JSON.stringify(users));
+                        window.isFirstLogin = true;
+                        alert('새 사용자로 등록되었습니다. 보안을 위해 비밀번호를 변경해주세요.');
+                    } else {
+                        window.isFirstLogin = users[email].firstLogin !== false;
+                    }
+                    
+                    if (users[email].password === password) {
+                        window.currentUser = email;
+                        window.isAdmin = users[email].role === 'admin';
+                        showAuthStatus();
+                        
+                        if (window.isFirstLogin) {
+                            showPasswordChangeSection();
+                        } else {
+                            enableMainFeatures();
+                            updateVacancyTabAuth();
+                        }
+                    } else {
+                        alert('비밀번호가 일치하지 않습니다');
+                    }
+                }
+            } catch (error) {
+                console.error('인증 오류:', error);
+                alert('인증 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 인증 상태 표시
+        function showAuthStatus() {
+            document.getElementById('authForm').classList.add('hidden');
+            document.getElementById('authStatus').classList.remove('hidden');
+            document.getElementById('currentUser').textContent = window.currentUser;
+            
+            if (window.isAdmin) {
+                document.getElementById('adminBadge').classList.remove('hidden');
+            }
+            
+            // 최초 로그인이 아닌 경우에만 메인 기능 바로 활성화
+            if (!window.isFirstLogin) {
+                enableMainFeatures();
+            }
+        }
+        
+        // 로그아웃
+        window.logout = function() {
+            window.currentUser = null;
+            window.isAdmin = false;
+            window.isFirstLogin = false;
+            window.editingRentrollId = null;
+            window.editingMemoId = null;
+            window.editingManagementId = null;
+            window.editingVacancyId = null;
+            window.editingIncentiveId = null;
+            
+            // 렌트롤 탭 로그아웃 처리
+            document.getElementById('authForm').classList.remove('hidden');
+            document.getElementById('authStatus').classList.add('hidden');
+            document.getElementById('rentrollInputForm').classList.add('disabled');
+            document.getElementById('memoInputSection').classList.add('disabled');
+            document.getElementById('adminBadge').classList.add('hidden');
+            document.getElementById('passwordInput').value = '';
+            
+            // 공실 탭 로그아웃 처리
+            document.getElementById('authFormVacancy').classList.remove('hidden');
+            document.getElementById('authStatusVacancy').classList.add('hidden');
+            document.getElementById('vacancyInputForm').classList.add('disabled');
+            document.getElementById('incentiveInputForm').classList.add('disabled');
+            document.getElementById('adminBadgeVacancy').classList.add('hidden');
+            document.getElementById('passwordInputVacancy').value = '';
+            
+            // 비밀번호 변경 섹션 숨김
+            hidePasswordChangeSection();
+            clearPasswordChangeInputs();
+            
+            // 블러 상태 업데이트
+            updateBlurState();
+            updateVacancyBlurState();
+            
+            clearRentrollInputs();
+            clearMemoInput();
+            cancelManagementInfo();
+            cancelVacancy();
+            cancelIncentive();
+        };
+        
+        // 렌트롤 필터링 함수
+        window.filterRentrolls = function() {
+            loadRentrolls();
+        };
+        
+        // 렌트롤 저장 (시계열 기능 추가)
+        window.saveRentroll = async function() {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            if (!window.currentBuildingId) {
+                alert('빌딩 정보가 없습니다');
+                return;
+            }
+            
+            const targetYear = document.getElementById('rentrollYearInput').value;
+            const targetMonth = document.getElementById('rentrollMonthInput').value;
+            const floor = document.getElementById('floorInput').value.trim();
+            const tenant = document.getElementById('tenantInput').value.trim();
+            const contractFrom = document.getElementById('contractFromInput').value.trim();
+            const contractTo = document.getElementById('contractToInput').value.trim();
+            const note = document.getElementById('rentrollNoteInput').value.trim();
+            
+            if (!targetYear || !targetMonth) {
+                alert('렌트롤 기준 년도와 월을 선택하세요');
+                return;
+            }
+            
+            if (!floor || !tenant) {
+                alert('층과 입주사명은 필수입니다');
+                return;
+            }
+            
+            try {
+                const rentrollData = {
+                    targetYear: parseInt(targetYear),
+                    targetMonth: targetMonth,
+                    targetDate: `${targetYear}-${targetMonth}`,
+                    floor: floor,
+                    tenant: tenant,
+                    contractFrom: contractFrom,
+                    contractTo: contractTo,
+                    contractPeriod: contractFrom && contractTo ? `${contractFrom}~${contractTo}` : '',
+                    note: note,
+                    author: window.currentUser,
+                    timestamp: Date.now(),
+                    createdAt: new Date().toISOString(),
+                    buildingId: window.currentBuildingId,
+                    buildingName: window.currentBuildingData?.['빌딩명'] || window.currentBuildingData?.name || ''
+                };
+                
+                if (window.database) {
+                    if (window.editingRentrollId) {
+                        await window.firebaseUpdate(
+                            window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}/${window.editingRentrollId}`),
+                            rentrollData
+                        );
+                        window.editingRentrollId = null;
+                    } else {
+                        await window.firebasePush(
+                            window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}`),
+                            rentrollData
+                        );
+                    }
+                } else {
+                    const rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                    
+                    if (window.editingRentrollId) {
+                        const index = rentrolls.findIndex(r => r.id === window.editingRentrollId);
+                        if (index !== -1) {
+                            rentrolls[index] = { ...rentrolls[index], ...rentrollData };
+                        }
+                        window.editingRentrollId = null;
+                    } else {
+                        rentrollData.id = Date.now().toString();
+                        rentrolls.push(rentrollData);
+                    }
+                    
+                    localStorage.setItem(`rentrolls_${window.currentBuildingId}`, JSON.stringify(rentrolls));
+                }
+                
+                // 저장 후 층과 입주사만 초기화 (년월은 유지)
+                document.getElementById('floorInput').value = '';
+                document.getElementById('tenantInput').value = '';
+                document.getElementById('contractFromInput').value = '';
+                document.getElementById('contractToInput').value = '';
+                document.getElementById('rentrollNoteInput').value = '';
+                if (window.contractFromPicker) window.contractFromPicker.clear();
+                if (window.contractToPicker) window.contractToPicker.clear();
+                
+                // 필터를 저장한 데이터의 년월로 설정
+                document.getElementById('filterRentrollYear').value = targetYear;
+                document.getElementById('filterRentrollMonth').value = targetMonth;
+                
+                loadRentrolls();
+                window.updateRentrollBadge();
+                
+            } catch (error) {
+                console.error('저장 오류:', error);
+                alert('저장 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 렌트롤 취소
+        window.cancelRentroll = function() {
+            clearRentrollInputs();
+            window.editingRentrollId = null;
+        };
+        
+        // 렌트롤 입력 필드 초기화 (년월 유지 옵션 추가)
+        window.clearRentrollInputs = function(keepDate = false) {
+            if (!keepDate) {
+                // 편집 중이 아닐 때만 현재 날짜로 리셋
+                if (!window.editingRentrollId) {
+                    const currentDate = new Date();
+                    const currentYear = currentDate.getFullYear();
+                    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+                    
+                    document.getElementById('rentrollYearInput').value = currentYear;
+                    document.getElementById('rentrollMonthInput').value = currentMonth;
+                } else {
+                    document.getElementById('rentrollYearInput').value = '';
+                    document.getElementById('rentrollMonthInput').value = '';
+                }
+            }
+            document.getElementById('floorInput').value = '';
+            document.getElementById('tenantInput').value = '';
+            document.getElementById('contractFromInput').value = '';
+            document.getElementById('contractToInput').value = '';
+            document.getElementById('rentrollNoteInput').value = '';
+            if (window.contractFromPicker) window.contractFromPicker.clear();
+            if (window.contractToPicker) window.contractToPicker.clear();
+        };
+        
+        // 메모 저장
+        window.saveMemo = async function() {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            if (!window.currentBuildingId) {
+                alert('빌딩 정보가 없습니다');
+                return;
+            }
+            
+            const content = document.getElementById('memoTextarea').value.trim();
+            const pinned = document.getElementById('memoPinCheckbox').checked;
+            
+            if (!content) {
+                alert('메모를 입력하세요');
+                return;
+            }
+            
+            try {
+                const memoData = {
+                    content: content,
+                    pinned: pinned,
+                    author: window.currentUser,
+                    timestamp: Date.now(),
+                    buildingId: window.currentBuildingId,
+                    buildingName: window.currentBuildingData?.['빌딩명'] || window.currentBuildingData?.name || '',
+                    deleted: false
+                };
+                
+                if (window.database) {
+                    if (window.editingMemoId) {
+                        await window.firebaseUpdate(
+                            window.firebaseRef(window.database, `memos/${window.currentBuildingId}/${window.editingMemoId}`),
+                            memoData
+                        );
+                        window.editingMemoId = null;
+                    } else {
+                        await window.firebasePush(
+                            window.firebaseRef(window.database, `memos/${window.currentBuildingId}`),
+                            memoData
+                        );
+                    }
+                } else {
+                    const memos = JSON.parse(localStorage.getItem(`memos_${window.currentBuildingId}`) || '[]');
+                    
+                    if (window.editingMemoId) {
+                        const index = memos.findIndex(m => m.id === window.editingMemoId);
+                        if (index !== -1) {
+                            memos[index] = { ...memos[index], ...memoData };
+                        }
+                        window.editingMemoId = null;
+                    } else {
+                        memoData.id = Date.now().toString();
+                        memos.push(memoData);
+                    }
+                    
+                    localStorage.setItem(`memos_${window.currentBuildingId}`, JSON.stringify(memos));
+                }
+                
+                clearMemoInput();
+                loadMemos();
+                window.updateRentrollBadge();
+                
+            } catch (error) {
+                console.error('메모 저장 오류:', error);
+                alert('메모 저장 중 오류가 발생했습니다');
+            }
+        };
+        
+        // 메모 취소
+        window.cancelMemo = function() {
+            clearMemoInput();
+            window.editingMemoId = null;
+        };
+        
+        // 메모 입력 필드 초기화
+        function clearMemoInput() {
+            document.getElementById('memoTextarea').value = '';
+            document.getElementById('memoPinCheckbox').checked = false;
+        }
+        
+        // 렌트롤 목록 로드 (아이콘으로 개선된 UI)
+        window.loadRentrolls = async function() {
+            const rentrollList = document.getElementById('rentrollList');
+            
+            if (!window.currentBuildingId) {
+                rentrollList.innerHTML = '<div class="empty-state">빌딩을 선택하세요</div>';
+                return;
+            }
+            
+            try {
+                let rentrolls = [];
+                
+                if (window.database) {
+                    const rentrollRef = window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}`);
+                    const snapshot = await window.firebaseGet(rentrollRef);
+                    
+                    if (snapshot.exists()) {
+                        rentrolls = Object.entries(snapshot.val()).map(([id, data]) => ({
+                            id,
+                            ...data
+                        }));
+                    }
+                } else {
+                    rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                }
+                
+                if (rentrolls.length === 0) {
+                    rentrollList.innerHTML = '<div class="empty-state">렌트롤 정보가 없습니다</div>';
+                    
+                    // 렌트롤이 없으면 입력 폼에 현재 년월 설정
+                    const currentDate = new Date();
+                    const currentYear = currentDate.getFullYear();
+                    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+                    
+                    document.getElementById('rentrollYearInput').value = currentYear;
+                    document.getElementById('rentrollMonthInput').value = currentMonth;
+                    
+                    return;
+                }
+                
+                // 최신 렌트롤 날짜 저장
+                const latestDate = await getLatestRentrollDate();
+                window.latestRentrollDate = latestDate;
+                
+                // 처음 로드시 최신 날짜로 필터 설정
+                if (!document.getElementById('filterRentrollYear').value && 
+                    !document.getElementById('filterRentrollMonth').value && 
+                    latestDate) {
+                    document.getElementById('filterRentrollYear').value = latestDate.year;
+                    document.getElementById('filterRentrollMonth').value = latestDate.month;
+                }
+                
+                // 필터링 적용
+                const filterYear = document.getElementById('filterRentrollYear')?.value;
+                const filterMonth = document.getElementById('filterRentrollMonth')?.value;
+                
+                if (filterYear) {
+                    rentrolls = rentrolls.filter(r => r.targetYear === parseInt(filterYear));
+                }
+                
+                if (filterMonth) {
+                    rentrolls = rentrolls.filter(r => r.targetMonth === filterMonth);
+                }
+                
+                if (rentrolls.length === 0) {
+                    rentrollList.innerHTML = '<div class="empty-state">선택한 기간의 렌트롤 정보가 없습니다</div>';
+                    return;
+                }
+                
+                // 기준년월별로 그룹화
+                const groupedByDate = {};
+                rentrolls.forEach(rentroll => {
+                    const key = `${rentroll.targetYear}-${rentroll.targetMonth}`;
+                    if (!groupedByDate[key]) {
+                        groupedByDate[key] = [];
+                    }
+                    groupedByDate[key].push(rentroll);
+                });
+                
+                // 각 그룹을 층수 기준으로 정렬
+                Object.keys(groupedByDate).forEach(key => {
+                    groupedByDate[key].sort((a, b) => {
+                        const floorA = parseInt(a.floor) || 0;
+                        const floorB = parseInt(b.floor) || 0;
+                        return floorA - floorB;
+                    });
+                });
+                
+                // 정렬된 그룹 키 (최신순)
+                const sortedKeys = Object.keys(groupedByDate).sort((a, b) => {
+                    const [yearA, monthA] = a.split('-').map(Number);
+                    const [yearB, monthB] = b.split('-').map(Number);
+                    const dateA = yearA * 100 + monthA;
+                    const dateB = yearB * 100 + monthB;
+                    return dateB - dateA;
+                });
+                
+                const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);
+                
+                // HTML 생성
+                let html = '';
+                sortedKeys.forEach(key => {
+                    const [year, month] = key.split('-');
+                    const group = groupedByDate[key];
+                    
+                    // 최신 작성 시간과 작성자 찾기
+                    const latestEntry = group.reduce((latest, current) => 
+                        current.timestamp > latest.timestamp ? current : latest
+                    );
+                    
+                    const hasNew = group.some(r => r.timestamp > threeDaysAgo);
+                    
+                    html += `
+                        <div class="rentroll-header">
+                            <div class="rentroll-header-title">
+                                📅 ${year}년 ${month}월 렌트롤
+                                ${hasNew ? '<span class="new-badge">NEW</span>' : ''}
+                            </div>
+                            <div class="rentroll-header-meta">
+                                최종 수정: ${formatDateTime(latestEntry.timestamp)}
+                            </div>
+                        </div>
+                        <div class="rentroll-table-wrapper">
+                            <table class="rentroll-table compact">
+                                <thead>
+                                    <tr>
+                                        <th class="floor-col">층</th>
+                                        <th class="tenant-col">입주사명</th>
+                                        <th class="contract-col">계약기간</th>
+                                        <th class="note-col">비고</th>
+                                        <th class="author-col">👤</th>
+                                        <th class="action-cell">관리</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    group.forEach(rentroll => {
+                        const isRecent = rentroll.timestamp > threeDaysAgo;
+                        const authorName = rentroll.author.split('@')[0];
+                        const tooltipText = `${rentroll.author}\n${formatDateTime(rentroll.timestamp)}`;
+                        
+                        html += `
+                            <tr>
+                                <td class="floor-col">${rentroll.floor || '-'}</td>
+                                <td class="tenant-col">${rentroll.tenant || '-'}</td>
+                                <td class="contract-col">${rentroll.contractPeriod || '-'}</td>
+                                <td class="note-col">${rentroll.note || '-'}</td>
+                                <td class="author-col">
+                                    <span class="author-icon ${isRecent ? 'new' : ''}" title="${tooltipText}">
+                                        👤
+                                        <span class="author-tooltip">${tooltipText}</span>
+                                    </span>
+                                </td>
+                                <td class="action-cell">
+                                    ${(rentroll.author === window.currentUser || window.isAdmin) ? `
+                                        <button class="rentroll-action-btn" onclick="editRentroll('${rentroll.id}')" title="편집">✏️</button>
+                                        <button class="rentroll-action-btn" onclick="deleteRentroll('${rentroll.id}')" title="삭제">🗑️</button>
+                                    ` : '-'}
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    html += `
+                                </tbody>
+                            </table>
+                            <div class="rentroll-footer">
+                                <span class="rentroll-count">총 ${group.length}개 층</span>
+                                <span>작성자 ${[...new Set(group.map(r => r.author))].length}명</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                rentrollList.innerHTML = html;
+                
+                // 입력 폼에 최신 날짜 설정 (편집 중이 아닐 때만)
+                if (latestDate && !window.editingRentrollId) {
+                    document.getElementById('rentrollYearInput').value = latestDate.year;
+                    document.getElementById('rentrollMonthInput').value = latestDate.month;
+                }
+                
+            } catch (error) {
+                console.error('렌트롤 로드 오류:', error);
+                rentrollList.innerHTML = '<div class="empty-state">데이터 로드 실패</div>';
+            }
+        };
+        
+        // 메모 목록 로드 (핀고정 메모 우선 표시 + 삭제 상태 처리)
+        window.loadMemos = async function() {
+            const memoList = document.getElementById('memoList');
+            
+            if (!window.currentBuildingId) {
+                memoList.innerHTML = '<div class="empty-state">빌딩을 선택하세요</div>';
+                return;
+            }
+            
+            try {
+                let memos = [];
+                
+                if (window.database) {
+                    const memoRef = window.firebaseRef(window.database, `memos/${window.currentBuildingId}`);
+                    const snapshot = await window.firebaseGet(memoRef);
+                    
+                    if (snapshot.exists()) {
+                        memos = Object.entries(snapshot.val()).map(([id, data]) => ({
+                            id,
+                            ...data
+                        }));
+                    }
+                } else {
+                    memos = JSON.parse(localStorage.getItem(`memos_${window.currentBuildingId}`) || '[]');
+                }
+                
+                // 일반 사용자는 삭제된 메모 필터링, 관리자는 모든 메모 표시
+                if (!window.isAdmin) {
+                    memos = memos.filter(memo => !memo.deleted);
+                }
+                
+                if (memos.length === 0) {
+                    memoList.innerHTML = '<div class="empty-state">메모가 없습니다</div>';
+                    return;
+                }
+                
+                // 정렬: 핀고정된 메모 우선, 그 다음 시간순
+                memos.sort((a, b) => {
+                    if (a.pinned && !b.pinned) return -1;
+                    if (!a.pinned && b.pinned) return 1;
+                    return b.timestamp - a.timestamp;
+                });
+                
+                const threeDaysAgo = Date.now() - (3 * 24 * 60 * 60 * 1000);
+                
+                memoList.innerHTML = memos.map(memo => {
+                    const isNew = memo.timestamp > threeDaysAgo;
+                    const isDeleted = memo.deleted;
+                    const isPinned = memo.pinned;
+                    
+                    return `
+                        <div class="memo-item ${isPinned ? 'pinned' : ''} ${isDeleted ? 'deleted' : ''}">
+                            ${isPinned ? '<div class="pin-indicator">📌 공지</div>' : ''}
+                            ${isDeleted ? '<div class="deleted-indicator">삭제됨</div>' : ''}
+                            <div class="memo-item-header">
+                                <div class="memo-item-meta">
+                                    <strong>${memo.author}</strong>
+                                    ${isNew && !isDeleted ? '<span style="background: #ff6b6b; color: white; padding: 1px 4px; border-radius: 10px; font-size: 9px; margin-left: 5px;">NEW</span>' : ''}
+                                    <span style="margin-left: 5px;">${formatDateTime(memo.timestamp)}</span>
+                                </div>
+                            </div>
+                            <div class="memo-item-content">${escapeHtml(memo.content)}</div>
+                            <div class="memo-item-actions">
+                                ${!isDeleted && (memo.author === window.currentUser || window.isAdmin) ? `
+                                    <button class="edit-button" onclick="editMemo('${memo.id}')">편집</button>
+                                    <button class="delete-button" onclick="deleteMemo('${memo.id}')">${window.isAdmin ? '완전삭제' : '삭제'}</button>
+                                ` : ''}
+                                ${isDeleted && window.isAdmin ? `
+                                    <button class="restore-button" onclick="restoreMemo('${memo.id}')">복원</button>
+                                    <button class="delete-button" onclick="permanentDeleteMemo('${memo.id}')">완전삭제</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('메모 로드 오류:', error);
+                memoList.innerHTML = '<div class="empty-state">데이터 로드 실패</div>';
+            }
+        };
+        
+        // 렌트롤 편집 (시계열 필드 포함)
+        window.editRentroll = async function(rentrollId) {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            let rentroll = null;
+            
+            if (window.database) {
+                const snapshot = await window.firebaseGet(
+                    window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}/${rentrollId}`)
+                );
+                if (snapshot.exists()) {
+                    rentroll = snapshot.val();
+                }
+            } else {
+                const rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                rentroll = rentrolls.find(r => r.id === rentrollId);
+            }
+            
+            if (rentroll && (rentroll.author === window.currentUser || window.isAdmin)) {
+                document.getElementById('rentrollYearInput').value = rentroll.targetYear || '';
+                document.getElementById('rentrollMonthInput').value = rentroll.targetMonth || '';
+                document.getElementById('floorInput').value = rentroll.floor || '';
+                document.getElementById('tenantInput').value = rentroll.tenant || '';
+                document.getElementById('contractFromInput').value = rentroll.contractFrom || '';
+                document.getElementById('contractToInput').value = rentroll.contractTo || '';
+                document.getElementById('rentrollNoteInput').value = rentroll.note || '';
+                window.editingRentrollId = rentrollId;
+                document.getElementById('floorInput').focus();
+            } else {
+                alert('수정 권한이 없습니다');
+            }
+        };
+        
+        // 렌트롤 삭제
+        window.deleteRentroll = async function(rentrollId) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                try {
+                    if (window.database) {
+                        await window.firebaseRemove(
+                            window.firebaseRef(window.database, `rentrolls/${window.currentBuildingId}/${rentrollId}`)
+                        );
+                    } else {
+                        let rentrolls = JSON.parse(localStorage.getItem(`rentrolls_${window.currentBuildingId}`) || '[]');
+                        rentrolls = rentrolls.filter(r => r.id !== rentrollId);
+                        localStorage.setItem(`rentrolls_${window.currentBuildingId}`, JSON.stringify(rentrolls));
+                    }
+                    
+                    loadRentrolls();
+                    window.updateRentrollBadge();
+                } catch (error) {
+                    console.error('삭제 오류:', error);
+                    alert('삭제 중 오류가 발생했습니다');
+                }
+            }
+        };
+        
+        // 메모 편집
+        window.editMemo = async function(memoId) {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            let memo = null;
+            
+            if (window.database) {
+                const snapshot = await window.firebaseGet(
+                    window.firebaseRef(window.database, `memos/${window.currentBuildingId}/${memoId}`)
+                );
+                if (snapshot.exists()) {
+                    memo = snapshot.val();
+                }
+            } else {
+                const memos = JSON.parse(localStorage.getItem(`memos_${window.currentBuildingId}`) || '[]');
+                memo = memos.find(m => m.id === memoId);
+            }
+            
+            if (memo && (memo.author === window.currentUser || window.isAdmin)) {
+                document.getElementById('memoTextarea').value = memo.content || '';
+                document.getElementById('memoPinCheckbox').checked = memo.pinned || false;
+                window.editingMemoId = memoId;
+                document.getElementById('memoTextarea').focus();
+            } else {
+                alert('수정 권한이 없습니다');
+            }
+        };
+        
+        // 메모 삭제 (권한별 차등 처리)
+        window.deleteMemo = async function(memoId) {
+            const confirmMessage = window.isAdmin ? '정말 완전삭제 하시겠습니까?' : '정말 삭제하시겠습니까?';
+            
+            if (confirm(confirmMessage)) {
+                try {
+                    if (window.database) {
+                        if (window.isAdmin) {
+                            // 관리자는 완전 삭제
+                            await window.firebaseRemove(
+                                window.firebaseRef(window.database, `memos/${window.currentBuildingId}/${memoId}`)
+                            );
+                        } else {
+                            // 일반 사용자는 삭제 표시만
+                            await window.firebaseUpdate(
+                                window.firebaseRef(window.database, `memos/${window.currentBuildingId}/${memoId}`),
+                                { deleted: true, deletedBy: window.currentUser, deletedAt: Date.now() }
+                            );
+                        }
+                    } else {
+                        let memos = JSON.parse(localStorage.getItem(`memos_${window.currentBuildingId}`) || '[]');
+                        
+                        if (window.isAdmin) {
+                            // 관리자는 완전 삭제
+                            memos = memos.filter(m => m.id !== memoId);
+                        } else {
+                            // 일반 사용자는 삭제 표시만
+                            const index = memos.findIndex(m => m.id === memoId);
+                            if (index !== -1) {
+                                memos[index].deleted = true;
+                                memos[index].deletedBy = window.currentUser;
+                                memos[index].deletedAt = Date.now();
+                            }
+                        }
+                        
+                        localStorage.setItem(`memos_${window.currentBuildingId}`, JSON.stringify(memos));
+                    }
+                    
+                    loadMemos();
+                    window.updateRentrollBadge();
+                } catch (error) {
+                    console.error('삭제 오류:', error);
+                    alert('삭제 중 오류가 발생했습니다');
+                }
+            }
+        };
+
+        // 메모 복원 (관리자 전용)
+        window.restoreMemo = async function(memoId) {
+            if (!window.isAdmin) {
+                alert('관리자만 복원할 수 있습니다');
+                return;
+            }
+
+            try {
+                if (window.database) {
+                    await window.firebaseUpdate(
+                        window.firebaseRef(window.database, `memos/${window.currentBuildingId}/${memoId}`),
+                        { deleted: false, restoredBy: window.currentUser, restoredAt: Date.now() }
+                    );
+                } else {
+                    let memos = JSON.parse(localStorage.getItem(`memos_${window.currentBuildingId}`) || '[]');
+                    const index = memos.findIndex(m => m.id === memoId);
+                    if (index !== -1) {
+                        memos[index].deleted = false;
+                        memos[index].restoredBy = window.currentUser;
+                        memos[index].restoredAt = Date.now();
+                    }
+                    localStorage.setItem(`memos_${window.currentBuildingId}`, JSON.stringify(memos));
+                }
+
+                loadMemos();
+                window.updateRentrollBadge();
+            } catch (error) {
+                console.error('복원 오류:', error);
+                alert('복원 중 오류가 발생했습니다');
+            }
+        };
+
+        // 메모 완전 삭제 (관리자 전용)
+        window.permanentDeleteMemo = async function(memoId) {
+            if (!window.isAdmin) {
+                alert('관리자만 완전삭제할 수 있습니다');
+                return;
+            }
+
+            if (confirm('정말 완전삭제 하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                try {
+                    if (window.database) {
+                        await window.firebaseRemove(
+                            window.firebaseRef(window.database, `memos/${window.currentBuildingId}/${memoId}`)
+                        );
+                    } else {
+                        let memos = JSON.parse(localStorage.getItem(`memos_${window.currentBuildingId}`) || '[]');
+                        memos = memos.filter(m => m.id !== memoId);
+                        localStorage.setItem(`memos_${window.currentBuildingId}`, JSON.stringify(memos));
+                    }
+
+                    loadMemos();
+                    window.updateRentrollBadge();
+                } catch (error) {
+                    console.error('완전삭제 오류:', error);
+                    alert('완전삭제 중 오류가 발생했습니다');
+                }
+            }
+        };
+        
+        // 유틸리티 함수들
+        window.formatDateTime = function(timestamp) {
+            const date = new Date(timestamp);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            
+            return `${month}/${day} ${hours}:${minutes}`;
+        };
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+    
+    <!-- 나머지 스크립트들은 동일하게 유지 -->
+    <script src="js/building2-config.js"></script>
+    <script src="js/building2-template.js"></script>
+    <script src="js/building2-data.js"></script>
+    <script src="js/building2-styles.js"></script>
+    <script src="js/building2-main.js"></script>
+    
+    <script src="js/main.js"></script>
+    <script>
+        // 카카오맵 API가 로드된 후 map.js 및 관련 스크립트 실행
+        window.addEventListener('kakaoMapLoaded', function() {
+            // map.js 동적 로드
+            const mapScript = document.createElement('script');
+            mapScript.src = 'js/map.js';
+            document.body.appendChild(mapScript);
+            
+            // drawing.js 동적 로드
+            const drawingScript = document.createElement('script');
+            drawingScript.src = 'js/drawing.js';
+            document.body.appendChild(drawingScript);
+        });
+    </script>
+    <script src="js/building.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/vacancy.js"></script>
+    
+    <script>
+        // 관리사무소 정보 확인 함수
+        window.checkManagementInfo = async function(building) {
+            if (!window.database) return false;
+            
+            try {
+                const buildingId = (building.name || building['빌딩명'] || building.id)?.replace(/\s+/g, '-').toLowerCase();
+                const managementRef = window.firebaseRef(window.database, `management/${buildingId}`);
+                const snapshot = await window.firebaseGet(managementRef);
+                return snapshot.exists();
+            } catch (error) {
+                console.error('관리사무소 정보 확인 오류:', error);
+                return false;
+            }
+        };
+
+        // building.js의 showBuildingInfo 함수 보강
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const originalShowBuildingInfo = window.showBuildingInfo;
+                
+                window.showBuildingInfo = function(building) {
+                    if (originalShowBuildingInfo) {
+                        originalShowBuildingInfo(building);
+                    }
+                    
+                    // buildingId 생성 방식
+                    window.currentBuildingId = (building.name || building['빌딩명'] || building.id)?.replace(/\s+/g, '-').toLowerCase();
+                    window.currentBuildingData = building;
+                    
+                    console.log('Building ID generated:', window.currentBuildingId);
+                    console.log('Building data:', window.currentBuildingData);
+                    
+                    document.querySelectorAll('.tab-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    document.querySelector('.tab-button').classList.add('active');
+                    
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById('infoTab').classList.add('active');
+                    
+                    if (window.updateRentrollBadge) {
+                        window.updateRentrollBadge();
+                    }
+                };
+                
+                console.log('showBuildingInfo 함수 보강 완료');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+        
