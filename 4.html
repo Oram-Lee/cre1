@@ -1083,56 +1083,77 @@
             min-height: 140px; /* 120px -> 140px */
         }
         
-        /* 인센티브 입력 폼 개선 - 펼침/접기 추가 */
-        .incentive-input-form {
+        /* 인센티브 펼침/접힘 토글 스타일 */
+        .incentive-toggle-header {
             background: white;
             border: 1px solid #ddd;
             border-radius: 6px;
+            padding: 12px 15px;
             margin-bottom: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .incentive-input-toggle {
-            background: #fff3cd;
-            padding: 10px 15px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #ffeaa7;
-            user-select: none;
+            transition: all 0.3s;
         }
         
-        .incentive-input-toggle:hover {
-            background: #ffe8a1;
+        .incentive-toggle-header:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
         }
         
-        .incentive-input-toggle-title {
+        .incentive-toggle-header.active {
+            border-color: #007bff;
+            background: #e7f3ff;
+        }
+        
+        .incentive-toggle-title {
             font-size: 14px;
             font-weight: 600;
-            color: #856404;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .incentive-input-toggle-icon {
+        .incentive-toggle-icon {
+            background: #007bff;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .incentive-toggle-arrow {
+            color: #666;
+            transition: transform 0.3s;
             font-size: 18px;
-            transition: transform 0.3s ease;
         }
         
-        .incentive-input-toggle-icon.expanded {
+        .incentive-toggle-header.active .incentive-toggle-arrow {
             transform: rotate(180deg);
         }
         
-        .incentive-input-content {
+        /* 인센티브 입력 폼 개선 - 애니메이션 효과 */
+        .incentive-input-form {
+            background: white;
+            border: 1px solid #007bff;
+            border-radius: 6px;
+            padding: 0;
+            margin-bottom: 12px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
-            padding: 0;
+            transition: max-height 0.3s ease, padding 0.3s ease;
         }
         
-        .incentive-input-content.expanded {
-            max-height: 400px;
+        .incentive-input-form.expanded {
             padding: 15px;
+            max-height: 300px;
         }
 
         .vacancy-input-form.disabled, .incentive-input-form.disabled {
@@ -1174,7 +1195,7 @@
             flex: 1;
         }
 
-        /* 인센티브 입력 그룹 개선 */
+        /* 인센티브 입력 그룹 개선 - RF/TI 한줄 배치 */
         .incentive-input-group {
             display: flex;
             flex-direction: column;
@@ -1198,30 +1219,38 @@
             font-size: 13px;
         }
         
-        /* 인센티브 값 입력 그룹 개선 - 2행 레이아웃 */
+        /* RF/TI 한줄 배치 개선 */
+        .incentive-rf-ti-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .incentive-rf-ti-row .incentive-input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 인센티브 값 입력 그룹 개선 */
         .incentive-values-group {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
         
-        .incentive-row {
-            display: flex;
-            gap: 15px;
-        }
-        
         .incentive-input-wrapper {
             display: flex;
             align-items: center;
             gap: 8px;
-            flex: 1;
         }
         
         .incentive-input-wrapper label {
             font-size: 13px;
             font-weight: 600;
             color: #495057;
-            min-width: 35px;
+            min-width: 40px;
         }
         
         .incentive-input-wrapper input {
@@ -1236,7 +1265,6 @@
             font-size: 13px;
             color: #666;
             white-space: nowrap;
-            min-width: 40px;
         }
         
         .incentive-note-wrapper {
@@ -1305,7 +1333,7 @@
             align-items: center;
         }
 
-        /* 인센티브 카드 스타일 */
+        /* 인센티브 카드 스타일 개선 - 액션 버튼 드롭다운 */
         .incentive-card {
             background: white;
             border: 1px solid #e0e0e0;
@@ -1353,6 +1381,7 @@
             gap: 3px;
         }
         
+        /* 액션 메뉴 개선 */
         .incentive-card-actions {
             position: relative;
         }
@@ -1377,54 +1406,44 @@
             color: white;
         }
         
-        /* 액션 드롭다운 메뉴 */
-        .incentive-action-dropdown {
+        .incentive-action-menu {
             position: absolute;
-            top: 38px;
+            top: 35px;
             right: 0;
             background: white;
             border: 1px solid #dee2e6;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: none;
             z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.2s;
-            min-width: 120px;
         }
         
-        .incentive-action-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+        .incentive-action-menu.show {
+            display: block;
         }
         
-        .incentive-action-dropdown-item {
-            padding: 10px 15px;
-            font-size: 13px;
-            color: #333;
+        .incentive-action-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 15px;
+            border: none;
+            background: none;
+            text-align: left;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            white-space: nowrap;
             transition: background 0.2s;
         }
         
-        .incentive-action-dropdown-item:last-child {
-            border-bottom: none;
-        }
-        
-        .incentive-action-dropdown-item:hover {
+        .incentive-action-menu button:hover {
             background: #f8f9fa;
         }
         
-        .incentive-action-dropdown-item.edit {
+        .incentive-action-menu button.edit-action {
             color: #007bff;
         }
         
-        .incentive-action-dropdown-item.delete {
+        .incentive-action-menu button.delete-action {
             color: #dc3545;
         }
         
@@ -1633,7 +1652,7 @@
                     <span class="tab-badge" id="rentrollBadge" style="display:none;"></span>
                 </button>
                 <button class="tab-button" onclick="switchTab('vacancy')">🏢 공실현황&추이</button>
-                <button class="tab-button disabled">📁 관련문서</button>
+                <button class="tab-button disabled">📄 관련문서</button>
             </div>
             
             <!-- 빌딩 정보 탭 -->
@@ -1665,7 +1684,7 @@
                 
                 <!-- 비밀번호 변경 섹션 -->
                 <div class="password-change-section" id="passwordChangeSection">
-                    <div class="password-change-title">🔐 비밀번호 변경</div>
+                    <div class="password-change-title">🔒 비밀번호 변경</div>
                     <div class="password-change-subtitle">
                         보안을 위해 새로운 비밀번호를 설정해주세요.<br>
                         숫자 6자리로 입력해주시기 바랍니다.
@@ -1932,74 +1951,72 @@
                         <div class="incentive-section" style="flex: 1;">
                             <div class="section-title">💰 인센티브 정보</div>
                             
-                            <div class="incentive-input-form disabled" id="incentiveInputForm">
-                                <!-- 펼침/접기 토글 -->
-                                <div class="incentive-input-toggle" onclick="toggleIncentiveInput()">
-                                    <span class="incentive-input-toggle-title">📝 인센티브 정보 입력</span>
-                                    <span class="incentive-input-toggle-icon" id="incentiveToggleIcon">▼</span>
+                            <!-- 인센티브 토글 헤더 -->
+                            <div class="incentive-toggle-header" onclick="toggleIncentiveForm()" id="incentiveToggleHeader">
+                                <div class="incentive-toggle-title">
+                                    <span class="incentive-toggle-icon">+</span>
+                                    <span>인센티브 정보 등록</span>
                                 </div>
-                                
-                                <!-- 입력 콘텐츠 -->
-                                <div class="incentive-input-content" id="incentiveInputContent">
-                                    <div class="incentive-input-group">
-                                        <!-- 시계열 선택 -->
-                                        <div class="incentive-date-group">
-                                            <select id="incentiveYearInput">
-                                                <option value="">기준년도</option>
-                                            </select>
-                                            <select id="incentiveMonthInput">
-                                                <option value="">기준월</option>
-                                                <option value="01">1월</option>
-                                                <option value="02">2월</option>
-                                                <option value="03">3월</option>
-                                                <option value="04">4월</option>
-                                                <option value="05">5월</option>
-                                                <option value="06">6월</option>
-                                                <option value="07">7월</option>
-                                                <option value="08">8월</option>
-                                                <option value="09">9월</option>
-                                                <option value="10">10월</option>
-                                                <option value="11">11월</option>
-                                                <option value="12">12월</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <!-- 인센티브 값 입력 - 2행으로 재구성 -->
-                                        <div class="incentive-values-group">
-                                            <!-- 첫 번째 행: R/F와 F/O -->
-                                            <div class="incentive-row">
-                                                <div class="incentive-input-wrapper">
-                                                    <label>R/F:</label>
-                                                    <input type="number" id="incentiveRFInput" placeholder="0.25" step="0.01" min="0" max="99.99">
-                                                    <span class="unit">개월</span>
-                                                </div>
-                                                <div class="incentive-input-wrapper">
-                                                    <label>F/O:</label>
-                                                    <span class="unit" style="order: -1; margin-right: 5px;">평당</span>
-                                                    <input type="text" id="incentiveFOInput" placeholder="100,000" onkeyup="formatCurrency(this)">
-                                                    <span class="unit">원</span>
-                                                </div>
+                                <span class="incentive-toggle-arrow">▼</span>
+                            </div>
+                            
+                            <!-- 인센티브 입력 폼 (펼침/접힘) -->
+                            <div class="incentive-input-form disabled" id="incentiveInputForm">
+                                <!-- 인센티브 입력 그룹 -->
+                                <div class="incentive-input-group">
+                                    <!-- 시계열 선택 -->
+                                    <div class="incentive-date-group">
+                                        <select id="incentiveYearInput">
+                                            <option value="">기준년도</option>
+                                        </select>
+                                        <select id="incentiveMonthInput">
+                                            <option value="">기준월</option>
+                                            <option value="01">1월</option>
+                                            <option value="02">2월</option>
+                                            <option value="03">3월</option>
+                                            <option value="04">4월</option>
+                                            <option value="05">5월</option>
+                                            <option value="06">6월</option>
+                                            <option value="07">7월</option>
+                                            <option value="08">8월</option>
+                                            <option value="09">9월</option>
+                                            <option value="10">10월</option>
+                                            <option value="11">11월</option>
+                                            <option value="12">12월</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- 인센티브 값 입력 - RF/TI 한줄 배치 -->
+                                    <div class="incentive-values-group">
+                                        <div class="incentive-rf-ti-row">
+                                            <div class="incentive-input-wrapper">
+                                                <label>R/F:</label>
+                                                <input type="number" id="incentiveRFInput" placeholder="0.25" step="0.01" min="0" max="99.99">
+                                                <span class="unit">개월</span>
                                             </div>
-                                            <!-- 두 번째 행: T/I -->
-                                            <div class="incentive-row">
-                                                <div class="incentive-input-wrapper">
-                                                    <label>T/I:</label>
-                                                    <input type="number" id="incentiveTIInput" placeholder="0.25" step="0.01" min="0" max="99.99">
-                                                    <span class="unit">개월</span>
-                                                </div>
+                                            <div class="incentive-input-wrapper">
+                                                <label>T/I:</label>
+                                                <input type="number" id="incentiveTIInput" placeholder="0.25" step="0.01" min="0" max="99.99">
+                                                <span class="unit">개월</span>
                                             </div>
                                         </div>
-                                        
-                                        <div class="incentive-note-wrapper">
-                                            <label>비고:</label>
-                                            <input type="text" id="incentiveNoteInput" placeholder="추가 정보 입력">
+                                        <div class="incentive-input-wrapper">
+                                            <label>F/O:</label>
+                                            <span class="unit">평당</span>
+                                            <input type="text" id="incentiveFOInput" placeholder="100,000" onkeyup="formatCurrency(this)">
+                                            <span class="unit">원</span>
                                         </div>
                                     </div>
                                     
-                                    <div class="rentroll-buttons" style="margin-top: 10px;">
-                                        <button class="incentive-save-button" onclick="saveIncentive()">저장</button>
-                                        <button class="incentive-cancel-button" onclick="cancelIncentive()">취소</button>
+                                    <div class="incentive-note-wrapper">
+                                        <label>비고:</label>
+                                        <input type="text" id="incentiveNoteInput" placeholder="추가 정보 입력">
                                     </div>
+                                </div>
+                                
+                                <div class="rentroll-buttons" style="margin-top: 10px;">
+                                    <button class="incentive-save-button" onclick="saveIncentive()">저장</button>
+                                    <button class="incentive-cancel-button" onclick="cancelIncentive()">취소</button>
                                 </div>
                             </div>
                             
@@ -2050,7 +2067,7 @@
         <div class="loading-progress" id="loading-progress"></div>
     </div>
     
-    <!-- 금액 포맷 함수 및 펼침/접기 함수 추가 -->
+    <!-- 금액 포맷 함수 및 인센티브 토글 함수 추가 -->
     <script>
         // 금액 포맷 함수
         function formatCurrency(input) {
@@ -2070,26 +2087,37 @@
             return value.replace(/[^\d]/g, '');
         }
         
-        // 인센티브 입력 폼 펼침/접기
-        function toggleIncentiveInput() {
-            const content = document.getElementById('incentiveInputContent');
-            const icon = document.getElementById('incentiveToggleIcon');
+        // 인센티브 폼 토글 함수
+        window.toggleIncentiveForm = function() {
+            const form = document.getElementById('incentiveInputForm');
+            const header = document.getElementById('incentiveToggleHeader');
             
-            if (content.classList.contains('expanded')) {
-                content.classList.remove('expanded');
-                icon.classList.remove('expanded');
-            } else {
-                content.classList.add('expanded');
-                icon.classList.add('expanded');
+            if (!window.currentUser) {
+                alert('먼저 로그인해 주세요');
+                return;
             }
-        }
+            
+            form.classList.toggle('expanded');
+            header.classList.toggle('active');
+            
+            // 토글 아이콘 변경
+            const icon = header.querySelector('.incentive-toggle-icon');
+            icon.textContent = form.classList.contains('expanded') ? '−' : '+';
+            
+            // 폼이 펼쳐질 때 첫 번째 입력 필드에 포커스
+            if (form.classList.contains('expanded')) {
+                setTimeout(() => {
+                    document.getElementById('incentiveYearInput').focus();
+                }, 300);
+            }
+        };
         
-        // 인센티브 액션 메뉴 표시/숨김
-        function toggleIncentiveMenu(event, incentiveId) {
+        // 인센티브 액션 메뉴 토글
+        window.toggleIncentiveActionMenu = function(event, incentiveId) {
             event.stopPropagation();
             
-            // 다른 드롭다운 메뉴들 닫기
-            document.querySelectorAll('.incentive-action-dropdown').forEach(menu => {
+            // 다른 열린 메뉴 닫기
+            document.querySelectorAll('.incentive-action-menu').forEach(menu => {
                 if (menu.id !== `menu-${incentiveId}`) {
                     menu.classList.remove('show');
                 }
@@ -2097,17 +2125,23 @@
             
             // 현재 메뉴 토글
             const menu = document.getElementById(`menu-${incentiveId}`);
-            if (menu) {
-                menu.classList.toggle('show');
+            menu.classList.toggle('show');
+            
+            // 클릭 이벤트 리스너 추가 (메뉴 외부 클릭 시 닫기)
+            if (menu.classList.contains('show')) {
+                setTimeout(() => {
+                    document.addEventListener('click', closeAllActionMenus);
+                }, 0);
             }
-        }
+        };
         
-        // 페이지 클릭 시 메뉴 닫기
-        document.addEventListener('click', function() {
-            document.querySelectorAll('.incentive-action-dropdown').forEach(menu => {
+        // 모든 액션 메뉴 닫기
+        function closeAllActionMenus() {
+            document.querySelectorAll('.incentive-action-menu').forEach(menu => {
                 menu.classList.remove('show');
             });
-        });
+            document.removeEventListener('click', closeAllActionMenus);
+        }
     </script>
     
     <!-- Firebase 및 탭 기능 추가 -->
@@ -2173,9 +2207,7 @@
             console.error('Firebase 초기화 실패:', error);
         }
         
-        // 나머지 기존 함수들은 모두 동일하게 유지...
-        
-        // 인센티브 저장 함수 수정
+        // 인센티브 저장 함수 개선 (편집 기능 포함)
         window.saveIncentive = async function() {
             if (!window.currentUser) {
                 alert('먼저 로그인하세요');
@@ -2256,6 +2288,14 @@
                 document.getElementById('incentiveFOInput').value = '';
                 document.getElementById('incentiveNoteInput').value = '';
                 
+                // 폼 닫기
+                const form = document.getElementById('incentiveInputForm');
+                const header = document.getElementById('incentiveToggleHeader');
+                form.classList.remove('expanded');
+                header.classList.remove('active');
+                const icon = header.querySelector('.incentive-toggle-icon');
+                icon.textContent = '+';
+                
                 // 필터 업데이트
                 document.getElementById('filterIncentiveYear').value = targetYear;
                 document.getElementById('filterIncentiveMonth').value = targetMonth;
@@ -2268,7 +2308,7 @@
             }
         };
         
-        // 인센티브 목록 로드 함수 수정 (카드 스타일)
+        // 인센티브 목록 로드 함수 (액션 메뉴 추가)
         window.loadIncentives = async function() {
             const incentiveList = document.getElementById('incentiveList');
             
@@ -2329,7 +2369,7 @@
                 const paginatedIncentives = incentives.slice(startIdx, endIdx);
                 const totalPages = Math.ceil(incentives.length / pageSize);
                 
-                // 카드 스타일 HTML 생성
+                // 카드 스타일 HTML 생성 (액션 메뉴 포함)
                 let html = '';
                 
                 paginatedIncentives.forEach(incentive => {
@@ -2345,22 +2385,18 @@
                                         📅 ${incentive.targetYear}년 ${incentive.targetMonth}월
                                     </div>
                                     <div class="incentive-card-meta">
-                                        <span>📝 ${dateStr}</span>
+                                        <span>🕐 ${dateStr}</span>
                                         <span>👤 ${incentive.author.split('@')[0]}</span>
                                     </div>
                                 </div>
                                 ${canEdit ? `
                                     <div class="incentive-card-actions">
-                                        <div class="incentive-action-icon" onclick="toggleIncentiveMenu(event, '${incentive.id}')">
-                                            ✏️
+                                        <div class="incentive-action-icon" onclick="toggleIncentiveActionMenu(event, '${incentive.id}')">
+                                            ⋮
                                         </div>
-                                        <div class="incentive-action-dropdown" id="menu-${incentive.id}">
-                                            <div class="incentive-action-dropdown-item edit" onclick="editIncentive('${incentive.id}')">
-                                                ✏️ 편집하기
-                                            </div>
-                                            <div class="incentive-action-dropdown-item delete" onclick="deleteIncentive('${incentive.id}')">
-                                                🗑️ 삭제하기
-                                            </div>
+                                        <div class="incentive-action-menu" id="menu-${incentive.id}">
+                                            <button class="edit-action" onclick="editIncentive('${incentive.id}')">✏️ 편집</button>
+                                            <button class="delete-action" onclick="deleteIncentive('${incentive.id}')">🗑️ 삭제</button>
                                         </div>
                                     </div>
                                 ` : ''}
@@ -2388,9 +2424,9 @@
                                 ${incentive.fo ? `
                                     <div class="incentive-value-item">
                                         <div class="incentive-value-label">F/O (Fit Out)</div>
-                                        <div class="incentive-value-number" style="font-size: 15px;">
+                                        <div class="incentive-value-number">
                                             ${parseInt(incentive.fo).toLocaleString('ko-KR')}
-                                            <span class="incentive-value-unit" style="font-size: 12px;">평당 원</span>
+                                            <span class="incentive-value-unit">평당 원</span>
                                         </div>
                                     </div>
                                 ` : ''}
@@ -2425,12 +2461,14 @@
             }
         };
         
-        // 인센티브 편집 함수 수정
+        // 인센티브 편집 함수
         window.editIncentive = async function(incentiveId) {
             if (!window.currentUser) {
                 alert('먼저 로그인하세요');
                 return;
             }
+            
+            closeAllActionMenus();
             
             let incentive = null;
             
@@ -2447,6 +2485,15 @@
             }
             
             if (incentive && (incentive.author === window.currentUser || window.isAdmin)) {
+                // 폼 펼치기
+                const form = document.getElementById('incentiveInputForm');
+                const header = document.getElementById('incentiveToggleHeader');
+                form.classList.add('expanded');
+                header.classList.add('active');
+                const icon = header.querySelector('.incentive-toggle-icon');
+                icon.textContent = '−';
+                
+                // 데이터 채우기
                 document.getElementById('incentiveYearInput').value = incentive.targetYear || '';
                 document.getElementById('incentiveMonthInput').value = incentive.targetMonth || '';
                 document.getElementById('incentiveRFInput').value = incentive.rf || '';
@@ -2454,24 +2501,17 @@
                 document.getElementById('incentiveFOInput').value = incentive.fo ? parseInt(incentive.fo).toLocaleString('ko-KR') : '';
                 document.getElementById('incentiveNoteInput').value = incentive.note || '';
                 window.editingIncentiveId = incentiveId;
-                
-                // 편집 시 입력 폼 자동으로 펼치기
-                const content = document.getElementById('incentiveInputContent');
-                const icon = document.getElementById('incentiveToggleIcon');
-                if (!content.classList.contains('expanded')) {
-                    content.classList.add('expanded');
-                    icon.classList.add('expanded');
-                }
-                
                 document.getElementById('incentiveRFInput').focus();
             } else {
                 alert('수정 권한이 없습니다');
             }
         };
         
-        // 인센티브 삭제 함수 추가
+        // 인센티브 삭제 함수
         window.deleteIncentive = async function(incentiveId) {
             if (confirm('정말 삭제하시겠습니까?')) {
+                closeAllActionMenus();
+                
                 try {
                     if (window.database) {
                         await window.firebaseRemove(
@@ -2494,268 +2534,6 @@
         // 나머지 모든 기존 함수들은 동일하게 유지...
         // (이전 코드의 모든 함수들을 그대로 복사)
         
-        // 년도 선택 옵션 초기화 함수 (현재 년월 기본값 추가)
-        window.initializeRentrollYearSelects = function() {
-            const currentDate = new Date();
-            const currentYear = currentDate.getFullYear();
-            const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
-            const selects = ['rentrollYearInput', 'filterRentrollYear', 
-                           'vacancyYearInput', 'filterVacancyYear',
-                           'incentiveYearInput', 'filterIncentiveYear'];
-            
-            selects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    // 기존 옵션 유지 (첫번째 옵션)
-                    const firstOption = select.options[0];
-                    select.innerHTML = '';
-                    if (firstOption) {
-                        select.appendChild(firstOption);
-                    }
-                    
-                    // 년도 옵션 추가
-                    for (let year = currentYear + 2; year >= currentYear - 10; year--) {
-                        const option = document.createElement('option');
-                        option.value = year;
-                        option.textContent = year + '년';
-                        select.appendChild(option);
-                    }
-                    
-                    // 입력 폼에는 현재 년도를 기본값으로 설정
-                    if (selectId.includes('Input') && !selectId.includes('filter')) {
-                        select.value = currentYear;
-                    }
-                }
-            });
-            
-            // 입력 폼에 현재 월을 기본값으로 설정
-            ['rentrollMonthInput', 'vacancyMonthInput', 'incentiveMonthInput'].forEach(id => {
-                const monthInput = document.getElementById(id);
-                if (monthInput) {
-                    monthInput.value = currentMonth;
-                }
-            });
-        };
-        
-        // 공실현황&추이 탭 전환 함수
-        const originalSwitchTab = window.switchTab;
-        window.switchTab = function(tabName) {
-            if (event.target.classList.contains('disabled')) {
-                return;
-            }
-            
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(`${tabName}Tab`).classList.add('active');
-            
-            if (tabName === 'rentroll') {
-                updateBlurState();
-                loadManagementInfo();
-                // 렌트롤 탭 열 때마다 최신 데이터로 필터 설정
-                setTimeout(async () => {
-                    await loadRentrolls();
-                    loadMemos();
-                }, 100);
-            } else if (tabName === 'vacancy') {
-                updateVacancyTabAuth();
-                updateVacancyBlurState();
-                if (window.currentUser) {
-                    // 로그인 상태에서 인센티브 입력 폼 자동으로 펼치기
-                    const content = document.getElementById('incentiveInputContent');
-                    const icon = document.getElementById('incentiveToggleIcon');
-                    if (content && !content.classList.contains('expanded')) {
-                        content.classList.add('expanded');
-                        icon?.classList.add('expanded');
-                    }
-                    loadVacancies();
-                    loadIncentives();
-                }
-            }
-        };
-        
-        // 공실 탭 인증 상태 동기화
-        window.updateVacancyTabAuth = function() {
-            if (window.currentUser) {
-                // 로그인 상태일 때
-                document.getElementById('authFormVacancy')?.classList.add('hidden');
-                document.getElementById('authStatusVacancy')?.classList.remove('hidden');
-                const currentUserVacancy = document.getElementById('currentUserVacancy');
-                if (currentUserVacancy) {
-                    currentUserVacancy.textContent = window.currentUser;
-                }
-                if (window.isAdmin) {
-                    document.getElementById('adminBadgeVacancy')?.classList.remove('hidden');
-                }
-                
-                // 입력 폼 활성화
-                document.getElementById('vacancyInputForm')?.classList.remove('disabled');
-                document.getElementById('incentiveInputForm')?.classList.remove('disabled');
-                
-                // 인센티브 입력 폼 펼치기 (로그인 시 자동으로 열기)
-                const content = document.getElementById('incentiveInputContent');
-                const icon = document.getElementById('incentiveToggleIcon');
-                if (content && !content.classList.contains('expanded')) {
-                    content.classList.add('expanded');
-                    icon?.classList.add('expanded');
-                }
-            } else {
-                // 로그아웃 상태일 때
-                document.getElementById('authFormVacancy')?.classList.remove('hidden');
-                document.getElementById('authStatusVacancy')?.classList.add('hidden');
-                document.getElementById('adminBadgeVacancy')?.classList.add('hidden');
-                
-                // 입력 폼 비활성화
-                document.getElementById('vacancyInputForm')?.classList.add('disabled');
-                document.getElementById('incentiveInputForm')?.classList.add('disabled');
-            }
-        };
-        
-        // 공실 탭 블러 상태 업데이트
-        window.updateVacancyBlurState = function() {
-            const contentContainer = document.getElementById('vacancyContentContainer');
-            const blurOverlay = document.getElementById('vacancyBlurOverlay');
-            
-            if (!window.currentUser) {
-                // 비로그인 상태: 블러 효과 적용
-                if (contentContainer) contentContainer.classList.add('blur-content');
-                if (blurOverlay) blurOverlay.classList.add('show');
-            } else {
-                // 로그인 상태: 블러 효과 제거
-                if (contentContainer) contentContainer.classList.remove('blur-content');
-                if (blurOverlay) blurOverlay.classList.remove('show');
-            }
-        };
-        
-        // 공실 탭 인증 (기존 인증 함수와 동기화)
-        window.authenticateVacancy = async function() {
-            const email = document.getElementById('emailInputVacancy').value.trim();
-            const password = document.getElementById('passwordInputVacancy').value.trim();
-            const saveEmail = document.getElementById('saveEmailCheckboxVacancy').checked;
-            
-            if (!email || !password) {
-                alert('이메일과 비밀번호를 입력하세요');
-                return;
-            }
-            
-            if (!/^\d{6}$/.test(String(password))) {
-                alert('비밀번호는 6자리 숫자여야 합니다');
-                return;
-            }
-            
-            // 이메일 저장
-            if (saveEmail) {
-                localStorage.setItem('saved_email', email);
-            } else {
-                localStorage.removeItem('saved_email');
-            }
-            
-            try {
-                if (window.database) {
-                    const userKey = email.replace(/[@.]/g, '_');
-                    const userRef = window.firebaseRef(window.database, `users/${userKey}`);
-                    const snapshot = await window.firebaseGet(userRef);
-                    
-                    if (snapshot.exists()) {
-                        const userData = snapshot.val();
-                        if (String(userData.password) === String(password)) {
-                            window.currentUser = email;
-                            window.isAdmin = userData.role === 'admin';
-                            
-                            // 공실 탭 인증 상태 업데이트
-                            updateVacancyTabAuth();
-                            updateVacancyBlurState();
-                            
-                            // 인센티브 입력 폼 자동으로 펼치기
-                            const content = document.getElementById('incentiveInputContent');
-                            const icon = document.getElementById('incentiveToggleIcon');
-                            if (content && !content.classList.contains('expanded')) {
-                                content.classList.add('expanded');
-                                icon?.classList.add('expanded');
-                            }
-                            
-                            // 렌트롤 탭 인증 상태도 업데이트
-                            if (!userData.firstLogin || userData.firstLogin === false) {
-                                document.getElementById('authForm')?.classList.add('hidden');
-                                document.getElementById('authStatus')?.classList.remove('hidden');
-                                const currentUserElement = document.getElementById('currentUser');
-                                if (currentUserElement) {
-                                    currentUserElement.textContent = window.currentUser;
-                                }
-                                if (window.isAdmin) {
-                                    document.getElementById('adminBadge')?.classList.remove('hidden');
-                                }
-                                document.getElementById('rentrollInputForm')?.classList.remove('disabled');
-                                document.getElementById('memoInputSection')?.classList.remove('disabled');
-                                updateBlurState();
-                            }
-                            
-                            // 데이터 로드
-                            loadVacancies();
-                            loadIncentives();
-                        } else {
-                            alert('비밀번호가 일치하지 않습니다');
-                        }
-                    } else {
-                        // 새 사용자 자동 등록
-                        const newUser = {
-                            email: email,
-                            password: password,
-                            role: 'user',
-                            firstLogin: true,
-                            created: Date.now()
-                        };
-                        await window.firebaseSet(userRef, newUser);
-                        window.currentUser = email;
-                        window.isAdmin = false;
-                        window.isFirstLogin = true;
-                        alert('새 사용자로 등록되었습니다. 보안을 위해 비밀번호를 변경해주세요.');
-                        
-                        // 비밀번호 변경 화면으로 전환해야 하므로 렌트롤 탭으로 이동
-                        switchTab('rentroll');
-                    }
-                } else {
-                    // LocalStorage 모드
-                    const users = JSON.parse(localStorage.getItem('authorized_users') || '{}');
-                    if (!users[email]) {
-                        users[email] = {
-                            password: password,
-                            role: 'user',
-                            firstLogin: true,
-                            created: Date.now()
-                        };
-                        localStorage.setItem('authorized_users', JSON.stringify(users));
-                        window.isFirstLogin = true;
-                        alert('새 사용자로 등록되었습니다. 보안을 위해 비밀번호를 변경해주세요.');
-                        switchTab('rentroll');
-                        return;
-                    }
-                    
-                    if (users[email].password === password) {
-                        window.currentUser = email;
-                        window.isAdmin = users[email].role === 'admin';
-                        updateVacancyTabAuth();
-                        updateVacancyBlurState();
-                        loadVacancies();
-                        loadIncentives();
-                    } else {
-                        alert('비밀번호가 일치하지 않습니다');
-                    }
-                }
-            } catch (error) {
-                console.error('인증 오류:', error);
-                alert('인증 중 오류가 발생했습니다');
-            }
-        };
-        
-        // 나머지 모든 기존 함수들 그대로 복사...
-        // (여기에 이전 코드의 모든 함수들이 들어갑니다)
-        
     </script>
     
     <!-- 나머지 스크립트들은 동일하게 유지 -->
@@ -2764,7 +2542,6 @@
     <script src="js/building2-data.js"></script>
     <script src="js/building2-styles.js"></script>
     <script src="js/building2-main.js"></script>
-    
     <script src="js/main.js"></script>
     <script>
         // 카카오맵 API가 로드된 후 map.js 및 관련 스크립트 실행
@@ -2783,58 +2560,5 @@
     <script src="js/building.js"></script>
     <script src="js/search.js"></script>
     <script src="js/vacancy.js"></script>
-    
-    <script>
-        // 관리사무소 정보 확인 함수
-        window.checkManagementInfo = async function(building) {
-            if (!window.database) return false;
-            
-            try {
-                const buildingId = (building.name || building['빌딩명'] || building.id)?.replace(/\s+/g, '-').toLowerCase();
-                const managementRef = window.firebaseRef(window.database, `management/${buildingId}`);
-                const snapshot = await window.firebaseGet(managementRef);
-                return snapshot.exists();
-            } catch (error) {
-                console.error('관리사무소 정보 확인 오류:', error);
-                return false;
-            }
-        };
-
-        // building.js의 showBuildingInfo 함수 보강
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                const originalShowBuildingInfo = window.showBuildingInfo;
-                
-                window.showBuildingInfo = function(building) {
-                    if (originalShowBuildingInfo) {
-                        originalShowBuildingInfo(building);
-                    }
-                    
-                    // buildingId 생성 방식
-                    window.currentBuildingId = (building.name || building['빌딩명'] || building.id)?.replace(/\s+/g, '-').toLowerCase();
-                    window.currentBuildingData = building;
-                    
-                    console.log('Building ID generated:', window.currentBuildingId);
-                    console.log('Building data:', window.currentBuildingData);
-                    
-                    document.querySelectorAll('.tab-button').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    document.querySelector('.tab-button').classList.add('active');
-                    
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    document.getElementById('infoTab').classList.add('active');
-                    
-                    if (window.updateRentrollBadge) {
-                        window.updateRentrollBadge();
-                    }
-                };
-                
-                console.log('showBuildingInfo 함수 보강 완료');
-            }, 500);
-        });
-    </script>
 </body>
 </html>
