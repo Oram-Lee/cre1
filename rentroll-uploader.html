@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>렌트롤 일괄 업로드</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <!-- SheetJS for Excel parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 인증 섹션 */
+        .auth-section {
+            margin-bottom: 20px;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .auth-form input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .auth-form input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .auth-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .auth-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #d4edda;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .auth-status.hidden { display: none; }
+        .auth-form.hidden { display: none; }
+        
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        /* 파일 업로드 영역 */
+        .upload-zone {
+            border: 3px dashed #ddd;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .upload-zone.has-file {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .file-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        /* 통계 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+        
+        /* 업로드 옵션 */
+        .upload-options {
+            margin-top: 20px;
+        }
+        
+        .option-group {
+            margin-bottom: 15px;
+        }
+        
+        .option-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .option-row {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .option-row select, .option-row input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #555;
+            margin-top: 10px;
+        }
+        
+        .checkbox-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* 업로드 버튼 */
+        .upload-button {
+            width: 100%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .upload-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .upload-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* 우측 패널 - 데이터 미리보기 */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .preview-card {
+            flex: 1;
+            max-height: calc(100vh - 140px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            width: 200px;
+        }
+        
+        .building-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        
+        .building-item {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .building-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .building-header:hover {
+            background: #f8f9fa;
+        }
+        
+        .building-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .building-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .building-count {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+        
+        .building-address {
+            font-size: 11px;
+            color: #888;
+        }
+        
+        .expand-icon {
+            transition: transform 0.3s;
+        }
+        
+        .building-item.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .building-details {
+            display: none;
+            padding: 0 15px 15px;
+            background: #f8f9fa;
+        }
+        
+        .building-item.expanded .building-details {
+            display: block;
+        }
+        
+        .tenant-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .tenant-table th, .tenant-table td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tenant-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .tenant-table tr:hover td {
+            background: #f0f4ff;
+        }
+        
+        .contact-badge {
+            background: #28a745;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+        
+        .no-contact {
+            color: #999;
+            font-style: italic;
+        }
+        
+        /* 진행률 표시 */
+        .progress-section {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .progress-section.show {
+            display: block;
+        }
+        
+        .progress-bar-container {
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .progress-text {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+        
+        /* 결과 로그 */
+        .result-log {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #1e1e1e;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        
+        .log-item {
+            padding: 3px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .log-item.success { color: #4caf50; }
+        .log-item.error { color: #f44336; }
+        .log-item.info { color: #2196f3; }
+        .log-item.warning { color: #ff9800; }
+        
+        /* 선택 체크박스 */
+        .select-all-row {
+            padding: 10px 15px;
+            background: #f0f4ff;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .building-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        /* 빈 상태 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+        
+        /* 작성자 입력 */
+        .author-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 렌트롤 일괄 업로드</h1>
+        
+        <div class="main-grid">
+            <!-- 좌측 패널 -->
+            <div class="left-panel">
+                <!-- 인증 -->
+                <div class="card auth-section">
+                    <div class="card-title">🔐 Firebase 인증</div>
+                    <div class="auth-form" id="authForm">
+                        <input type="email" id="emailInput" placeholder="이메일">
+                        <input type="password" id="passwordInput" placeholder="비밀번호 (숫자 6자리)" maxlength="6">
+                        <button class="auth-button" onclick="authenticate()">로그인</button>
+                    </div>
+                    <div class="auth-status hidden" id="authStatus">
+                        <span>✅ <strong id="currentUserDisplay"></strong></span>
+                        <button class="logout-btn" onclick="logout()">로그아웃</button>
+                    </div>
+                </div>
+                
+                <!-- 파일 업로드 -->
+                <div class="card">
+                    <div class="card-title">📁 엑셀 파일 업로드</div>
+                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text">
+                            클릭하거나 파일을 드래그하세요<br>
+                            <small>.xlsx, .xls 파일 지원</small>
+                        </div>
+                        <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFileSelect(event)">
+                    </div>
+                    
+                    <div class="file-info" id="fileInfo" style="display:none">
+                        <strong id="fileName"></strong>
+                    </div>
+                    
+                    <div class="stats-grid" id="statsGrid" style="display:none">
+                        <div class="stat-box">
+                            <div class="stat-number" id="statBuildings">0</div>
+                            <div class="stat-label">빌딩 수</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="statTenants">0</div>
+                            <div class="stat-label">입주사 수</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="statContacts">0</div>
+                            <div class="stat-label">연락처 있음</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="statSelected">0</div>
+                            <div class="stat-label">선택된 빌딩</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 업로드 옵션 -->
+                <div class="card upload-options">
+                    <div class="card-title">⚙️ 업로드 설정</div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">렌트롤 기준 시점</label>
+                        <div class="option-row">
+                            <select id="targetYear"></select>
+                            <select id="targetMonth">
+                                <option value="01">1월</option>
+                                <option value="02">2월</option>
+                                <option value="03">3월</option>
+                                <option value="04">4월</option>
+                                <option value="05">5월</option>
+                                <option value="06">6월</option>
+                                <option value="07">7월</option>
+                                <option value="08">8월</option>
+                                <option value="09">9월</option>
+                                <option value="10">10월</option>
+                                <option value="11">11월</option>
+                                <option value="12">12월</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">작성자 (업로드 기록용)</label>
+                        <input type="text" class="author-input" id="authorInput" placeholder="예: admin@company.com" readonly>
+                    </div>
+                    
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="uploadRentroll" checked>
+                        렌트롤 업로드 (층, 입주사명)
+                    </label>
+                    
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="uploadMemo" checked>
+                        메모 업로드 (연락처 정보)
+                    </label>
+                    
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="pinMemo">
+                        메모 공지로 고정 (📌)
+                    </label>
+                    
+                    <button class="upload-button" id="uploadBtn" onclick="startUpload()" disabled>
+                        🚀 선택한 빌딩 업로드 시작
+                    </button>
+                    
+                    <!-- 진행률 -->
+                    <div class="progress-section" id="progressSection">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar">0%</div>
+                        </div>
+                        <div class="progress-text" id="progressText">준비 중...</div>
+                        
+                        <div class="result-log" id="resultLog"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 우측 패널 - 데이터 미리보기 -->
+            <div class="right-panel">
+                <div class="card preview-card">
+                    <div class="preview-header">
+                        <div class="card-title" style="margin-bottom: 0; border: none; padding-bottom: 0;">
+                            🏢 빌딩별 데이터 미리보기
+                        </div>
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="빌딩명 검색..." oninput="filterBuildings()">
+                        </div>
+                    </div>
+                    
+                    <div class="building-list" id="buildingList">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📂</div>
+                            <div>엑셀 파일을 업로드하면<br>빌딩별 데이터가 표시됩니다</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getDatabase, 
+            ref, 
+            push, 
+            set,
+            get,
+            update
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0jF0Soo-0OoUtJLIIy2g7EMubcHqP5XM",
+            authDomain: "rentroll-32a01.firebaseapp.com",
+            databaseURL: "https://rentroll-32a01-default-rtdb.firebaseio.com",
+            projectId: "rentroll-32a01",
+            storageBucket: "rentroll-32a01.appspot.com",
+            messagingSenderId: "2538299262",
+            appId: "1:2538299262:web:cdf4f01f5dc012e1299d2f"
+        };
+        
+        // 전역 변수
+        window.firebaseApp = initializeApp(firebaseConfig);
+        window.database = getDatabase(window.firebaseApp);
+        window.firebaseRef = ref;
+        window.firebasePush = push;
+        window.firebaseSet = set;
+        window.firebaseGet = get;
+        window.firebaseUpdate = update;
+        
+        window.currentUser = null;
+        window.parsedData = null;
+        window.buildingGroups = {};
+        window.selectedBuildings = new Set();
+        
+        console.log('Firebase 초기화 완료');
+        
+        // 년도 셀렉트 초기화
+        const currentDate = new Date();
+        const yearSelect = document.getElementById('targetYear');
+        for (let y = currentDate.getFullYear() + 1; y >= currentDate.getFullYear() - 5; y--) {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y + '년';
+            if (y === currentDate.getFullYear()) opt.selected = true;
+            yearSelect.appendChild(opt);
+        }
+        document.getElementById('targetMonth').value = String(currentDate.getMonth() + 1).padStart(2, '0');
+        
+        // 인증 함수
+        window.authenticate = async function() {
+            const email = document.getElementById('emailInput').value.trim();
+            const password = document.getElementById('passwordInput').value.trim();
+            
+            if (!email || !password) {
+                alert('이메일과 비밀번호를 입력하세요');
+                return;
+            }
+            
+            try {
+                const userKey = email.replace(/[@.]/g, '_');
+                const userRef = ref(window.database, `users/${userKey}`);
+                const snapshot = await get(userRef);
+                
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    if (String(userData.password) === String(password)) {
+                        window.currentUser = email;
+                        document.getElementById('authForm').classList.add('hidden');
+                        document.getElementById('authStatus').classList.remove('hidden');
+                        document.getElementById('currentUserDisplay').textContent = email;
+                        document.getElementById('authorInput').value = email;
+                        updateUploadButton();
+                        addLog('로그인 성공: ' + email, 'success');
+                    } else {
+                        alert('비밀번호가 일치하지 않습니다');
+                    }
+                } else {
+                    // 새 사용자 등록
+                    await set(userRef, {
+                        email: email,
+                        password: password,
+                        role: 'user',
+                        created: Date.now()
+                    });
+                    window.currentUser = email;
+                    document.getElementById('authForm').classList.add('hidden');
+                    document.getElementById('authStatus').classList.remove('hidden');
+                    document.getElementById('currentUserDisplay').textContent = email;
+                    document.getElementById('authorInput').value = email;
+                    updateUploadButton();
+                    addLog('새 사용자 등록 완료: ' + email, 'success');
+                }
+            } catch (error) {
+                console.error('인증 오류:', error);
+                alert('인증 중 오류가 발생했습니다');
+            }
+        };
+        
+        window.logout = function() {
+            window.currentUser = null;
+            document.getElementById('authForm').classList.remove('hidden');
+            document.getElementById('authStatus').classList.add('hidden');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('authorInput').value = '';
+            updateUploadButton();
+        };
+        
+        // 업로드 시작
+        window.startUpload = async function() {
+            if (!window.currentUser) {
+                alert('먼저 로그인하세요');
+                return;
+            }
+            
+            if (window.selectedBuildings.size === 0) {
+                alert('업로드할 빌딩을 선택하세요');
+                return;
+            }
+            
+            const uploadRentroll = document.getElementById('uploadRentroll').checked;
+            const uploadMemo = document.getElementById('uploadMemo').checked;
+            
+            if (!uploadRentroll && !uploadMemo) {
+                alert('렌트롤 또는 메모 중 하나는 선택해야 합니다');
+                return;
+            }
+            
+            const targetYear = parseInt(document.getElementById('targetYear').value);
+            const targetMonth = document.getElementById('targetMonth').value;
+            const pinMemo = document.getElementById('pinMemo').checked;
+            
+            // 진행률 표시
+            document.getElementById('progressSection').classList.add('show');
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('resultLog').innerHTML = '';
+            
+            const selectedArray = Array.from(window.selectedBuildings);
+            let completed = 0;
+            let successCount = 0;
+            let errorCount = 0;
+            
+            for (const buildingName of selectedArray) {
+                const buildingData = window.buildingGroups[buildingName];
+                if (!buildingData) continue;
+                
+                try {
+                    // 빌딩 ID 생성 (기존 시스템과 동일)
+                    const buildingId = buildingName.replace(/\s+/g, '-').toLowerCase();
+                    
+                    addLog(`📌 ${buildingName} 처리 시작 (ID: ${buildingId})`, 'info');
+                    
+                    // 렌트롤 업로드
+                    if (uploadRentroll) {
+                        for (const tenant of buildingData.tenants) {
+                            const rentrollData = {
+                                targetYear: targetYear,
+                                targetMonth: targetMonth,
+                                targetDate: `${targetYear}-${targetMonth}`,
+                                floor: tenant.floor || '',
+                                tenant: tenant.tenant || '',
+                                contractFrom: '',
+                                contractTo: '',
+                                contractPeriod: '',
+                                note: tenant.contact ? `📞 ${tenant.contact}` : '',
+                                author: window.currentUser,
+                                timestamp: Date.now(),
+                                createdAt: new Date().toISOString(),
+                                buildingId: buildingId,
+                                buildingName: buildingName
+                            };
+                            
+                            await push(ref(window.database, `rentrolls/${buildingId}`), rentrollData);
+                        }
+                        addLog(`  ✅ 렌트롤 ${buildingData.tenants.length}건 업로드`, 'success');
+                    }
+                    
+                    // 메모 업로드 (연락처 정보 통합)
+                    if (uploadMemo) {
+                        const contactInfo = buildingData.tenants
+                            .filter(t => t.contact)
+                            .map(t => `${t.floor} ${t.tenant}: ${t.contact}`)
+                            .join('\n');
+                        
+                        if (contactInfo) {
+                            const memoData = {
+                                content: `📞 입주사 연락처 (${targetYear}년 ${parseInt(targetMonth)}월 기준)\n\n${contactInfo}`,
+                                pinned: pinMemo,
+                                author: window.currentUser,
+                                timestamp: Date.now(),
+                                buildingId: buildingId,
+                                buildingName: buildingName,
+                                deleted: false
+                            };
+                            
+                            await push(ref(window.database, `memos/${buildingId}`), memoData);
+                            addLog(`  ✅ 연락처 메모 업로드 완료`, 'success');
+                        }
+                    }
+                    
+                    successCount++;
+                    
+                } catch (error) {
+                    console.error(`${buildingName} 업로드 오류:`, error);
+                    addLog(`  ❌ ${buildingName} 오류: ${error.message}`, 'error');
+                    errorCount++;
+                }
+                
+                completed++;
+                const percent = Math.round((completed / selectedArray.length) * 100);
+                document.getElementById('progressBar').style.width = percent + '%';
+                document.getElementById('progressBar').textContent = percent + '%';
+                document.getElementById('progressText').textContent = 
+                    `${completed}/${selectedArray.length} 빌딩 처리 완료`;
+            }
+            
+            // 완료 메시지
+            addLog(`\n🎉 업로드 완료! 성공: ${successCount}, 실패: ${errorCount}`, 'success');
+            document.getElementById('uploadBtn').disabled = false;
+            
+            if (successCount > 0) {
+                alert(`업로드 완료!\n\n성공: ${successCount}개 빌딩\n실패: ${errorCount}개 빌딩`);
+            }
+        };
+        
+        // 로그 추가
+        window.addLog = function(message, type = 'info') {
+            const log = document.getElementById('resultLog');
+            const item = document.createElement('div');
+            item.className = 'log-item ' + type;
+            item.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(item);
+            log.scrollTop = log.scrollHeight;
+        };
+    </script>
+    
+    <script>
+        // 드래그 앤 드롭
+        const uploadZone = document.getElementById('uploadZone');
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('drag-over');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('drag-over');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file) processFile(file);
+        });
+        
+        // 파일 선택
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) processFile(file);
+        }
+        
+        // 파일 처리
+        function processFile(file) {
+            if (!file.name.match(/\.(xlsx|xls)$/i)) {
+                alert('엑셀 파일(.xlsx, .xls)만 지원합니다');
+                return;
+            }
+            
+            uploadZone.classList.add('has-file');
+            document.getElementById('fileInfo').style.display = 'block';
+            document.getElementById('fileName').textContent = `📄 ${file.name}`;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // 첫 번째 시트 읽기
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    window.parsedData = jsonData;
+                    processExcelData(jsonData);
+                    
+                } catch (error) {
+                    console.error('파일 파싱 오류:', error);
+                    alert('파일을 읽는 중 오류가 발생했습니다');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        // 엑셀 데이터 처리
+        function processExcelData(data) {
+            window.buildingGroups = {};
+            let totalContacts = 0;
+            
+            data.forEach(row => {
+                const buildingName = row['빌딩명'];
+                if (!buildingName) return;
+                
+                if (!window.buildingGroups[buildingName]) {
+                    window.buildingGroups[buildingName] = {
+                        name: buildingName,
+                        address: row['도로명주소'] || '',
+                        tenants: []
+                    };
+                }
+                
+                const contact = row['대표연락처'];
+                if (contact) totalContacts++;
+                
+                window.buildingGroups[buildingName].tenants.push({
+                    floor: row['층'] || '',
+                    tenant: row['입주사명'] || '',
+                    contact: contact || '',
+                    website: row['웹사이트'] || ''
+                });
+            });
+            
+            // 통계 업데이트
+            const buildingCount = Object.keys(window.buildingGroups).length;
+            document.getElementById('statsGrid').style.display = 'grid';
+            document.getElementById('statBuildings').textContent = buildingCount;
+            document.getElementById('statTenants').textContent = data.length;
+            document.getElementById('statContacts').textContent = totalContacts;
+            
+            // 빌딩 목록 렌더링
+            renderBuildingList();
+            updateUploadButton();
+        }
+        
+        // 빌딩 목록 렌더링
+        function renderBuildingList() {
+            const container = document.getElementById('buildingList');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let html = `
+                <div class="select-all-row">
+                    <input type="checkbox" class="building-checkbox" id="selectAll" onchange="toggleSelectAll()">
+                    <label for="selectAll"><strong>전체 선택</strong></label>
+                    <span style="margin-left: auto; font-size: 12px; color: #666;">
+                        ${Object.keys(window.buildingGroups).length}개 빌딩
+                    </span>
+                </div>
+            `;
+            
+            Object.entries(window.buildingGroups)
+                .filter(([name]) => name.toLowerCase().includes(searchTerm))
+                .sort((a, b) => b[1].tenants.length - a[1].tenants.length)
+                .forEach(([name, data]) => {
+                    const contactCount = data.tenants.filter(t => t.contact).length;
+                    const isSelected = window.selectedBuildings.has(name);
+                    
+                    html += `
+                        <div class="building-item ${isSelected ? 'selected' : ''}" data-building="${name}">
+                            <div class="building-header">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" class="building-checkbox" 
+                                           ${isSelected ? 'checked' : ''} 
+                                           onchange="toggleBuilding('${name.replace(/'/g, "\\'")}', this.checked)"
+                                           onclick="event.stopPropagation()">
+                                    <div>
+                                        <div class="building-name">${name}</div>
+                                        <div class="building-address">${data.address}</div>
+                                    </div>
+                                </div>
+                                <div class="building-meta">
+                                    <span class="building-count">${data.tenants.length}개 층</span>
+                                    ${contactCount > 0 ? `<span class="contact-badge">📞 ${contactCount}</span>` : ''}
+                                    <span class="expand-icon" onclick="toggleExpand(this.closest('.building-item'))">▼</span>
+                                </div>
+                            </div>
+                            <div class="building-details">
+                                <table class="tenant-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 60px;">층</th>
+                                            <th>입주사명</th>
+                                            <th style="width: 120px;">연락처</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${data.tenants.map(t => `
+                                            <tr>
+                                                <td>${t.floor}</td>
+                                                <td>${t.tenant}</td>
+                                                <td>${t.contact ? t.contact : '<span class="no-contact">-</span>'}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                });
+            
+            container.innerHTML = html;
+        }
+        
+        // 빌딩 확장/축소
+        function toggleExpand(item) {
+            item.classList.toggle('expanded');
+        }
+        
+        // 빌딩 선택
+        function toggleBuilding(name, checked) {
+            if (checked) {
+                window.selectedBuildings.add(name);
+            } else {
+                window.selectedBuildings.delete(name);
+            }
+            updateSelectedCount();
+            updateUploadButton();
+        }
+        
+        // 전체 선택
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll').checked;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            Object.keys(window.buildingGroups)
+                .filter(name => name.toLowerCase().includes(searchTerm))
+                .forEach(name => {
+                    if (selectAll) {
+                        window.selectedBuildings.add(name);
+                    } else {
+                        window.selectedBuildings.delete(name);
+                    }
+                });
+            
+            renderBuildingList();
+            updateSelectedCount();
+            updateUploadButton();
+        }
+        
+        // 선택 수 업데이트
+        function updateSelectedCount() {
+            document.getElementById('statSelected').textContent = window.selectedBuildings.size;
+        }
+        
+        // 업로드 버튼 상태
+        function updateUploadButton() {
+            const btn = document.getElementById('uploadBtn');
+            const hasData = Object.keys(window.buildingGroups).length > 0;
+            const hasSelection = window.selectedBuildings.size > 0;
+            const isLoggedIn = window.currentUser !== null;
+            
+            btn.disabled = !(hasData && hasSelection && isLoggedIn);
+            btn.textContent = hasSelection 
+                ? `🚀 ${window.selectedBuildings.size}개 빌딩 업로드 시작`
+                : '🚀 빌딩을 선택하세요';
+        }
+        
+        // 빌딩 검색
+        function filterBuildings() {
+            renderBuildingList();
+        }
+    </script>
+</body>
+</html>
